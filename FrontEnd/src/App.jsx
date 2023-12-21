@@ -4,7 +4,7 @@ import Footer from './components/Footer';
 import LoginForm from './components/LoginForm';
 import SignUpForm from './components/SignUpForm';
 import ProfilePage from './pages/ProfilePage';
-import CreatePostButton from './components/CreatePostButton';
+
 
 function App() {
     return (
@@ -12,8 +12,8 @@ function App() {
             <Header></Header>
             {/* <LoginForm></LoginForm> */}
             {/* <SignUpForm></SignUpForm> */}
-            <ProfilePage></ProfilePage>
-            <CreatePostButton></CreatePostButton>
+            <ProfilePage> </ProfilePage>
+         
             <Footer></Footer>
         </>
     )
