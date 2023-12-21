@@ -30,35 +30,41 @@ const ItemCard = ({ itemData }) => { //Replace itemData with the correct name fo
                     />
                 </div>
             </div>
-            <div className="text-center mt-2">
+            <div className="mt-1 mb-3 mx-2">
                 <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
             </div>
         </Card>
 
-        <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal show={showModal} onHide={handleCloseModal} size='lg'>
                 <Modal.Header closeButton>
                     {/* need to change the itemData to link to the database when created... */}
                     <Modal.Title className='headings'>{itemData.ItemName}</Modal.Title>
-                    <p className='body'>{itemData.ItemCategory}</p>
+                    <p className='body mt-4 mx-5'>Category: {itemData.ItemCategory}</p>
                 </Modal.Header>
                 <Modal.Body>
-                    <p className="body">{itemData.ItemDescription}</p>
-                    <p className='body'>{itemData.ItemPricePerDay}</p>
+                    <div className='row'>
+                        <div className='col-md-6'>
+                            <p className="body">{itemData.ItemDescription}</p>
+                            <p className='body'>{itemData.ItemPricePerDay}</p>
+                            <p className='body'>{itemData.ItemLocation}</p>
+                        </div>
+                        <div className='col-md-6'>
+                            {/* This is where I will add the message user, hire item and save item buttons! */}
+                        <Carousel className='w-100'>
+                            <Carousel.Item>
+                                    <img className='d-block w-100' src={itemData.ItemFeaturedImage} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img className='d-block' src={itemData.ItemSecondImage} alt='Second item image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <img className='d-block' src={itemData.ItemThirdImage} alt='third item image' style={{ maxWidth: '400px', maxHeight: '300px' }} />
+                            </Carousel.Item>
+                        </Carousel>
+                        </div>
+                    </div>
                 </Modal.Body>
-                <Modal.Footer>
-                    <p className='body'>{itemData.ItemLocation}</p>
-                    <Carousel className='w-50'>
-                        <Carousel.Item>
-                            <img className='d-block' src={itemData.ItemFeaturedImage} alt='Featured image' style={{ width: '250px', height:'175px' }} /> 
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img className='d-block' src={itemData.ItemSecondImage} alt='Second item image' style={{ width: '250px', height: '175px' }} />
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img className='d-block' src={itemData.ItemThirdImage} alt='third item image' style={{ width: '250px', height: '175px' }} />
-                        </Carousel.Item>
-                    </Carousel>
-                </Modal.Footer>
+
         </Modal>
         </>
     );
