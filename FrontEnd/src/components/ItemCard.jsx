@@ -1,9 +1,18 @@
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/esm/Container';
+import { Button, Modal, Carousel } from 'react-bootstrap';
+import { useState } from 'react';
+
 
 
 const ItemCard = ({ itemData }) => { //Replace itemData with the correct name for the table in database when constructed
+
+    const [showModal, setShowModal] = useState(false);
+
+    const handleShowModal = () => setShowModal(true);
+    const handleCloseModal = () => setShowModal(false);
+
     return (
+        <>
         <Card style={{ width: '50%', margin: '10px' }} className="mb-3">
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
@@ -21,7 +30,37 @@ const ItemCard = ({ itemData }) => { //Replace itemData with the correct name fo
                     />
                 </div>
             </div>
+            <div className="text-center mt-2">
+                <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
+            </div>
         </Card>
+
+        <Modal show={showModal} onHide={handleCloseModal}>
+                <Modal.Header closeButton>
+                    {/* need to change the itemData to link to the database when created... */}
+                    <Modal.Title className='headings'>{itemData.ItemName}</Modal.Title>
+                    <p className='body'>{itemData.ItemCategory}</p>
+                </Modal.Header>
+                <Modal.Body>
+                    <p className="body">{itemData.ItemDescription}</p>
+                    <p className='body'>{itemData.ItemPricePerDay}</p>
+                </Modal.Body>
+                <Modal.Footer>
+                    <p className='body'>{itemData.ItemLocation}</p>
+                    <Carousel className='w-50'>
+                        <Carousel.Item>
+                            <img className='d-block' src={itemData.ItemFeaturedImage} alt='Featured image' style={{ width: '250px', height:'175px' }} /> 
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img className='d-block' src={itemData.ItemSecondImage} alt='Second item image' style={{ width: '250px', height: '175px' }} />
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img className='d-block' src={itemData.ItemThirdImage} alt='third item image' style={{ width: '250px', height: '175px' }} />
+                        </Carousel.Item>
+                    </Carousel>
+                </Modal.Footer>
+        </Modal>
+        </>
     );
 };
 
