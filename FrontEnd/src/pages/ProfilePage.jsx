@@ -20,13 +20,14 @@ function ProfilePage() {
     ];
 
     return (
+        <>
         <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px'}}>
-            <h1 className='headings'>Your profile page</h1>
             <Row>
                 <Col md={2}> {/* Adjust the column size based on your needs */}
                     <ProfileInfo userData={userData} />
-                </Col>
-                <Col md={10}> {/* Adjust the column size based on your needs */}
+                    </Col>
+                    <Col md={10}> {/* Adjust the column size based on your needs */}
+                        <h3 className='headings'>For rent:</h3>
                     <div className='d-flex flex-column justify-content-around'>
                         {itemsData.map((item, index) => (
                             <ItemCard key={index} itemData={item} />
@@ -35,7 +36,7 @@ function ProfilePage() {
                 </Col>
             </Row>
         </Container>
-    
+    </>
     );
 }
 
