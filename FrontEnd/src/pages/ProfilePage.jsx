@@ -1,10 +1,13 @@
+// import the relevant components:
 import ItemCard from '../components/ItemCard';
 import ProfileInfo from '../components/ProfileInfo';
+import CreatePostButton from '../components/CreatePostButton';
+import Header from '../components/Header';
+import NavBar from '../components/NavBar';
+// import the relevant bootstrap:
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
-import CreatePostButton from '../components/CreatePostButton';
-
 // This is all currently for testing!
 function ProfilePage() {
 
@@ -23,6 +26,8 @@ function ProfilePage() {
 
     return (
         <>
+            <Header></Header>
+            <NavBar></NavBar>
         <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px'}}>
             <Row>
                 <Col md={2}> {/* Adjust the column size based on your needs */}
@@ -39,7 +44,8 @@ function ProfilePage() {
                     </div>
                 </Col>
             </Row>
-        </Container>
+            </Container>
+
     </>
     );
 }
