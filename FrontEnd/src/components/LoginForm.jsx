@@ -4,8 +4,12 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
+import { useNavigate } from "react-router-dom";
 
 function LoginForm() {
+
+    const navigate = useNavigate();
+
     const [status, setStatus] = useState('');
     const [usersData, setUsersData] = useState([]);
 
@@ -35,6 +39,10 @@ function LoginForm() {
         }
     }
 
+    function handleSignup() {
+        navigate('/SignupPage');
+    }
+
     return (
         <Container className="d-flex justify-content-center align-items-center mt-3">
             <Form>
@@ -46,12 +54,19 @@ function LoginForm() {
                     <Form.Label className="headings">Password:</Form.Label>
                     <Form.Control type="password" value={passwordInputProps.value} onChange={passwordInputProps.onChange} />
                 </Form.Group>
-                <Button variant="secondary" onClick={handleLogin} className="my-3 body">Login!</Button>
+                <div className='d-flex justify-content-center'>
+                    <Button variant="secondary" onClick={handleLogin} className="my-3 body">Login!</Button>
+                </div>
                 {status && <Alert variant={status === 'success!' ? 'success' : 'danger'} className="mt-3">
                     {status}
-                </Alert>}
+                    </Alert>}
+                <p className='body d-flex justify-content-center'>Don't have an account?</p>
+                <div className='d-flex justify-content-center'>
+                    <Button variant='secondary' onClick={handleSignup} className='my-3 body'>Sign up!</Button>
+                </div>
             </Form>
         </Container>
+
     );
 }
 
