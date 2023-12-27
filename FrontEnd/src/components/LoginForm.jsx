@@ -5,10 +5,12 @@ import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
 import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from "react-router-dom";
+import { useUserContext } from "../context/userContext";
 
 function LoginForm() {
 
     const navigate = useNavigate();
+    const { handleUpdateUser } = useUserContext(); //accessing the user context
 
     const [status, setStatus] = useState('');
     const [usersData, setUsersData] = useState([]);
@@ -24,39 +26,44 @@ function LoginForm() {
                                     // }, []);
 
     const handleLogin = async (e) => {
+        e.preventDefault();
         const enteredEmail = emailInputProps.value;
         const enteredPassword = passwordInputProps.value;
 
-        const response = await fetch('http://localhost:3307/rentshare/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                Email: enteredEmail,
-                Password: enteredPassword,
-            }),
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Login failed, please check credentials');
+        try {
+            const response = await fetch('http://localhost:3307/rentshare/users/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    Email: enteredEmail,
+                    Password: enteredPassword,
+                }),
+            })
+            if (!response.ok) {
+                throw new Error('Login failed, please check credentials');
 
-                }
-                return response.json();
-            })
-            .then(data => {
-                resetEmail();
-                resetPassword();
-                setStatus('success')
-            })
-            .catch(error => {
-                setStatus(error.message);
+            }
+            const data = await response.json();
+            resetEmail();
+            resetPassword();
+            setStatus('success')
+
+            handleUpdateUser({
+                Email: data.Email,
+                UserName: data.UserName,
+                FullName: data.FullName,
+                Contact: data.Contact,
+                Location: data.Location
             });
 
+            navigate('/ProfilePage');
+        } catch (error) {
+            setStatus(error.message);
         }
-
-
-
+    } 
+    
     function handleSignup() {
         navigate('/SignupPage');
     }
