@@ -35,7 +35,7 @@ function SignUpForm() {
             }
 
             // Make the HTTP request:
-            const response = await fetch('http://localhost:3007/rentshare/users/register', {
+            const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
                 body: formDataToSend,
             });
