@@ -42,52 +42,66 @@ const deleteUser = (req, res) => {
         });
 }
 
+// new register user controller::::::
 const registerUser = async (req, res) => {
+    //let user; // Declare user variable outside the try block
     try {
-        const {
+        const { FullName, UserName, Email, Password, Contact, Location, } = req.body;
+
+        console.log('email', Email);
+        console.log('username', UserName);
+
+        if (!FullName || !UserName || !Email || !Password || !Contact || !Location) {
+            return res.status(400).json({ error: 'all fields are required' });
+        }
+        // const existingUser = await Models.User.findOne({
+        //     $or: [
+        //         { Email: { $regex: new RegExp(`^${Email}$`, 'i') } },
+        //         { UserName: { $regex: new RegExp(`^${UserName}$`, 'i') } }
+        //     ] });
+        // if (existingUser) {
+        //     return res.status(400).json({ error: 'Email or username already taken' });
+        // }
+        
+        // create a new user 
+        const newUser = new Models.User({
             FullName,
             UserName,
             Email,
-            Password,
+            Password, //encyrpt password here!
             Contact,
-            Location,
-            ProfilePhoto
-        } = req.body;
-
-        if (!(Email && Password && FullName && UserName && Contact && Location && ProfilePhoto)) {
-            res.status(400).json({ result: "All input is required" });
-        } else if (Password.length < 6) {
-            res.status(400).json({ result: "Password must be at least 6 characters long" });
-        } else if (Password === Email) {
-            res.status(400).json({ result: "Password cannot be the same as your email address" });
-        } else if (!/^[A-Za-z\s\-]+$/i.test(FullName)) {
-            res.status(400).json({ result: "Invalid  name" });
-        } else {
-            const oldUser = await Models.User.findOne({ where: { Email } });
-            if (oldUser) {
-                res.status(409).json({ result: "This email address already has an account. Please login!" });
-                return;
-            }
-        }
-        const userData = await Models.User.create({
-            FullName,
-            UserName,
-            Email: Email.toLowerCase(),
-            Password, //encrypt password here!
-            Contact,
-            Location,
-            ProfilePhoto,
+            Location
         });
-        const user = userData.get({ plain: true })
-        
-        //create token here??
 
-        res.status(200).json({ result: 'User registration successful', data: user });
-    } catch (err) {
-        console.log(err);
-        res.status(500).json({ result: err.message });
+        await newUser.save();
+
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+//         // Move user creation inside the try block
+//         const userData = await Models.User.create({
+//             FullName: user.FullName,
+//             UserName: user.UserName,
+//             Email: user.Email,
+//             Password: user.Password, //encrypt password here!
+//             Contact: user.Contact,
+//             Location: user.Location,
+//             // ProfilePhoto: req.body.ProfilePhoto,
+//         });
+
+//         user = userData.get({ plain: true });
+//         // create token here??
+
+//         res.status(200).json({ result: 'User registration successful', data: user });
+//     } catch (err) {
+//         console.error('Error registering user:', err);
+//         res.status(500).json({ result: 'Failed to register user', error: err.message });
+//     }
+// };
 
 module.exports = {
     getUser,
@@ -96,3 +110,7 @@ module.exports = {
     deleteUser,
     registerUser
 };
+
+
+
+// need to redo the whole userController file i think, its not working at all!!!
