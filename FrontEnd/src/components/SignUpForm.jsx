@@ -6,13 +6,13 @@ import useSignUpInput from "../hooks/useSignUpInput";
 
 function SignUpForm() {
     const initialFormData = {
-        fullname: "",
-        username: "",
-        email: "",
-        phonenumber: "",
-        location: "",
-        password: "",
-        profilephoto: null,
+        FullName: "",
+        UserName: "",
+        Email: "",
+        Contact: "",
+        Location: "",
+        Password: "",
+        ProfilePhoto: null,
     };
 
     const {
@@ -23,12 +23,38 @@ function SignUpForm() {
         resetForm
     } = useSignUpInput(initialFormData);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         console.log("Form data:", formData);
         // console.log for testing purposes 
-        resetForm();
-    };
+        
+
+        try {
+            const formDataToSend = new FormData();
+            for (const key in formData) {
+                formDataToSend.append(key, formData[key]);
+            }
+
+            // Make the HTTP request:
+            console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
+            const response = await fetch('http://localhost:3307/rentshare/users/register', {
+                method: 'POST',
+                body: formDataToSend,
+            });
+
+            console.log('after fetch', response)
+            if (response.ok) {
+                const result = await response.json();
+                console.log('user registered successfully:', result);
+                resetForm();
+            } else {
+                const errorResult = await response.json();
+                console.error('Failed to register user:', errorResult.result);
+            }
+        } catch (error) {
+            console.error('Error registering user', error);
+        }
+    }
 
     return (
         <Container className="d-flex justify-content-center align-items-center mt-3">
@@ -37,8 +63,8 @@ function SignUpForm() {
                     <Form.Label>Full name:</Form.Label>
                     <Form.Control
                         type="text"
-                        name="fullname"
-                        value={formData.fullname}
+                        name="FullName"
+                        value={formData.FullName}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
@@ -46,8 +72,8 @@ function SignUpForm() {
                     <Form.Label>Username:</Form.Label>
                     <Form.Control 
                         type="text"
-                        name="username"
-                        value={formData.username}
+                        name="UserName"
+                        value={formData.UserName}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
@@ -55,17 +81,17 @@ function SignUpForm() {
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
                         type="text"
-                        name="email"
-                        value={formData.email}
+                        name="Email"
+                        value={formData.Email}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
-                <Form.Group controlId="formPhoneNumber">
-                    <Form.Label>Phone Number</Form.Label>
+                <Form.Group controlId="formContact">
+                    <Form.Label>Contact</Form.Label>
                     <Form.Control
-                        type="tel"
-                        name="phonenumber"
-                        value={formData.phonenumber}
+                        type="text"
+                        name="Contact"
+                        value={formData.Contact}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
@@ -73,8 +99,8 @@ function SignUpForm() {
                     <Form.Label>Location:</Form.Label>
                     <Form.Control
                         as="select"
-                        name="location"
-                        value={formData.location}
+                        name="Location"
+                        value={formData.Location}
                         onChange={handleLocationChange}
                     >
                         <option value=" ">Select city:</option>
@@ -91,8 +117,8 @@ function SignUpForm() {
                 <Form.Label>Password:</Form.Label>
                     <Form.Control
                         type="password"
-                        name="password"
-                        value={formData.password}
+                        name="Password"
+                        value={formData.Password}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
@@ -100,7 +126,7 @@ function SignUpForm() {
                     <Form.Label>Profile Photo:</Form.Label>
                     <Form.Control
                         type="file"
-                        name="profilephoto"
+                        name="ProfilePhoto"
                         onChange={handleFileChange}
                     />
                 </Form.Group>
