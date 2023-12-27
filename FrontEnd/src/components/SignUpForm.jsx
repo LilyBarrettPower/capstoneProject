@@ -27,6 +27,7 @@ function SignUpForm() {
         e.preventDefault();
         console.log("Form data:", formData);
         // console.log for testing purposes 
+        
 
         try {
             const formDataToSend = new FormData();
@@ -35,11 +36,13 @@ function SignUpForm() {
             }
 
             // Make the HTTP request:
+            console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
             const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
                 body: formDataToSend,
             });
 
+            console.log('after fetch', response)
             if (response.ok) {
                 const result = await response.json();
                 console.log('user registered successfully:', result);
