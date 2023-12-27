@@ -12,12 +12,10 @@ function SignUpForm() {
         Contact: "",
         Location: "",
         Password: "",
-        ProfilePhoto: null,
     };
 
     const {
         formData,
-        handleFileChange,
         handleInputChange,
         handleLocationChange,
         resetForm
@@ -30,31 +28,37 @@ function SignUpForm() {
         
 
         try {
-            const formDataToSend = new FormData();
-            for (const key in formData) {
-                formDataToSend.append(key, formData[key]);
-            }
+            // const formDataToSend = new FormData();
+            // for (const key in formData) {
+            //     formDataToSend.append(key, formData[key]);
+            // }
 
             // Make the HTTP request:
-            console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
+            // console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
             const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
-                body: formDataToSend,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
             });
 
-            console.log('after fetch', response)
+            const data = await response.json();
+
+            // console.log('after fetch', response)
             if (response.ok) {
-                const result = await response.json();
-                console.log('user registered successfully:', result);
+                // const result = await response.json();
+                console.log('user registered successfully:', data);
                 resetForm();
             } else {
-                const errorResult = await response.json();
-                console.error('Failed to register user:', errorResult.result);
+                // const errorResult = await response.json();
+                console.error('error during registration', data.error);
+                console.error('details', data)
             }
         } catch (error) {
             console.error('Error registering user', error);
         }
-    }
+    };
 
     return (
         <Container className="d-flex justify-content-center align-items-center mt-3">
@@ -80,7 +84,7 @@ function SignUpForm() {
                 <Form.Group controlId="formEmail">
                     <Form.Label>Email:</Form.Label>
                     <Form.Control
-                        type="text"
+                        type="email"
                         name="Email"
                         value={formData.Email}
                         onChange={handleInputChange}
@@ -120,14 +124,6 @@ function SignUpForm() {
                         name="Password"
                         value={formData.Password}
                         onChange={handleInputChange}
-                    />
-                </Form.Group>
-                <Form.Group controlId="formProfilePhoto">
-                    <Form.Label>Profile Photo:</Form.Label>
-                    <Form.Control
-                        type="file"
-                        name="ProfilePhoto"
-                        onChange={handleFileChange}
                     />
                 </Form.Group>
                 <Button variant="secondary" type="submit" className="my-3 body">Sign up</Button>

@@ -15,9 +15,16 @@ const savedItemsRoutes = require('./Routes/savedItemsRoutes');
 const usersRoutes = require('./Routes/usersRoutes');
 
 
+const corsOptions = {
+    origin: 'http://localhost:3307', // Update with your front end's origin
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    optionsSuccessStatus: 204,
+};
+
 
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Serve the front end through the server 
 app.use(express.static(path.join(__dirname, '../FrontEnd/dist')));

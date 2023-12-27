@@ -34,9 +34,9 @@ User.init({
     Location: {
         type: DataTypes.STRING,
     },
-    ProfilePhoto: {
-        type: DataTypes.STRING,
-    },
+    // ProfilePhoto: {
+    //     type: DataTypes.STRING,
+    // },
 },
     {
         sequelize: sequelizeInstance, modelName: 'users', timestamps: true, freezeTableName: true,
