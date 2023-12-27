@@ -4,6 +4,7 @@ import ProfileInfo from '../components/ProfileInfo';
 import CreatePostButton from '../components/CreatePostButton';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
+import LogOutButton from '../components/LogOutButton';
 // import the relevant bootstrap:
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/Row';
@@ -28,6 +29,7 @@ function ProfilePage() {
         <>
             <Header></Header>
             <NavBar></NavBar>
+            <LogOutButton></LogOutButton>
         <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px'}}>
             <Row>
                 <Col md={2}> {/* Adjust the column size based on your needs */}
