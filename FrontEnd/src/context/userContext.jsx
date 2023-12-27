@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from "react";
+
+import { createContext, useContext, useState, useEffect } from "react";
 
 const UserContext = createContext();
 
@@ -11,11 +12,12 @@ export const UserProvider = (props) => {
         Location: ''
     });
 
+
     const handleUpdateUser = (user) => {
         setCurrentUser(user);
+        console.log('updated user', user);
     }
 
-    // need to add a logout button into your front end to call this from:::::
     const logOut = () => {
         setCurrentUser({
             Email: '',
@@ -24,6 +26,7 @@ export const UserProvider = (props) => {
             Contact: '',
             Location: ''
         });
+        console.log('user logged out');
     }
 
     return (
@@ -35,4 +38,4 @@ export const UserProvider = (props) => {
 
 export const useUserContext = () => {
     return useContext(UserContext);
-}
+};

@@ -1,8 +1,18 @@
 import Image from 'react-bootstrap/Image';
 import Container from 'react-bootstrap/esm/Container';
 
-function ProfileInfo({ userData }) { //swap userData for the actual database 
-    const { FullName, Location, Contact, ProfilePhoto } = userData;
+import { useUserContext } from '../context/userContext';
+
+function ProfileInfo() { 
+    // using the useUserContext custom hook
+    const { currentUser } = useUserContext();
+
+
+    if (!currentUser) {
+        return null;
+    }
+
+    const { FullName, Location, Contact, ProfilePhoto } = currentUser;
 
     return (
         <Container className="d-flex flex-column align-items-center" style={{width: '10%', margin: '10px'}}>
