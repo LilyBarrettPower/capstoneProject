@@ -23,21 +23,39 @@ function LoginForm() {
                                     //         .catch(error => console.error("Error fetching the users data:", error));
                                     // }, []);
 
-    function handleLogin() {
+    const handleLogin = async (e) => {
         const enteredEmail = emailInputProps.value;
         const enteredPassword = passwordInputProps.value;
 
-        const user = usersData.find(user => user.email === enteredEmail && user.password === enteredPassword);
+        const response = await fetch('http://localhost:3307/rentshare/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                Email: enteredEmail,
+                Password: enteredPassword,
+            }),
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Login failed, please check credentials');
 
-        if (user) {
-            resetEmail();
-            resetPassword();
-            setStatus('success!');
-            // Navigate or handle context update here if needed
-        } else {
-            setStatus('Login failed. Please check credentials.');
+                }
+                return response.json();
+            })
+            .then(data => {
+                resetEmail();
+                resetPassword();
+                setStatus('success')
+            })
+            .catch(error => {
+                setStatus(error.message);
+            });
+
         }
-    }
+
+
 
     function handleSignup() {
         navigate('/SignupPage');
