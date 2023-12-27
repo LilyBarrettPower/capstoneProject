@@ -26,4 +26,8 @@ router.post('/register', (req, res) => {
     Controllers.userController.registerUser(req, res);
 })
 
+router.post('/login', (req, res) => {
+    Controllers.userController.loginUser(req, res);
+})
+
 module.exports = router;

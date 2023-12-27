@@ -1,6 +1,8 @@
 'use strict';
 
 const Models = require('../Models');
+// for password encryption
+const bcrypt = require('bcrypt');
 
 const getUser = (res) => {
     Models.User.findAll({})
@@ -44,7 +46,6 @@ const deleteUser = (req, res) => {
 
 // new register user controller::::::
 const registerUser = async (req, res) => {
-    //let user; // Declare user variable outside the try block
     try {
         const { FullName, UserName, Email, Password, Contact, Location, } = req.body;
 
@@ -54,21 +55,21 @@ const registerUser = async (req, res) => {
         if (!FullName || !UserName || !Email || !Password || !Contact || !Location) {
             return res.status(400).json({ error: 'all fields are required' });
         }
-        // const existingUser = await Models.User.findOne({
-        //     $or: [
-        //         { Email: { $regex: new RegExp(`^${Email}$`, 'i') } },
-        //         { UserName: { $regex: new RegExp(`^${UserName}$`, 'i') } }
-        //     ] });
-        // if (existingUser) {
-        //     return res.status(400).json({ error: 'Email or username already taken' });
-        // }
+        // check if the email is already in use
+        const existingUser = await Models.User.findOne({ where: {Email}});
+        if (existingUser) {
+            return res.status(400).json({ error: 'Email already taken' });
+        };
+
+        const hashedPassword = await bcrypt.hash(Password, 10);
+        // Add more valication here...
         
         // create a new user 
         const newUser = new Models.User({
             FullName,
             UserName,
             Email,
-            Password, //encyrpt password here!
+            Password: hashedPassword, //encyrpt password here!
             Contact,
             Location
         });
@@ -82,35 +83,39 @@ const registerUser = async (req, res) => {
     }
 };
 
-//         // Move user creation inside the try block
-//         const userData = await Models.User.create({
-//             FullName: user.FullName,
-//             UserName: user.UserName,
-//             Email: user.Email,
-//             Password: user.Password, //encrypt password here!
-//             Contact: user.Contact,
-//             Location: user.Location,
-//             // ProfilePhoto: req.body.ProfilePhoto,
-//         });
+// controller for loggin in the users 
+// Here, you need to create a token to hash the password then compare the hashed password to the hashed password in the database 
+const loginUser = async (req, res) => {
+    try {
+        const { Email, Password } = req.body
 
-//         user = userData.get({ plain: true });
-//         // create token here??
+        // Validate if user is in the database 
+        const user = await Models.User.findOne({ where: { Email } });
+        if (!user) {
+            return res.status(400).json({message: 'This email is not registered'})
+        }
 
-//         res.status(200).json({ result: 'User registration successful', data: user });
-//     } catch (err) {
-//         console.error('Error registering user:', err);
-//         res.status(500).json({ result: 'Failed to register user', error: err.message });
-//     }
-// };
+        const passwordMatch = await bcrypt.compare(Password, user.Password);
+        if (passwordMatch) {
+            res.status(200).json({ message: 'User successfully logged in' })
+        } else {
+            res.status(401).json({error: 'login failed'})
+        }
+
+    } catch(error) {
+        console.log(error);
+        res.status(500).json({result: error})
+    }
+};
 
 module.exports = {
     getUser,
     createUser,
     updateUser,
     deleteUser,
-    registerUser
+    registerUser,
+    loginUser
 };
 
 
 
-// need to redo the whole userController file i think, its not working at all!!!
