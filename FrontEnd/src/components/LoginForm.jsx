@@ -13,7 +13,7 @@ function LoginForm() {
     const { handleUpdateUser } = useUserContext(); //accessing the user context
 
     const [status, setStatus] = useState('');
-    const [usersData, setUsersData] = useState([]);
+    // const [usersData, setUsersData] = useState([]);
 
     const [emailInputProps, resetEmail] = useLoginInput('Example@gmail.com');
     const [passwordInputProps, resetPassword] = useLoginInput('*******');
