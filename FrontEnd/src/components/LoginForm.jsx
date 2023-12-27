@@ -18,13 +18,6 @@ function LoginForm() {
     const [emailInputProps, resetEmail] = useLoginInput('Example@gmail.com');
     const [passwordInputProps, resetPassword] = useLoginInput('*******');
 
-                                    // useEffect(() => {
-                                    //     fetch('./database/users.json')
-                                    //         .then(response => response.json())
-                                    //         .then(data => setUsersData(data))
-                                    //         .catch(error => console.error("Error fetching the users data:", error));
-                                    // }, []);
-
     const handleLogin = async (e) => {
         e.preventDefault();
         const enteredEmail = emailInputProps.value;
@@ -41,21 +34,26 @@ function LoginForm() {
                     Password: enteredPassword,
                 }),
             })
+
+            console.log('Response status:', response.status)
+
             if (!response.ok) {
                 throw new Error('Login failed, please check credentials');
 
             }
+            
             const data = await response.json();
+            console.log('Data from server', data)
             resetEmail();
             resetPassword();
             setStatus('success')
 
             handleUpdateUser({
-                Email: data.Email,
-                UserName: data.UserName,
-                FullName: data.FullName,
-                Contact: data.Contact,
-                Location: data.Location
+                Email: data.user.Email || '',
+                UserName: data.user.UserName || '',
+                FullName: data.user.FullName || '',
+                Contact: data.user.Contact || '',
+                Location: data.user.Location || ''
             });
 
             navigate('/ProfilePage');

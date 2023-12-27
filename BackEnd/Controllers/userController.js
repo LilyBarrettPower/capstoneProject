@@ -97,7 +97,16 @@ const loginUser = async (req, res) => {
 
         const passwordMatch = await bcrypt.compare(Password, user.Password);
         if (passwordMatch) {
-            res.status(200).json({ message: 'User successfully logged in' })
+            res.status(200).json({
+                message: 'User successfully logged in',
+                user: {
+                    Email: user.Email,
+                    UserName: user.UserName,
+                    FullName: user.FullName,
+                    Contact: user.Contact,
+                    Location: user.Location
+                }
+            });
         } else {
             res.status(401).json({error: 'login failed'})
         }

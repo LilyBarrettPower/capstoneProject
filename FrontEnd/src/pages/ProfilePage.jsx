@@ -8,16 +8,16 @@ import NavBar from '../components/NavBar';
 import Col from 'react-bootstrap/esm/Col';
 import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
+
+import { useUserContext } from '../context/userContext';
+
 // This is all currently for testing!
 function ProfilePage() {
 
-    const userData = {
-        FullName: 'Lily Barrett-Power',
-        Location: 'Canterbury',
-        Contact: '0220215282',
-        ProfilePhoto: 'https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8Mnx8fGVufDB8fHx8fA%3D%3D'
-    };
+    // use the context custom hook:
+    const currentUser = useUserContext();
 
+    console.log(currentUser);
     // Testing item data before adding the database
     const itemsData = [
         { ItemName: 'test item 1', ItemDescription: 'testing', ItemPricePerDay: 20, ItemFeaturedImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIF_8BvUeewoE1lJ7Y16ibY250r7R0_0XfLZtg3Vj6cA&s', ItemCategory: 'animals', ItemLocation: 'Canterbury', ItemSecondImage: 'https://img.freepik.com/free-photo/isolated-happy-smiling-dog-white-background-portrait-4_1562-693.jpg', ItemThirdImage: 'https://images.pexels.com/photos/1490908/pexels-photo-1490908.jpeg?cs=srgb&dl=pexels-svetozar-milashevich-1490908.jpg&fm=jpg' },
@@ -31,7 +31,7 @@ function ProfilePage() {
         <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px'}}>
             <Row>
                 <Col md={2}> {/* Adjust the column size based on your needs */}
-                    <ProfileInfo userData={userData} />
+                    <ProfileInfo currentUser={currentUser} />
                     </Col>
                     <Col md={10}> {/* Adjust the column size based on your needs */}
                         <h3 className='headings'>For rent:</h3>
