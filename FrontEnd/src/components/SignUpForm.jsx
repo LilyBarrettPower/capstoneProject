@@ -1,8 +1,11 @@
+// import all the Bootstrap components:
 import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import Container from 'react-bootstrap/Container';
+// import all the neccessary components:
 import useSignUpInput from "../hooks/useSignUpInput";
-// import all the neccessary things 
+import { useUserContext } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
 function SignUpForm() {
     const initialFormData = {
@@ -14,6 +17,9 @@ function SignUpForm() {
         Password: "",
     };
 
+    const { handleUpdateUser } = useUserContext();
+    const navigate = useNavigate();
+
     const {
         formData,
         handleInputChange,
@@ -23,17 +29,12 @@ function SignUpForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Form data:", formData);
+        // console.log("Form data:", formData);
         // console.log for testing purposes 
         
 
         try {
-            // const formDataToSend = new FormData();
-            // for (const key in formData) {
-            //     formDataToSend.append(key, formData[key]);
-            // }
-
-            // Make the HTTP request:
+            // console.log for testing:
             // console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
             const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
@@ -49,7 +50,32 @@ function SignUpForm() {
             if (response.ok) {
                 // const result = await response.json();
                 console.log('user registered successfully:', data);
-                resetForm();
+
+                // after successful registration, log user in
+                const loginResponse = await fetch('http://localhost:3307/rentshare/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        Email: formData.Email,
+                        Password: formData.Password,
+                    }),
+                });
+
+                if (loginResponse.ok) {
+                    const loginData = await loginResponse.json();
+
+                    if (loginData.message === 'User successfully logged in' && loginData.user) {
+                        const loggedInUser = loginData.user;
+                        handleUpdateUser(loggedInUser);
+                        resetForm();
+                        navigate('/ProfilePage');
+                    }
+                } else {
+                    const errorResult = await loginResponse.json();
+                    console.error('error during login after registration', errorResult.error);
+                }
             } else {
                 // const errorResult = await response.json();
                 console.error('error during registration', data.error);
