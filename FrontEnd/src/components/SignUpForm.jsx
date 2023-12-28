@@ -15,6 +15,8 @@ function SignUpForm() {
         Contact: "",
         Location: "",
         Password: "",
+        // Added new field for profile picture:
+        ProfilePhoto: null,
     };
 
     const { handleUpdateUser } = useUserContext();
@@ -24,13 +26,19 @@ function SignUpForm() {
         formData,
         handleInputChange,
         handleLocationChange,
+        handleFileChange,
         resetForm
     } = useSignUpInput(initialFormData);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         // console.log("Form data:", formData);
-        // console.log for testing purposes 
+        // console.log for testing purposes
+
+    const formDataToSend = new FormData();
+    for (const key in formData) {
+        formDataToSend.append(key, formData[key]);
+    }
         
 
         try {
@@ -38,10 +46,10 @@ function SignUpForm() {
             // console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
             const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
+                // headers: {
+                //     'Content-Type': 'application/json',
+                // },
+                body: formDataToSend,  //JSON.stringify(formData),
             });
 
             const data = await response.json();
@@ -88,7 +96,7 @@ function SignUpForm() {
 
     return (
         <Container className="d-flex justify-content-center align-items-center mt-3">
-            <Form onSubmit={handleSubmit}>
+            <Form onSubmit={handleSubmit} encType='multipart/form-data'>
                 <Form.Group controlId="formFullName">
                     <Form.Label>Full name:</Form.Label>
                     <Form.Control
@@ -150,6 +158,14 @@ function SignUpForm() {
                         name="Password"
                         value={formData.Password}
                         onChange={handleInputChange}
+                    />
+                </Form.Group>
+                <Form.Group controlId="formProfilePhoto">
+                    <Form.Label>Profile Photo:</Form.Label>
+                    <Form.Control 
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileChange} 
                     />
                 </Form.Group>
                 <Button variant="secondary" type="submit" className="my-3 body">Sign up</Button>

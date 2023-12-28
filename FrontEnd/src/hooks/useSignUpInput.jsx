@@ -13,6 +13,14 @@ export default function useSignUpInput(initialFormData) {
         setFormData((prevData) => ({ ...prevData, Location: e.target.value }));
     }
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setFormData({
+            ...formData,
+            ProfilePhoto: file,
+        });
+    };
+
     const resetForm = () => {
         setFormData(initialFormData);
     };
@@ -21,6 +29,7 @@ export default function useSignUpInput(initialFormData) {
         formData,
         handleInputChange,
         handleLocationChange,
+        handleFileChange,
         resetForm
     };
 }

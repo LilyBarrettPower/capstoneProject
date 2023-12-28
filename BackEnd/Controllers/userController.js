@@ -61,6 +61,14 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ error: 'Email already taken' });
         };
 
+        // Handle the profile photo:
+        let profilePhoto = null;
+        if (req.file) {
+            profilePhoto = `http://localhost:3307/${req.file.path}`;
+            console.log(profilePhoto);
+        }
+
+        // encrypt the password here:
         const hashedPassword = await bcrypt.hash(Password, 10);
         // Add more valication here...
         
@@ -71,7 +79,8 @@ const registerUser = async (req, res) => {
             Email,
             Password: hashedPassword, //encyrpt password here!
             Contact,
-            Location
+            Location,
+            ProfilePhoto: profilePhoto
         });
 
         await newUser.save();
@@ -83,7 +92,8 @@ const registerUser = async (req, res) => {
                 UserName: newUser.UserName,
                 FullName: newUser.FullName,
                 Contact: newUser.Contact,
-                Location: newUser.Location
+                Location: newUser.Location,
+                ProfilePhoto: newUser.ProfilePhoto
             },
         });
     } catch (error) {
@@ -113,7 +123,8 @@ const loginUser = async (req, res) => {
                     UserName: user.UserName,
                     FullName: user.FullName,
                     Contact: user.Contact,
-                    Location: user.Location
+                    Location: user.Location,
+                    ProfilePhoto: user.ProfilePhoto
                 }
             });
         } else {
