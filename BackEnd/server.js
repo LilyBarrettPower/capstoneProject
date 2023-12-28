@@ -38,6 +38,8 @@ app.use('/rentshare/messages', messagesRoutes);
 app.use('/rentshare/saveditems', savedItemsRoutes);
 app.use('/rentshare/users', usersRoutes);
 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../FrontEnd/dist/index.html"));
 });
