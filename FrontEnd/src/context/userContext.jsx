@@ -9,7 +9,8 @@ export const UserProvider = (props) => {
         UserName: '',
         FullName: '',
         Contact: '',
-        Location: ''
+        Location: '',
+        ProfilePhoto: '',
     });
 
 
@@ -24,7 +25,8 @@ export const UserProvider = (props) => {
             UserName: '',
             FullName: '',
             Contact: '',
-            Location: ''
+            Location: '',
+            ProfilePhoto: '',
         });
         console.log('user logged out');
     }
