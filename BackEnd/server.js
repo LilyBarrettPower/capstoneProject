@@ -30,6 +30,7 @@ app.use(cors(corsOptions));
 
 // Serve the front end through the server 
 app.use(express.static(path.join(__dirname, '../FrontEnd/dist')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Use routes here 
 // app.use('/rentshare')
@@ -38,7 +39,7 @@ app.use('/rentshare/messages', messagesRoutes);
 app.use('/rentshare/saveditems', savedItemsRoutes);
 app.use('/rentshare/users', usersRoutes);
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../FrontEnd/dist/index.html"));

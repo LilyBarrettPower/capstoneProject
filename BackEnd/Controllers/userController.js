@@ -64,7 +64,7 @@ const registerUser = async (req, res) => {
         // Handle the profile photo:
         let profilePhoto = null;
         if (req.file) {
-            profilePhoto = `http://localhost:3307/Routes/uploads/${req.file.filename}`;
+            profilePhoto = `http://localhost:3307/uploads/${req.file.filename}`;
             console.log(profilePhoto);
         }
 
