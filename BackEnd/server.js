@@ -30,7 +30,10 @@ app.use(cors(corsOptions));
 
 // Serve the front end through the server 
 app.use(express.static(path.join(__dirname, '../FrontEnd/dist')));
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// serve the profile pictures:
+const uploadDirectory = path.join(__dirname, 'Routes', 'uploads');
+app.use('/uploads', express.static(uploadDirectory));
 
 // Use routes here 
 // app.use('/rentshare')
