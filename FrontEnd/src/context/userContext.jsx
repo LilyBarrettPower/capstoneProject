@@ -15,10 +15,20 @@ export const UserProvider = (props) => {
     });
 
 
+    // const handleUpdateUser = (user) => {
+    //     setCurrentUser(user);
+    //     console.log('updated user', user);
+    // }
+
     const handleUpdateUser = (user) => {
+        // Convert ProfilePhoto to object URL if it's a File object
+        if (user.ProfilePhoto instanceof File) {
+            user.ProfilePhoto = URL.createObjectURL(user.ProfilePhoto);
+        }
+
         setCurrentUser(user);
         console.log('updated user', user);
-    }
+    };
 
     const logOut = () => {
         setCurrentUser({
