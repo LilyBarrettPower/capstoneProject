@@ -45,12 +45,12 @@ const createItem = async (req, res) => {
 
         // Handle ItemFeaturedPhoto
         if (req.files['ItemFeaturedPhoto'] && req.files['ItemFeaturedPhoto'][0]) {
-            newItem.ItemFeaturedPhoto = req.files['ItemFeaturedPhoto'][0].path;
+            newItem.ItemFeaturedPhoto = `http://localhost:3307/uploads/${req.files['ItemFeaturedPhoto'][0].filename}`;
         }
 
         // Handle ItemOtherPhotos
         if (req.files['ItemOtherPhotos'] && req.files['ItemOtherPhotos'].length > 0) {
-            newItem.ItemOtherPhotos = req.files['ItemOtherPhotos'].map(file => file.path);
+            newItem.ItemOtherPhotos = req.files['ItemOtherPhotos'].map(file => `http://localhost:3307/uploads/${file.filename}`);
         }
 
         await newItem.save();

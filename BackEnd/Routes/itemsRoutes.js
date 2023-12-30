@@ -4,6 +4,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path')
 
+
 const uploadDirectory = path.join(__dirname, 'uploads');
 
 const storage = multer.diskStorage({
@@ -11,9 +12,11 @@ const storage = multer.diskStorage({
         cb(null, uploadDirectory);
     },
     filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + '-' + file.originalname);
     }
 });
+
 const upload = multer({ storage: storage });
 
 // Use 'upload.fields' to handle multiple files with different field names
