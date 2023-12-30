@@ -85,9 +85,14 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
 
+
+        // obtain the UserID
+        const UserID = newUser.UserID;
+
         res.status(201).json({
             message: 'User registered successfully',
             user: {
+                UserID,
                 Email: newUser.Email,
                 UserName: newUser.UserName,
                 FullName: newUser.FullName,
@@ -119,6 +124,7 @@ const loginUser = async (req, res) => {
             res.status(200).json({
                 message: 'User successfully logged in',
                 user: {
+                    UserID: user.UserID,
                     Email: user.Email,
                     UserName: user.UserName,
                     FullName: user.FullName,
