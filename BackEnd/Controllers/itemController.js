@@ -22,8 +22,8 @@ const createItem = async (req, res) => {
             ItemFeaturedDescription,
             ItemLocation,
             Availability,
-            ItemFeaturedPhoto,
-            ItemOtherPhotos,
+            // ItemFeaturedPhoto,
+            // ItemOtherPhotos,
         } = req.body;
 
         console.log('UserID:', UserID);
@@ -38,20 +38,20 @@ const createItem = async (req, res) => {
             ItemFeaturedDescription,
              ItemLocation,
             Availability,
-            ItemFeaturedPhoto,
-           ItemOtherPhotos,
+        //     ItemFeaturedPhoto,
+        //    ItemOtherPhotos,
         });
 
 
         // Handle ItemFeaturedPhoto
-        // if (req.files['ItemFeaturedPhoto'] && req.files['ItemFeaturedPhoto'][0]) {
-        //     newItem.ItemFeaturedPhoto = req.files['ItemFeaturedPhoto'][0].path;
-        // }
+        if (req.files['ItemFeaturedPhoto'] && req.files['ItemFeaturedPhoto'][0]) {
+            newItem.ItemFeaturedPhoto = req.files['ItemFeaturedPhoto'][0].path;
+        }
 
-        // // Handle ItemOtherPhotos
-        // if (req.files['ItemOtherPhotos'] && req.files['ItemOtherPhotos'].length > 0) {
-        //     newItem.ItemOtherPhotos = req.files['ItemOtherPhotos'].map(file => file.path);
-        // }
+        // Handle ItemOtherPhotos
+        if (req.files['ItemOtherPhotos'] && req.files['ItemOtherPhotos'].length > 0) {
+            newItem.ItemOtherPhotos = req.files['ItemOtherPhotos'].map(file => file.path);
+        }
 
         await newItem.save();
 

@@ -49,7 +49,7 @@ Item.init({
         type: DataTypes.STRING,
     },
     ItemOtherPhotos: {
-        type: DataTypes.STRING,
+        type: DataTypes.JSON,
     },
 },
     {
