@@ -20,7 +20,6 @@ function CreatePostModal({ show, handleClose }) {
         Availability: '',
         ItemFeaturedPhoto: '',
         ItemOtherPhotos: [],
-        // UserID: '',
         // May need to think about how to do this one better to get the carousel working...
     };
 
@@ -147,7 +146,7 @@ function CreatePostModal({ show, handleClose }) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className='headings'>Other Photos:</Form.Label>
-                        <Form.Control type='file' multiple name='ItemOtherPhotos' onChange={handleFileChange}/>
+                        <Form.Control type='file' multiple name='ItemOtherPhotos' accept="image/*" onChange={handleFileChange}/>
                     </Form.Group>
 
                     <Button variant='secondary' type='submit' className='body mt-2'>Submit</Button>
