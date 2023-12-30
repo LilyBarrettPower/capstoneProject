@@ -2,6 +2,17 @@
 
 const Models = require('../Models');
 
+// controller to get all the items to populate the item cards on the timelinepage 
+const getAllItems = async (req, res) => {
+    try {
+        const items = await Models.Item.findAll({});
+        res.status(200).json({ result: 200, data: items });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ result: 500, error: error.message });
+    }
+};
+
 const getItem = (res) => {
     Models.Item.findAll({})
         .then(data => res.send({ result: 200, data: data }))
@@ -103,8 +114,9 @@ const deleteItem = (req, res) => {
 }
 
 module.exports = {
-    getItem,
+    getAllItems,
     createItem,
     updateItem,
-    deleteItem
+    deleteItem,
+    getItem,
 }

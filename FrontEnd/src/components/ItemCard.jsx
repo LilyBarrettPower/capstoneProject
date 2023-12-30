@@ -4,8 +4,21 @@ import { useState } from 'react';
 
 
 
-const ItemCard = ({ itemData }) => { //Replace itemData with the correct name for the table in database when constructed
+const ItemCard = ({ itemData }) => { 
 
+        console.log('itemData:', itemData);
+
+        if (!itemData) {
+            console.error('Item data is undefined or null.');
+            return null; // Render nothing if itemData is not available
+        }
+
+        console.log('ItemName:', itemData.ItemName);
+        console.log('ItemFeaturedDescription:', itemData.ItemFeaturedDescription);
+        console.log('ItemPricePerDay:', itemData.ItemPricePerDay);
+
+
+    
     const [showModal, setShowModal] = useState(false);
 
     const handleShowModal = () => setShowModal(true);
@@ -17,14 +30,14 @@ const ItemCard = ({ itemData }) => { //Replace itemData with the correct name fo
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
                     <Card.Body>
-                        <Card.Title className="headings">{itemData.ItemName}</Card.Title>
-                        <Card.Text className="body">{itemData.ItemDescription}</Card.Text>
-                        <Card.Text className="body">${itemData.ItemPricePerDay} Per Day</Card.Text>
+                            <Card.Title className="headings">{itemData.ItemName || 'No Name'}</Card.Title>
+                            <Card.Text className="body">{itemData.ItemFeaturedDescription || 'No Description'}</Card.Text>
+                            <Card.Text className="body">${itemData.ItemPricePerDay ? `${itemData.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                     </Card.Body>
                 </div>
                 <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
                     <Card.Img
-                        src={itemData.ItemFeaturedImage}
+                        src={itemData.ItemFeaturedPhoto}
                         alt={itemData.ItemName}
                         style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain', margin: '10px' }}
                     />
@@ -52,14 +65,19 @@ const ItemCard = ({ itemData }) => { //Replace itemData with the correct name fo
                             {/* This is where I will add the message user, hire item and save item buttons! */}
                         <Carousel className='w-100'>
                             <Carousel.Item>
-                                    <img className='d-block w-100' src={itemData.ItemFeaturedImage} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
+                                    <img className='d-block w-100' src={itemData.ItemFeaturedPhoto} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
                             </Carousel.Item>
-                            <Carousel.Item>
-                                <img className='d-block' src={itemData.ItemSecondImage} alt='Second item image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <img className='d-block' src={itemData.ItemThirdImage} alt='third item image' style={{ maxWidth: '400px', maxHeight: '300px' }} />
-                            </Carousel.Item>
+                                {Array.isArray(itemData.ItemOtherPhotos) &&
+                                    itemData.ItemOtherPhotos.map((photo, photoIndex) => (
+                                        <Carousel.Item key={photoIndex}>
+                                            <img
+                                                className="d-block w-100"
+                                                src={photo}
+                                                alt={`Other item image ${photoIndex + 1}`}
+                                                style={{ maxWidth: '400px', maxHeight: '300px' }}
+                                            />
+                                        </Carousel.Item>
+                                    ))}
                         </Carousel>
                         </div>
                     </div>
@@ -69,5 +87,7 @@ const ItemCard = ({ itemData }) => { //Replace itemData with the correct name fo
         </>
     );
 };
+
+
 
 export default ItemCard;

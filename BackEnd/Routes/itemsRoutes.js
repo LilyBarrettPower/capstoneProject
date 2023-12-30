@@ -28,11 +28,16 @@ const uploadMiddleware = upload.fields([
 
 const Controllers = require('../Controllers')
 
-router.get('/', (req, res) => {
+// route to get all items from the DB for the itemcards:
+router.get('/getall', (req, res) => {
+    Controllers.itemController.getAllItems(req, res);
+});
+
+router.get('/', (res) => {
     Controllers.itemController.getItem(res);
 });
 
-
+// route to create an item in the database (createpostmodal):
 router.post('/create', uploadMiddleware, (req, res) => {
     console.log(req.body);
     // Call the controller function to create the item

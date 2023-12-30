@@ -54,7 +54,8 @@ function LoginForm() {
                 UserName: data.user.UserName || '',
                 FullName: data.user.FullName || '',
                 Contact: data.user.Contact || '',
-                Location: data.user.Location || ''
+                Location: data.user.Location || '',
+                ProfilePhoto: data.user.ProfilePhoto || '',
 
                 // need to add profile picture here!
             });
