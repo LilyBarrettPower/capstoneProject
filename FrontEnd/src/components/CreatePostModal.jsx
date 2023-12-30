@@ -31,18 +31,23 @@ function CreatePostModal({ show, handleClose }) {
     };
 
     const handleFileChange = (e) => {
-        const files = e.target.files;
-        setFormData((prevData) => ({ ...prevData, ItemOtherPhotos: files }));
+        const { name, files } = e.target;
+
+        // Check if files are present before updating state
+        if (files.length > 0) {
+            setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log('Form data: ', formData); -- console.log for testing purposes 
+
         try {
             const formDataToSend = new FormData();
 
+            // Append all form data
             for (const key in formData) {
-                if (key === 'ItemOtherPhotos') {
+                if (Array.isArray(formData[key])) {
                     for (let i = 0; i < formData[key].length; i++) {
                         formDataToSend.append(`${key}[${i}]`, formData[key][i]);
                     }
@@ -51,20 +56,20 @@ function CreatePostModal({ show, handleClose }) {
                 }
             }
 
-            console.log('UserID in formData:', currentUser.UserID);
-            formDataToSend.append('UserID', (currentUser.UserID.toString()));
+            // Append UserID separately
+            formDataToSend.append('UserID', currentUser.UserID.toString());
 
             const response = await fetch('http://localhost:3307/rentshare/items/create', {
                 method: 'POST',
-                body: formDataToSend
-                // May need to add more of a response here to get the new post to be seen...
+                body: formDataToSend,
             });
+
             if (response.ok) {
                 const result = await response.json();
                 console.log('Item registered successfully', result);
 
                 // create a pop up to alert user their item has been created:
-                alert('Item registered successfully')
+                alert('Item registered successfully');
 
                 // reset form data on successful creation:
                 setFormData({
@@ -89,6 +94,7 @@ function CreatePostModal({ show, handleClose }) {
             console.error('Error registering item', error);
         }
     };
+
 
     return (
         <Modal show={show} onHide={handleClose}>
@@ -138,15 +144,11 @@ function CreatePostModal({ show, handleClose }) {
                     {/* Need to figure out how to change this to include a calander integration.... */}
                     <Form.Group>
                         <Form.Label className="headings">Featured Photo:</Form.Label>
-                        <Form.Control
-                            type="file"
-                            accept="image/*"
-                            onChange={handleFileChange}
-                        />
+                        <Form.Control type="file" name="ItemFeaturedPhoto" accept='image/*' onChange={handleFileChange} />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className='headings'>Other Photos:</Form.Label>
-                        <Form.Control type='file' multiple name='ItemOtherPhotos' accept="image/*" onChange={handleFileChange}/>
+                        <Form.Control type='file' name='ItemOtherPhotos' accept='image/*' multiple onChange={handleFileChange} />
                     </Form.Group>
 
                     <Button variant='secondary' type='submit' className='body mt-2'>Submit</Button>
