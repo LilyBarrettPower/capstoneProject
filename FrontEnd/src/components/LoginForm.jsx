@@ -49,11 +49,14 @@ function LoginForm() {
             setStatus('success')
 
             handleUpdateUser({
+                UserID: data.user.UserID || '',
                 Email: data.user.Email || '',
                 UserName: data.user.UserName || '',
                 FullName: data.user.FullName || '',
                 Contact: data.user.Contact || '',
                 Location: data.user.Location || ''
+
+                // need to add profile picture here!
             });
 
             navigate('/ProfilePage');

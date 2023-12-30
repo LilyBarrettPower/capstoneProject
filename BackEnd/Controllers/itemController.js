@@ -11,14 +11,63 @@ const getItem = (res) => {
         });
 };
 
-const createItem = (data, res) => {
-    Models.Item.create(data)
-        .then(data => res.send({ result: 200, data: data }))
-        .catch(err => {
-            console.log(err);
-            res.send({ result: 500, error: err.message });
+const createItem = async (req, res) => {
+    try {
+        const {
+            UserID,
+            ItemCategory,
+            ItemName,
+            ItemDescription,
+            ItemPricePerDay,
+            ItemFeaturedDescription,
+            ItemLocation,
+            Availability,
+            ItemFeaturedPhoto,
+            ItemOtherPhotos,
+        } = req.body;
+
+        console.log('UserID:', UserID);
+
+
+        const newItem = new Models.Item({
+            UserID: parseInt(UserID, 10),
+             ItemCategory,
+            ItemName,
+             ItemDescription,
+           ItemPricePerDay,
+            ItemFeaturedDescription,
+             ItemLocation,
+            Availability,
+            ItemFeaturedPhoto,
+           ItemOtherPhotos,
         });
-}
+
+        await newItem.save();
+
+        res.status(201).json({
+            result: 200,
+            item: {
+                UserID: newItem.UserID,
+                ItemCategory: newItem.ItemCategory,
+                ItemName: newItem.ItemName,
+                ItemDescription: newItem.ItemDescription,
+                ItemPricePerDay: newItem.ItemPricePerDay,
+                ItemFeaturedDescription: newItem.ItemFeaturedDescription,
+                ItemLocation: newItem.ItemLocation,
+                Availability: newItem.Availability,
+                ItemFeaturedPhoto: newItem.ItemFeaturedPhoto,
+                ItemOtherPhotos: newItem.ItemOtherPhotos,
+            }
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            result: 500,
+            error: err.message,
+        });
+    }
+};
+    
 
 const updateItem = (req, res) => {
     Models.Item.update(req.body, {

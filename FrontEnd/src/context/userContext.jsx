@@ -5,6 +5,7 @@ const UserContext = createContext();
 
 export const UserProvider = (props) => {
     const [currentUser, setCurrentUser] = useState({
+        UserID: '', //include the UserID in the context for db integration
         Email: '',
         UserName: '',
         FullName: '',
@@ -21,6 +22,7 @@ export const UserProvider = (props) => {
 
     const logOut = () => {
         setCurrentUser({
+            UserID: '',
             Email: '',
             UserName: '',
             FullName: '',

@@ -15,7 +15,7 @@ Item.init({
     },
     UserID: {
         type: DataTypes.INTEGER,
-        references: { model: User , key: 'UserID' },
+        references: { model: User, key: 'UserID' },
         allowNull: false,
         required: true,
     },
@@ -32,26 +32,23 @@ Item.init({
         allowNull: false
     },
     ItemPricePerDay: {
-        type: DataTypes.DECIMAL(10,2),
+        type: DataTypes.DECIMAL(10, 2),
         allowNull: false,
     },
     ItemFeaturedDescription: {
         type: DataTypes.STRING,
     },
-    Availability: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: true,
-    },
+    // Availability: {
+    //     type: DataTypes.BOOLEAN,
+    //     defaultValue: true,
+    // },
     ItemLocation: {
         type: DataTypes.STRING,
     },
     ItemFeaturedPhoto: {
         type: DataTypes.STRING,
     },
-    ItemImage2: {
-        type: DataTypes.STRING,
-    },
-    ItemImage3: {
+    ItemOtherPhotos: {
         type: DataTypes.STRING,
     },
 },

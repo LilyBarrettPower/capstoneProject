@@ -1,18 +1,30 @@
+
 import { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-function CreatePostModal({show, handleClose}) {
-    const [formData, setFormData] = useState({
+
+import { useUserContext } from "../context/userContext";
+
+function CreatePostModal({ show, handleClose }) {
+    const { currentUser } = useUserContext();
+
+    const initialFormData = {
         ItemCategory: '',
         ItemName: '',
         ItemDescription: '',
         ItemPricePerDay: '',
+        ItemFeaturedDescription: '',
         ItemLocation: '',
-        Available: '',
-        ItemPhotos: [],
-    });
+        Availability: '',
+        ItemFeaturedPhoto: '',
+        ItemOtherPhotos: [],
+        // UserID: '',
+        // May need to think about how to do this one better to get the carousel working...
+    };
+
+    const [formData, setFormData] = useState(initialFormData);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -21,13 +33,62 @@ function CreatePostModal({show, handleClose}) {
 
     const handleFileChange = (e) => {
         const files = e.target.files;
-        setFormData((prevData) => ({ ...prevData, ItemPhotos: files }));
+        setFormData((prevData) => ({ ...prevData, ItemOtherPhotos: files }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Form data: ', formData);
-        handleClose();
+        // console.log('Form data: ', formData); -- console.log for testing purposes 
+        try {
+            const formDataToSend = new FormData();
+
+            for (const key in formData) {
+                if (key === 'ItemOtherPhotos') {
+                    for (let i = 0; i < formData[key].length; i++) {
+                        formDataToSend.append(`${key}[${i}]`, formData[key][i]);
+                    }
+                } else {
+                    formDataToSend.append(key, formData[key]);
+                }
+            }
+
+            console.log('UserID in formData:', currentUser.UserID);
+            formDataToSend.append('UserID', (currentUser.UserID.toString()));
+
+            const response = await fetch('http://localhost:3307/rentshare/items/create', {
+                method: 'POST',
+                body: formDataToSend
+                // May need to add more of a response here to get the new post to be seen...
+            });
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Item registered successfully', result);
+
+                // create a pop up to alert user their item has been created:
+                alert('Item registered successfully')
+
+                // reset form data on successful creation:
+                setFormData({
+                    ItemCategory: '',
+                    ItemName: '',
+                    ItemDescription: '',
+                    ItemPricePerDay: '',
+                    ItemFeaturedDescription: '',
+                    ItemLocation: '',
+                    Availability: '',
+                    ItemFeaturedPhoto: '',
+                    ItemOtherPhotos: [],
+                    UserID: currentUser.UserID,
+                });
+                handleClose();
+            } else {
+                const errorResult = await response.json();
+                console.error('Error while registering item', errorResult.error);
+                console.error('Details:', errorResult);
+            }
+        } catch (error) {
+            console.error('Error registering item', error);
+        }
     };
 
     return (
@@ -52,7 +113,11 @@ function CreatePostModal({show, handleClose}) {
                     </Form.Group>
                     <Form.Group controlId='ItemDescription'>
                         <Form.Label className='headings'>Item Description:</Form.Label>
-                        <Form.Control as='textarea' rows={3} name='ItemDescription' value={FormData.ItemDescription} onChange={handleInputChange}/>
+                        <Form.Control as='textarea' rows={3} name='ItemDescription' value={formData.ItemDescription} onChange={handleInputChange}/>
+                    </Form.Group>
+                    <Form.Group controlId='ItemFeaturedDescription'>
+                        <Form.Label className='headings'>Featured description</Form.Label>
+                        <Form.Control type='text' name='ItemFeaturedDescription' value={formData.ItemFeaturedDescription} onChange={handleInputChange} />
                     </Form.Group>
                     <Form.Group controlId='ItemLocation'>
                         <Form.Label className='headings'>Item location:</Form.Label>
@@ -73,8 +138,16 @@ function CreatePostModal({show, handleClose}) {
                     </Form.Group> */}
                     {/* Need to figure out how to change this to include a calander integration.... */}
                     <Form.Group>
-                        <Form.Label className='headings'>Item Photos:</Form.Label>
-                        <Form.Control type='file' multiple name='ItemPhotos' onChange={handleFileChange}/>
+                        <Form.Label className="headings">Featured Photo:</Form.Label>
+                        <Form.Control
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                        />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label className='headings'>Other Photos:</Form.Label>
+                        <Form.Control type='file' multiple name='ItemOtherPhotos' onChange={handleFileChange}/>
                     </Form.Group>
 
                     <Button variant='secondary' type='submit' className='body mt-2'>Submit</Button>
