@@ -14,12 +14,6 @@ export const UserProvider = (props) => {
         ProfilePhoto: '',
     });
 
-
-    // const handleUpdateUser = (user) => {
-    //     setCurrentUser(user);
-    //     console.log('updated user', user);
-    // }
-
     const handleUpdateUser = (user) => {
         // Convert ProfilePhoto to object URL if it's a File object
         if (user.ProfilePhoto instanceof File) {

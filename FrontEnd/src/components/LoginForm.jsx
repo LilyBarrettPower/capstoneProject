@@ -57,8 +57,6 @@ function LoginForm() {
                 Contact: data.user.Contact || '',
                 Location: data.user.Location || '',
                 ProfilePhoto: data.user.ProfilePhoto || '',
-
-                // need to add profile picture here!
             });
 
             navigate('/ProfilePage');
