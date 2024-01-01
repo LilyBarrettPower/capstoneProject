@@ -33,6 +33,11 @@ router.get('/getall', (req, res) => {
     Controllers.itemController.getAllItems(req, res);
 });
 
+// route for getting the rented items:
+router.get('/getrented/:UserID', (req, res) => {
+    Controllers.itemController.getRentedItems(req, res);
+});
+
 router.get('/', (res) => {
     Controllers.itemController.getItem(res);
 });

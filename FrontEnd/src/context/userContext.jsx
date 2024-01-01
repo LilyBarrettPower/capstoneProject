@@ -22,6 +22,7 @@ export const UserProvider = (props) => {
 
         setCurrentUser(user);
         console.log('updated user', user);
+            console.log('updated UserID', user.UserID);
     };
 
     const logOut = () => {
