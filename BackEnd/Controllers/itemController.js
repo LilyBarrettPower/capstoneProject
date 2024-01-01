@@ -2,16 +2,41 @@
 
 const Models = require('../Models');
 
+
 // controller to get all the items to populate the item cards on the timelinepage 
 const getAllItems = async (req, res) => {
     try {
-        const items = await Models.Item.findAll({});
+        const items = await Models.Item.findAll({})
         res.status(200).json({ result: 200, data: items });
     } catch (error) {
         console.error(error);
         res.status(500).json({ result: 500, error: error.message });
     }
 };
+// controller to get the renteditemscard depending on whos logged in:
+const getRentedItems = async (req, res) => {
+    console.log(req.params);
+    try {
+        const { UserID } = req.params;
+
+        // Ensure UserID is a valid number
+        const userId = parseInt(UserID, 10);
+
+        if (isNaN(userId)) {
+            return res.status(400).json({ result: 400, error: 'Invalid UserID' });
+        }
+
+        const items = await Models.Item.findAll({
+            where: { UserID: userId },
+        });
+
+        res.status(200).json({ result: 200, data: items });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ result: 500, error: error.message });
+    }
+};
+
 
 const getItem = (res) => {
     Models.Item.findAll({})
@@ -115,6 +140,7 @@ const deleteItem = (req, res) => {
 
 module.exports = {
     getAllItems,
+    getRentedItems,
     createItem,
     updateItem,
     deleteItem,
