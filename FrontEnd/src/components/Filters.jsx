@@ -5,7 +5,7 @@ import Form from 'react-bootstrap/Form';
 const Filters = ({ selectedCategory, onCategoryChange, minPrice, maxPrice, onMinPriceChange, onMaxPriceChange }) => {
     return (
         <Form>
-            <Form.Group controlId="categoryFilter">
+            <Form.Group controlId="categoryFilter" style={{ marginBottom: '10px' }}>
                 <Form.Control
                     as="select"
                     value={selectedCategory}
@@ -17,7 +17,7 @@ const Filters = ({ selectedCategory, onCategoryChange, minPrice, maxPrice, onMin
                     {/* Add more categories as needed */}
                 </Form.Control>
             </Form.Group>
-            <Form.Group controlId="priceRange">
+            <Form.Group controlId="priceRange" style={{ marginTop: '10px' }}>
                 <Form.Control
                     type="number"
                     placeholder="Min Price"

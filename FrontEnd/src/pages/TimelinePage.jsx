@@ -65,7 +65,6 @@ function TimelinePage() {
             <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
                 <Row>
                     <Col md={2}>
-                        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
                         <Filters
                             selectedCategory={selectedCategory}
                             onCategoryChange={setSelectedCategory}
@@ -74,6 +73,9 @@ function TimelinePage() {
                             onMinPriceChange={setMinPrice}
                             onMaxPriceChange={setMaxPrice}
                         />
+                    </Col>
+                    <Col md={5}>
+                        <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
                     </Col>
                     <Col md={10}>
                         {itemsData.length > 0 ? (
