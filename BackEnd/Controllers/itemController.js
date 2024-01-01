@@ -1,18 +1,61 @@
 'use strict';
 
 const Models = require('../Models');
+const { Op } = require('sequelize');
 
 
 // controller to get all the items to populate the item cards on the timelinepage 
+// const getAllItems = async (req, res) => {
+//     try {
+//         const items = await Models.Item.findAll({})
+//         res.status(200).json({ result: 200, data: items });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ result: 500, error: error.message });
+//     }
+// };
+
+
+// TESTING:
 const getAllItems = async (req, res) => {
     try {
-        const items = await Models.Item.findAll({})
+        const { searchQuery, category, minPrice, maxPrice } = req.query;
+
+        const whereCondition = {};
+
+        // Add search query condition
+        if (searchQuery) {
+            whereCondition.ItemName = { [Op.like]: `%${searchQuery}%` };
+        }
+
+        // Add category filter condition
+        if (category) {
+            whereCondition.ItemCategory = category;
+        }
+
+        // Add price range filter condition
+        if (minPrice && maxPrice) {
+            whereCondition.ItemPricePerDay = { [Op.between]: [minPrice, maxPrice] };
+        } else if (minPrice) {
+            whereCondition.ItemPricePerDay = { [Op.gte]: minPrice };
+        } else if (maxPrice) {
+            whereCondition.ItemPricePerDay = { [Op.lte]: maxPrice };
+        }
+
+        const items = await Models.Item.findAll({
+            where: whereCondition,
+        });
+
         res.status(200).json({ result: 200, data: items });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ result: 500, error: error.message });
+        res.status(500).json({ result: 500, error: "Internal Server Error" });
     }
 };
+
+
+
+
 // controller to get the renteditemscard depending on whos logged in:
 const getRentedItems = async (req, res) => {
     console.log(req.params);
