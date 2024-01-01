@@ -67,8 +67,8 @@ const ItemCard = ({ itemData }) => {
                             <Carousel.Item>
                                     <img className='d-block w-100' src={itemData.ItemFeaturedPhoto} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
                             </Carousel.Item>
-                                {Array.isArray(itemData.ItemOtherPhotos) &&
-                                    itemData.ItemOtherPhotos.map((photo, photoIndex) => (
+                                {Array.isArray(JSON.parse(itemData.ItemOtherPhotos)) &&
+                                    JSON.parse(itemData.ItemOtherPhotos).map((photo, photoIndex) => (
                                         <Carousel.Item key={photoIndex}>
                                             <img
                                                 className="d-block w-100"
