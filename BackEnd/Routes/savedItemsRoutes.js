@@ -12,7 +12,7 @@ router.get('/getsaved/:UserID', (req, res) => {
     Controllers.savedItemController.getSavedItemById(req.params.UserID, res);
 });
 
-// testing:
+// route to get teh details of teh samed items 
 router.get('/getsaveddetails/:UserID', (req, res) => {
     const userId = parseInt(req.params.UserID, 10);
 

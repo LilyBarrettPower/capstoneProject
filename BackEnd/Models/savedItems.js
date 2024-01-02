@@ -33,7 +33,6 @@ SavedItem.init({
 );
 
 
-// testing
 SavedItem.belongsTo(Item, { foreignKey: 'ItemID' });
 
 module.exports = SavedItem;

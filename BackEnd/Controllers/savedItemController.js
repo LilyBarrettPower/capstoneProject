@@ -24,7 +24,7 @@ const getSavedItemById = (userId, res) => {
 };
 
 
-// testing:
+// controller for getting teh saveditems details for teh saveditem card
 const getSavedItemDetails = (UserID, res) => {
     Models.SavedItem.findAll({
         where: { UserID: UserID },

@@ -8,7 +8,6 @@ const SavedItemsCard = ({ savedItems }) => {
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null); 
 
-    // const handleShowModal = () => setShowModal(true);
 
     const handleShowModal = (itemData) => {
         setSelectedItem(itemData);
