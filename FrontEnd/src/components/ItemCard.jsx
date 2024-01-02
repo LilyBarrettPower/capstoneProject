@@ -2,11 +2,17 @@ import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useState } from 'react';
 
+import SaveItemButton from './SaveItemButton';
+import { useUserContext } from '../context/userContext';
 
 
 const ItemCard = ({ itemData }) => { 
 
-        console.log('itemData:', itemData);
+    console.log('itemData:', itemData);
+    
+    const { currentUser } = useUserContext();
+
+    console.log(currentUser.UserID);
 
         if (!itemData) {
             console.error('Item data is undefined or null.');
@@ -23,6 +29,35 @@ const ItemCard = ({ itemData }) => {
 
     const handleShowModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
+
+    const handleSaveItem = async (itemID) => {
+        try {
+            const userID = currentUser.UserID;
+
+            // Make API call to save the item
+            const response = await fetch('http://localhost:3307/rentshare/saveditems/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    UserID: userID,
+                    ItemID: itemID,
+                }),
+            });
+
+            if (response.ok) {
+                // Handle success
+                console.log('Item saved successfully!');
+            } else {
+                // Handle error
+                console.error('Error saving item:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error saving item:', error.message);
+        }
+    };
+
 
     return (
         <>
@@ -44,7 +79,8 @@ const ItemCard = ({ itemData }) => {
                 </div>
             </div>
             <div className="mt-1 mb-3 mx-2">
-                <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
+                    <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
+                    <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem}/>
             </div>
         </Card>
 
@@ -62,6 +98,7 @@ const ItemCard = ({ itemData }) => {
                             <p className='body'>{itemData.ItemLocation}</p>
                         </div>
                         <div className='col-md-6'>
+                            <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
                             {/* This is where I will add the message user, hire item and save item buttons! */}
                         <Carousel className='w-100'>
                             <Carousel.Item>
