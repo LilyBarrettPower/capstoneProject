@@ -63,11 +63,11 @@ function ProfilePage() {
             <LogOutButton></LogOutButton>
         <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px'}}>
             <Row>
-                <Col md={2}> {/* Adjust the column size based on your needs */}
+                <Col md={2}> 
                     <ProfileInfo currentUser={currentUser} />
                     </Col>
-                    <Col md={10}> {/* Adjust the column size based on your needs */}
-                        <h3 className='headings'>For rent:</h3>
+                    <Col md={10}> 
+                        <h3 className='headings'>Items you have for rent:</h3>
                         <CreatePostButton /> 
                         {/* HERE WILL BE THE RENTED AND SAVED ITEMS RENDERED HERE! 
                         when you create a post I want it automatically added here, depedning on whos logged in  */}
