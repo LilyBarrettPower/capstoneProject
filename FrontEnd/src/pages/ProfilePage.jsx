@@ -21,7 +21,7 @@ function ProfilePage() {
 
     const currentUser = useUserContext();
     console.log("currentUser", currentUser);
-    // const currentUserId = currentUser.UserID;
+    //  const currentUserId = currentUser.UserID;
     // console.log("currentUserId", currentUserId);
     console.log(currentUser.currentUser.UserID);
 
