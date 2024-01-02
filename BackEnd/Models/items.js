@@ -3,6 +3,7 @@ const dbConnect = require('../dbConnect');
 const sequelizeInstance = dbConnect.Sequelize;
 
 const User = require('./users');
+const SavedItem = require('./savedItems');
 
 class Item extends Model { }
 
@@ -56,7 +57,6 @@ Item.init({
         sequelize: sequelizeInstance, modelName: 'items', timestamps: true, freezeTableName: true,
     }
 );
-
 
 
 

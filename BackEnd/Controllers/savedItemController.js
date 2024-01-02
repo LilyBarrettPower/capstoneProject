@@ -11,6 +11,32 @@ const getSavedItem = (res) => {
         });
 };
 
+// controller to get the saved items depending on whos logged in 
+const getSavedItemById = (userId, res) => {
+    Models.SavedItem.findAll({
+        where: { UserID: userId }
+    })
+        .then(data => res.send({ result: 200, data: data }))
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
+
+// testing:
+const getSavedItemDetails = (UserID, res) => {
+    Models.SavedItem.findAll({
+        where: { UserID: UserID },
+        include: [Models.Item] // This will perform a join with the Item table
+    })
+        .then(data => res.send({ result: 200, data: data }))
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
 const createSavedItem = (data, res) => {
     Models.SavedItem.create(data)
         .then(data => res.send({ result: 200, data: data }))
@@ -44,6 +70,8 @@ const deleteSavedItem = (req, res) => {
 
 module.exports = {
     getSavedItem,
+    getSavedItemById,
+    getSavedItemDetails,
     createSavedItem,
     updateSavedItem,
     deleteSavedItem
