@@ -12,4 +12,7 @@ router.post('/create', (req, res) => {
     Controllers.bookingController.createBooking(req, res)
 })
 
+router.get('/getbooked/:UserID', (req, res) => {
+    Controllers.bookingController.getBookedItemById(req.params.UserID, res);
+});
 module.exports = router;

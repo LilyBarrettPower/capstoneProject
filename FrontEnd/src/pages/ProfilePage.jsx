@@ -5,8 +5,8 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import LogOutButton from '../components/LogOutButton';
 import RentedItemCard from '../components/RentedItemCard';
-import SavedItemsCard from '../components/SavedItemsCard';
 import useFetch from '../hooks/UseFetch';
+import BookedItemCard from '../components/BookedItemCard';
 
 // import the relevant bootstrap:
 import Col from 'react-bootstrap/esm/Col';
@@ -14,42 +14,17 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
 
 import { useUserContext } from '../context/userContext'
-import { useEffect, useState } from 'react';
-
-// const useFetch = (url) => {
-//     const [data, setData] = useState([]);
-//     const [error, setError] = useState(null);
-
-//     useEffect(() => {
-//         const fetchData = async () => {
-//             try {
-//                 const response = await fetch(url);
-//                 const result = await response.json();
-
-//                 if (response.ok) {
-//                     setData(result.data);
-//                 } else {
-//                     setError(result.error);
-//                 }
-//             } catch (error) {
-//                 setError(error.message);
-//             }
-//         };
-
-//         fetchData();
-//     }, [url]);
-
-//     return { data, error };
-// };
 
 
 function ProfilePage() {
     const currentUser = useUserContext();
     const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
-    // const userSavedItemsUrl = `http://localhost:3307/rentshare/saveditems/getsaveddetails/${parseInt(currentUser.currentUser.UserID, 10)}`;
 
+    const bookedItemsUrl = `http://localhost:3307/rentshare/bookings/getbooked/${parseInt(currentUser.currentUser.UserID, 10)}`;
+    
     const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
-    // const { data: userSavedItems, error: errorSavedItems } = useFetch(userSavedItemsUrl);
+    const { data: bookedItems, error: errorBookedItems } = useFetch(bookedItemsUrl);
+
 
     if (!currentUser.currentUser.UserID) {
         return <div>Loading...</div>; // Or any loading indicator
@@ -79,14 +54,16 @@ function ProfilePage() {
                                     <div>No current items for rent</div>
                                 )}
                             </Col>
-                            {/* <Col md={6}>
-                                <h3 className='headings' style={{marginBottom: '55px'}}>Items you have saved:</h3>
-                                {userSavedItems.length > 0 ? (
-                                    <SavedItemsCard savedItems={userSavedItems} />
+                            {/* render the booked items here  */}
+                            <Col md={6}>
+                                <h3 className='headings' style={{ marginBottom: '55px' }}>Items you have booked:</h3>
+                         
+                                    {bookedItems.length > 0 ? (
+                                        <BookedItemCard bookedItems={bookedItems} />
                                 ) : (
-                                    <div>No saved items</div>
+                                    <div>No booked items</div>
                                 )}
-                            </Col> */}
+                            </Col>
                         </Row>
                     </Col>
                 </Row>
