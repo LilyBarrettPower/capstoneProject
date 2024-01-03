@@ -15,4 +15,9 @@ router.post('/create', (req, res) => {
 router.get('/getbooked/:UserID', (req, res) => {
     Controllers.bookingController.getBookedItemById(req.params.UserID, res);
 });
+
+router.delete('/:BookingID', (req, res) => {
+    Controllers.bookingController.deleteBooking(req, res);
+})
+
 module.exports = router;
