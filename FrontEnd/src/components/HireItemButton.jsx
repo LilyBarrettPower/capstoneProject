@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 
 import HireItemModal from './HireItemModal';
 
-function HireItemButton() {
+function HireItemButton({itemID, ownerID}) {
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);
@@ -13,7 +13,7 @@ function HireItemButton() {
             <Button variant='secondary' className='body' onClick={handleShow}>
                 Hire Item
             </Button>
-            <HireItemModal show={showModal} handleClose={() => setShowModal(false)}></HireItemModal>
+            <HireItemModal show={showModal} handleClose={() => setShowModal(false)} itemID={itemID} ownerID={ownerID}></HireItemModal>
         </>
     )
 }

@@ -11,6 +11,7 @@ const ItemCard = ({ itemData }) => {
     console.log('itemData:', itemData);
     
     const { currentUser } = useUserContext();
+    const ownerID = itemData.UserID;
 
     console.log(currentUser.UserID);
 
@@ -81,7 +82,7 @@ const ItemCard = ({ itemData }) => {
             <div className="mt-1 mb-3 mx-2">
                     <Button variant="secondary" onClick={handleShowModal} className='body'>Read more</Button>
                     <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
-                    <HireItemButton/>
+                    <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
             </div>
         </Card>
 
