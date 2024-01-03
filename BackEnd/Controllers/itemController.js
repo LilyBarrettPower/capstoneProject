@@ -4,18 +4,6 @@ const Models = require('../Models');
 const { Op } = require('sequelize');
 
 
-// controller to get all the items to populate the item cards on the timelinepage 
-// const getAllItems = async (req, res) => {
-//     try {
-//         const items = await Models.Item.findAll({})
-//         res.status(200).json({ result: 200, data: items });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ result: 500, error: error.message });
-//     }
-// };
-
-
 // TESTING:
 const getAllItems = async (req, res) => {
     try {

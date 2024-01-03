@@ -51,23 +51,21 @@ const getBookedItemById = (UserID, res) => {
         });
 };
 
-// const getBookedItemById = (userId, res) => {
-//     Models.Booking.findAll({
-//         where: {
-//             RenterID: userId,
-//         },
-//         include: [Models.Item],
-//     })
-//         .then(data => res.send({ result: 200, data: Array.isArray(data) ? data : [data] }))
-//         .catch(err => {
-//             console.log(err);
-//             res.send({ result: 500, error: err.message });
-//         });
-// };
+const deleteBooking = (req, res) => {
+    Models.Booking.destroy({
+        where: { BookingID: req.params.BookingID }
+    })
+        .then(data => res.send({ result: 200, data: data }))
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+}
 
 
 module.exports = {
     createBooking,
     getBookings,
-    getBookedItemById
+    getBookedItemById,
+    deleteBooking
 };

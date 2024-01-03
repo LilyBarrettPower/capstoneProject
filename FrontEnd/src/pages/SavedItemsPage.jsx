@@ -15,10 +15,7 @@ import { useState, useEffect } from "react";
 
 function SavedItemsPage() {
     const currentUser = useUserContext();
-    const userSavedItemsUrl = `http://localhost:3307/rentshare/saveditems/getsaveddetails/${parseInt(
-        currentUser.currentUser.UserID,
-        10
-    )}`;
+    const userSavedItemsUrl = `http://localhost:3307/rentshare/saveditems/getsaveddetails/${parseInt(currentUser.currentUser.UserID,10)}`;
 
     const [userSavedItems, setUserSavedItems] = useState([]);
     const [errorSavedItems, setErrorSavedItems] = useState(null);
