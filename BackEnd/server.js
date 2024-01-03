@@ -15,6 +15,7 @@ const itemsRoutes = require('./Routes/itemsRoutes');
 const messagesRoutes = require('./Routes/messagesRoutes');
 const savedItemsRoutes = require('./Routes/savedItemsRoutes');
 const usersRoutes = require('./Routes/usersRoutes');
+const bookingRoutes = require('./Routes/bookingRoutes');
 
 
 const corsOptions = {
@@ -41,6 +42,7 @@ app.use('/rentshare/items', itemsRoutes);
 app.use('/rentshare/messages', messagesRoutes);
 app.use('/rentshare/saveditems', savedItemsRoutes);
 app.use('/rentshare/users', usersRoutes);
+app.use('/rentshare/bookings', bookingRoutes)
 
 
 
