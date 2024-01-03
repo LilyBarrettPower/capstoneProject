@@ -9,7 +9,7 @@ const SaveItemButton = ({ itemID, onSave }) => {
     };
 
     return (
-        <Button variant="secondary" onClick={handleSave} style={{marginLeft: '10px'}}>
+        <Button variant="secondary" onClick={handleSave} style={{marginLeft: '10px'}} className='body'>
             Save Item
         </Button>
     );

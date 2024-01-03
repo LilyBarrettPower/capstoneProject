@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 import SaveItemButton from './SaveItemButton';
 import { useUserContext } from '../context/userContext';
-
+import HireItemButton from './HireItemButton';
 
 const ItemCard = ({ itemData }) => { 
 
@@ -79,8 +79,9 @@ const ItemCard = ({ itemData }) => {
                 </div>
             </div>
             <div className="mt-1 mb-3 mx-2">
-                    <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
-                    <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem}/>
+                    <Button variant="secondary" onClick={handleShowModal} className='body'>Read more</Button>
+                    <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
+                    <HireItemButton/>
             </div>
         </Card>
 
