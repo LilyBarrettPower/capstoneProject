@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
+import UnSaveItemButton from './UnSaveItemButton';
 
-const SavedItemsCard = ({ savedItems }) => {
+const SavedItemsCard = ({ savedItems, onUnSave }) => {
+
+    console.log(onUnSave); 
+
     const { currentUser } = useUserContext();
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null); 
@@ -14,6 +18,11 @@ const SavedItemsCard = ({ savedItems }) => {
         setShowModal(true);
     };
     const handleCloseModal = () => setShowModal(false);
+
+
+
+ 
+
 
     return (
         <>
@@ -39,6 +48,7 @@ const SavedItemsCard = ({ savedItems }) => {
                         <Button variant="secondary" onClick={() => handleShowModal(savedItem)}>
                             Read more
                         </Button>
+                        <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave}/>
                     </div>
                 </Card>
             ))}
