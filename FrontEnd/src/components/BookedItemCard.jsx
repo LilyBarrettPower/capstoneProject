@@ -8,9 +8,9 @@ const BookedItemCard = ({ bookedItems }) => {
     console.log('bookedItems:', bookedItems);
 
 
-    if (!bookedItems || !bookedItems.data) {
-        return <div>No booked items</div>;
-    }
+    // if (!bookedItems || !bookedItems.data) {
+    //     return <div>No booked items</div>;
+    // }
 
 
     const { currentUser } = useUserContext();
