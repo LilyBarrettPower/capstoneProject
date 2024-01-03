@@ -50,6 +50,7 @@ const ItemCard = ({ itemData }) => {
             if (response.ok) {
                 // Handle success
                 console.log('Item saved successfully!');
+                alert('Item Saved Successfully!')
             } else {
                 // Handle error
                 console.error('Error saving item:', response.statusText);
