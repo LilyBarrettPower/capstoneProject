@@ -14,9 +14,36 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
 
 import { useUserContext } from '../context/userContext'
+import { useState } from 'react';
 
 
 function ProfilePage() {
+        const [userBookedItems, setUserBookedItems] = useState([]);
+
+        const handleDeleteBooking = async (bookingID) => {
+            try {
+                const response = await fetch(`http://localhost:3307/rentshare/bookings/${bookingID}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                if (response.ok) {
+                    console.log('Booking deleted successfully!');
+                    setUserBookedItems((prevBookedItems) =>
+                        prevBookedItems.filter((item) => item.BookingID !== bookingID)
+                    );
+                } else {
+                    console.error('Error deleting booking:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error deleting booking:', error.message);
+            }
+        };
+
+
+
     const currentUser = useUserContext();
     const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
 
@@ -57,9 +84,14 @@ function ProfilePage() {
                             {/* render the booked items here  */}
                             <Col md={6}>
                                 <h3 className='headings' style={{ marginBottom: '55px' }}>Items you have booked:</h3>
-                         
-                                    {bookedItems.length > 0 ? (
-                                        <BookedItemCard bookedItems={bookedItems} />
+                        
+                                {bookedItems.length > 0 ? (
+                                    <BookedItemCard
+                                        bookedItems={bookedItems}
+                                        onDeleteBooking={handleDeleteBooking}
+                                        userBookedItems={userBookedItems}
+                                        setUserBookedItems={setUserBookedItems}
+                                    />
                                 ) : (
                                     <div>No booked items</div>
                                 )}

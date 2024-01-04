@@ -4,7 +4,7 @@ import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
 import DeleteBookingButton from './DeleteBookingButton';
 
-const BookedItemCard = ({ bookedItems, onDeleteBooking }) => {
+const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems, userBookedItems }) => {
 
     console.log('bookedItems:', bookedItems);
 
@@ -19,7 +19,8 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking }) => {
     };
     const handleCloseModal = () => setShowModal(false);
 
-    console.log(bookedItems);
+
+    // console.log(bookedItems);
 
     return (
         <>
@@ -32,7 +33,16 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking }) => {
                                 <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                             </Card.Body>
-                            <DeleteBookingButton bookingID={bookedItem.BookingID} onDeleteBooking={onDeleteBooking}>
+                            {/* <DeleteBookingButton bookingID={bookedItem.BookingID} deleteBooking={onDeleteBooking} userBookedItems={userBookedItems}
+                                setUserBookedItems={setUserBookedItems}>
+                                Remove booking
+                            </DeleteBookingButton> */}
+                            <DeleteBookingButton
+                                bookingID={bookedItem.BookingID}
+                                onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
+                                setUserBookedItems={setUserBookedItems}
+                                userBookedItems={userBookedItems}
+                            >
                                 Remove booking
                             </DeleteBookingButton>
                         </div>
