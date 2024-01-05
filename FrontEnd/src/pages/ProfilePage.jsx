@@ -14,11 +14,45 @@ import Row from 'react-bootstrap/Row';
 import Container from 'react-bootstrap/esm/Container';
 
 import { useUserContext } from '../context/userContext'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 function ProfilePage() {
-        const [userBookedItems, setUserBookedItems] = useState([]);
+
+
+    const currentUser = useUserContext();
+    const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
+    const bookedItemsUrl = `http://localhost:3307/rentshare/bookings/getbooked/${parseInt(currentUser.currentUser.UserID, 10)}`;
+
+    const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
+
+
+    const [errorBookedItems, setErrorBookedItems] = useState(null);
+    const [userBookedItems, setUserBookedItems] = useState([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(bookedItemsUrl);
+                const result = await response.json();
+
+                if (response.ok) {
+                    setUserBookedItems(result.data);
+                } else {
+                    setErrorBookedItems(result.error);
+                }
+            } catch (error) {
+                setErrorBookedItems(error.message);
+            }
+        };
+
+        fetchData();
+    }, [bookedItemsUrl]);
+
+    if (!currentUser.currentUser.UserID) {
+        return <div>Loading...</div>; 
+    }
+
 
         const handleDeleteBooking = async (bookingID) => {
             try {
@@ -31,9 +65,12 @@ function ProfilePage() {
 
                 if (response.ok) {
                     console.log('Booking deleted successfully!');
+                    console.log('Before update:', userBookedItems);
+                    alert('Booking removed!')
                     setUserBookedItems((prevBookedItems) =>
                         prevBookedItems.filter((item) => item.BookingID !== bookingID)
                     );
+                    console.log('After update:', userBookedItems);
                 } else {
                     console.error('Error deleting booking:', response.statusText);
                 }
@@ -44,18 +81,7 @@ function ProfilePage() {
 
 
 
-    const currentUser = useUserContext();
-    const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
 
-    const bookedItemsUrl = `http://localhost:3307/rentshare/bookings/getbooked/${parseInt(currentUser.currentUser.UserID, 10)}`;
-    
-    const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
-    const { data: bookedItems, error: errorBookedItems } = useFetch(bookedItemsUrl);
-
-
-    if (!currentUser.currentUser.UserID) {
-        return <div>Loading...</div>; // Or any loading indicator
-    }
 
     return (
         <>
@@ -85,11 +111,11 @@ function ProfilePage() {
                             <Col md={6}>
                                 <h3 className='headings' style={{ marginBottom: '55px' }}>Items you have booked:</h3>
                         
-                                {bookedItems.length > 0 ? (
+                                {userBookedItems.length > 0 ? (
                                     <BookedItemCard
-                                        bookedItems={bookedItems}
+                                        bookedItems={userBookedItems}
                                         onDeleteBooking={handleDeleteBooking}
-                                        userBookedItems={userBookedItems}
+                                        // userBookedItems={userBookedItems}
                                         setUserBookedItems={setUserBookedItems}
                                     />
                                 ) : (
