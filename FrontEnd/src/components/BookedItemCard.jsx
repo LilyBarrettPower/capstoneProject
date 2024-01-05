@@ -2,16 +2,11 @@ import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
+import DeleteBookingButton from './DeleteBookingButton';
 
-const BookedItemCard = ({ bookedItems }) => {
+const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) => {
 
     console.log('bookedItems:', bookedItems);
-
-
-    // if (!bookedItems || !bookedItems.data) {
-    //     return <div>No booked items</div>;
-    // }
-
 
     const { currentUser } = useUserContext();
     const [showModal, setShowModal] = useState(false);
@@ -24,7 +19,8 @@ const BookedItemCard = ({ bookedItems }) => {
     };
     const handleCloseModal = () => setShowModal(false);
 
-    console.log(bookedItems);
+
+
 
     return (
         <>
@@ -37,6 +33,13 @@ const BookedItemCard = ({ bookedItems }) => {
                                 <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                             </Card.Body>
+                            <DeleteBookingButton
+                                bookingID={bookedItem.BookingID}
+                                onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
+                                setUserBookedItems={setUserBookedItems}
+                            >
+                                Remove booking
+                            </DeleteBookingButton>
                         </div>
                         <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
                             <Card.Img
