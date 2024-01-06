@@ -4,6 +4,8 @@ import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
 import DeleteBookingButton from './DeleteBookingButton';
 
+import { format } from 'date-fns';
+
 const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) => {
 
     console.log('bookedItems:', bookedItems);
@@ -33,6 +35,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                                 <Card.Title className="headings">{bookedItem.item.ItemName || 'No Name'}</Card.Title>
                                 <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
+                                <Card.Text className='body'>{format(new Date(bookedItem.StartDate), 'do MMM yyyy')} - {format(new Date(bookedItem.EndDate), 'do MMM yyyy')}</Card.Text> 
                             </Card.Body>
                         </div>
                         <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
@@ -71,6 +74,10 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                                     <p className="body">{selectedItem.item.ItemDescription}</p>
                                     <p className="body">$ {selectedItem.item.ItemPricePerDay} per day hire</p>
                                     <p className="body">{selectedItem.item.ItemLocation}</p>
+                                    <div className='mt-1 mb-2 mx1'>
+                                        {/*UI to display the dates of hire: */}
+                                        <p className='body'>Hire date: {format(new Date(selectedItem.StartDate), 'do MMM yyyy')} - {format(new Date(selectedItem.EndDate), 'do MMM yyyy')}</p>
+                                    </div>
                                 </div>
                                 <div className="col-md-6">
                                     <Carousel className="w-100">
