@@ -4,6 +4,7 @@ import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
 import UnSaveItemButton from './UnSaveItemButton';
 
+
 const SavedItemsCard = ({ savedItems, onUnSave }) => {
 
     console.log(onUnSave); 
@@ -45,10 +46,10 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                         </div>
                     </div>
                     <div className="mt-1 mb-3 mx-2">
-                        <Button variant="secondary" onClick={() => handleShowModal(savedItem)}>
+                        <Button variant="secondary" className='body' onClick={() => handleShowModal(savedItem)}>
                             Read more
                         </Button>
-                        <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave}/>
+                        <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave} />
                     </div>
                 </Card>
             ))}
@@ -58,13 +59,13 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                     <>
  <Modal.Header closeButton>
                     <Modal.Title className="headings">{selectedItem.item.ItemName}</Modal.Title>
-                    <p className="body mt-4 mx-5">Category: {selectedItem.item.ItemCategory}</p>
                 </Modal.Header>
                 <Modal.Body>
                     <div className="row">
-                        <div className="col-md-6">
+                                <div className="col-md-6">
+                            <p className="body">{selectedItem.item.ItemCategory}</p>
                             <p className="body">{selectedItem.item.ItemDescription}</p>
-                            <p className="body">{selectedItem.item.ItemPricePerDay}</p>
+                            <p className="body">$ {selectedItem.item.ItemPricePerDay} per day hire</p>
                             <p className="body">{selectedItem.item.ItemLocation}</p>
                         </div>
                         <div className="col-md-6">
@@ -93,7 +94,8 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                                                 <p>No other photos available</p>
                                             </Carousel.Item>
                                         )}
-                            </Carousel>
+                                    </Carousel>
+                                    {/* This is where I will put "message user" button */}
                         </div>
                     </div>
                         </Modal.Body>

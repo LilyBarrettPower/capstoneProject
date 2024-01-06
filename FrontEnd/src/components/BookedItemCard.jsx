@@ -24,6 +24,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
 
     return (
         <>
+            <h3 className='headings mt-3 mb-2'>Items you have booked:</h3>
             {bookedItems.map((bookedItem) => (
                 <Card key={bookedItem.BookingID} style={{ width: '100%', margin: '10px' }} className="mb-3">
                     <div className="d-flex">
@@ -33,13 +34,6 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                                 <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                             </Card.Body>
-                            <DeleteBookingButton
-                                bookingID={bookedItem.BookingID}
-                                onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
-                                setUserBookedItems={setUserBookedItems}
-                            >
-                                Remove booking
-                            </DeleteBookingButton>
                         </div>
                         <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
                             <Card.Img
@@ -50,9 +44,16 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                         </div>
                     </div>
                     <div className="mt-1 mb-3 mx-2">
-                        <Button variant="secondary" onClick={() => handleShowModal(bookedItem)}>
+                        <Button variant="secondary" className='body' onClick={() => handleShowModal(bookedItem)}>
                             Read more
                         </Button>
+                        <DeleteBookingButton
+                            bookingID={bookedItem.BookingID}
+                            onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
+                            setUserBookedItems={setUserBookedItems}
+                        >
+                            Remove booking
+                        </DeleteBookingButton>
                     </div>
                 </Card>
             ))}
@@ -62,13 +63,13 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                     <>
                         <Modal.Header closeButton>
                             <Modal.Title className="headings">{selectedItem.item.ItemName}</Modal.Title>
-                            <p className="body mt-4 mx-5">Category: {selectedItem.item.ItemCategory}</p>
                         </Modal.Header>
                         <Modal.Body>
                             <div className="row">
                                 <div className="col-md-6">
+                                    <p className="body">{selectedItem.item.ItemCategory}</p>
                                     <p className="body">{selectedItem.item.ItemDescription}</p>
-                                    <p className="body">{selectedItem.item.ItemPricePerDay}</p>
+                                    <p className="body">$ {selectedItem.item.ItemPricePerDay} per day hire</p>
                                     <p className="body">{selectedItem.item.ItemLocation}</p>
                                 </div>
                                 <div className="col-md-6">
@@ -94,10 +95,11 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                                             ))
                                         ) : (
                                             <Carousel.Item>
-                                                <p>No other photos available</p>
+                                                <p className='body'>No other photos available</p>
                                             </Carousel.Item>
                                         )}
                                     </Carousel>
+                                    {/* Here is where I will put the days of hire! */}
                                 </div>
                             </div>
                         </Modal.Body>

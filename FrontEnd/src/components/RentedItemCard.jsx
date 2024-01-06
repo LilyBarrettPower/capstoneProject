@@ -22,6 +22,7 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
 
     return (
         <>
+            <h3 className='headings mt-3 mb-2'>Your listings: </h3>
             <Card style={{ width: '100%', margin: '10px' }} className="mb-3">
                 <div className="d-flex">
                     <div style={{ float: 'left', width: '70%' }}>
@@ -40,7 +41,7 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
                     </div>
                 </div>
                 <div className="mt-1 mb-3 mx-2">
-                    <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
+                    <Button variant="secondary" className='body' onClick={handleShowModal}>Read more</Button>
                     <DeleteListingButton onDeleteListing={() => onDeleteListing(itemData.ItemID)}>
                         Delete Listing
                     </DeleteListingButton>
@@ -49,19 +50,17 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
 
             <Modal show={showModal} onHide={handleCloseModal} size='lg'>
                 <Modal.Header closeButton>
-                    {/* need to change the itemData to link to the database when created... */}
                     <Modal.Title className='headings'>{itemData.ItemName}</Modal.Title>
-                    <p className='body mt-4 mx-5'>Category: {itemData.ItemCategory}</p>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='row'>
                         <div className='col-md-6'>
+                            <p className='body'>{itemData.ItemCategory}</p>
                             <p className="body">{itemData.ItemDescription}</p>
-                            <p className='body'>{itemData.ItemPricePerDay}</p>
+                            <p className='body'>${itemData.ItemPricePerDay} per day hire</p>
                             <p className='body'>{itemData.ItemLocation}</p>
                         </div>
                         <div className='col-md-6'>
-                            {/* This is where I will add the message user, hire item and save item buttons! */}
                             <Carousel className='w-100'>
                                 <Carousel.Item>
                                     <img className='d-block w-100' src={itemData.ItemFeaturedPhoto} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />

@@ -8,7 +8,7 @@ const DeleteBookingButton = ({ bookingID, onDeleteBooking, userBookedItems, setU
     }
 
     return (
-        <Button variant='danger' onClick={handleDeleteingBooking} bookedItems={userBookedItems}>
+        <Button variant='secondary' className='body mx-2' onClick={handleDeleteingBooking} bookedItems={userBookedItems}>
             Delete Booking
         </Button>
     );

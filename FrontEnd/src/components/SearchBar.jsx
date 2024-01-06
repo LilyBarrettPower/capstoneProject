@@ -7,6 +7,7 @@ const SearchBar = ({ searchQuery, onSearchChange }) => {
             <Form.Control
                 type="text"
                 placeholder="Search by Item Name"
+                className='body'
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
             />

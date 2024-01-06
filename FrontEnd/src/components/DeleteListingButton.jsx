@@ -8,7 +8,7 @@ const DeleteListingButton = ({onDeleteListing }) => {
     }
 
     return (
-        <Button variant='danger' onClick={handleDeleteingListing}>
+        <Button variant='secondary' className='body mx-2' onClick={handleDeleteingListing}>
             Delete Listing
         </Button>
     );

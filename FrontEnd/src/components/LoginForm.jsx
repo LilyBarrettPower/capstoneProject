@@ -15,8 +15,8 @@ function LoginForm() {
     const [status, setStatus] = useState('');
     // const [usersData, setUsersData] = useState([]);
 
-    const [emailInputProps, resetEmail] = useLoginInput('Example@gmail.com');
-    const [passwordInputProps, resetPassword] = useLoginInput('*******');
+    const [emailInputProps, resetEmail] = useLoginInput('example@gmail.com');
+    const [passwordInputProps, resetPassword] = useLoginInput();
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -70,15 +70,15 @@ function LoginForm() {
     }
 
     return (
-        <Container className="d-flex justify-content-center align-items-center mt-3">
+        <Container className="d-flex justify-content-center align-items-center" style={{marginTop: "100px"}}>
             <Form>
                 <Form.Group controlId="formBasicEmail">
                     <Form.Label className="headings">Email:</Form.Label>
-                    <Form.Control type="email" value={emailInputProps.value} onChange={emailInputProps.onChange} />
+                    <Form.Control type="email" value={emailInputProps.value} onChange={emailInputProps.onChange} className='body'/>
                 </Form.Group>
                 <Form.Group controlId="formBasicPassword">
                     <Form.Label className="headings">Password:</Form.Label>
-                    <Form.Control type="password" value={passwordInputProps.value} onChange={passwordInputProps.onChange} />
+                    <Form.Control type="password" value={passwordInputProps.value} onChange={passwordInputProps.onChange} className='body' />
                 </Form.Group>
                 <div className='d-flex justify-content-center'>
                     <Button variant="secondary" onClick={handleLogin} className="my-3 body">Login!</Button>

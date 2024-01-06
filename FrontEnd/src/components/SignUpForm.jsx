@@ -98,46 +98,51 @@ function SignUpForm() {
         <Container className="d-flex justify-content-center align-items-center mt-3">
             <Form onSubmit={handleSubmit} encType='multipart/form-data'>
                 <Form.Group controlId="formFullName">
-                    <Form.Label>Full name:</Form.Label>
+                    <Form.Label className="headings">Full name:</Form.Label>
                     <Form.Control
                         type="text"
                         name="FullName"
+                        className='body'
                         value={formData.FullName}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Form.Group controlId="formUsername">
-                    <Form.Label>Username:</Form.Label>
+                    <Form.Label className="headings">Username:</Form.Label>
                     <Form.Control 
                         type="text"
                         name="UserName"
+                        className='body'
                         value={formData.UserName}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Form.Group controlId="formEmail">
-                    <Form.Label>Email:</Form.Label>
+                    <Form.Label className="headings">Email:</Form.Label>
                     <Form.Control
                         type="email"
                         name="Email"
+                        className='body'
                         value={formData.Email}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Form.Group controlId="formContact">
-                    <Form.Label>Contact</Form.Label>
+                    <Form.Label className="headings">Contact</Form.Label>
                     <Form.Control
                         type="text"
                         name="Contact"
+                        className='body'
                         value={formData.Contact}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Form.Group controlId="formLocation">
-                    <Form.Label>Location:</Form.Label>
+                    <Form.Label className="headings">Location:</Form.Label>
                     <Form.Control
                         as="select"
                         name="Location"
+                        className='body'
                         value={formData.Location}
                         onChange={handleLocationChange}
                     >
@@ -152,19 +157,21 @@ function SignUpForm() {
                     </Form.Control>
                 </Form.Group>
                 <Form.Group controlId="formPassword">
-                <Form.Label>Password:</Form.Label>
+                    <Form.Label className="headings">Password:</Form.Label>
                     <Form.Control
                         type="password"
                         name="Password"
+                        className='body'
                         value={formData.Password}
                         onChange={handleInputChange}
                     />
                 </Form.Group>
                 <Form.Group controlId="formProfilePhoto">
-                    <Form.Label>Profile Photo:</Form.Label>
+                    <Form.Label className="headings">Profile Photo:</Form.Label>
                     <Form.Control 
                         type="file"
                         accept="image/*"
+                        className='body'
                         onChange={handleFileChange} 
                     />
                 </Form.Group>

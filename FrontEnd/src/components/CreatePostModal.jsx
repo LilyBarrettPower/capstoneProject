@@ -107,9 +107,16 @@ function CreatePostModal({ show, handleClose }) {
                         <Form.Label className='headings'>Category:</Form.Label>
                         <Form.Control as='select' name='ItemCategory' value={formData.ItemCategory} onChange={handleInputChange}>
                             <option value=''>Select category:</option>
-                            <option value='category1'>Category 1</option>
-                            <option value='category2'>Category 2</option>
-                            {/* Change these options to the categories i want! */}
+                            <option value='Clothing'>Clothing</option>
+                            <option value='Jewellery'>Jewellery</option>
+                            <option value='Electronics'>Electronics</option>
+                            <option value='Homeware'>Homeware</option>
+                            <option value='SportingGoods'>Sporting goods</option>
+                            <option value='PetSupplies'>Pet supplies</option>
+                            <option value='Machinery'>Machinery</option>
+                            <option value='FarmingEquipment'>Farming equipment</option>
+                            <option value='HomeImprovement'>Home improvement</option>
+                            <option value='Miscellaneous'>Miscellaneous</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId='ItemName'>
@@ -128,9 +135,13 @@ function CreatePostModal({ show, handleClose }) {
                         <Form.Label className='headings'>Item location:</Form.Label>
                         <Form.Control as='select' name='ItemLocation' value={formData.ItemLocation} onChange={handleInputChange}>
                             <option value=''>Select your location:</option>
-                            <option value='location1'>Location 1</option>
-                            <option value='location2'>Location 2</option>
-                            {/* change these location options to the locations you want  */}
+                            <option value='Auckland'>Auckland</option>
+                            <option value='Northland'>Northland</option>
+                            <option value='Marlborough'>Marlborough</option>
+                            <option value='Wellington'>Wellington</option>
+                            <option value='Canterbury'>Canterbury</option>
+                            <option value='Otago'>Otago</option>
+                            <option value='Southland'>Southland</option>
                         </Form.Control>
                     </Form.Group>
                     <Form.Group controlId='ItemPricePerDay'>
@@ -144,11 +155,11 @@ function CreatePostModal({ show, handleClose }) {
                     {/* Need to figure out how to change this to include a calander integration.... */}
                     <Form.Group>
                         <Form.Label className="headings">Featured Photo:</Form.Label>
-                        <Form.Control type="file" name="ItemFeaturedPhoto" accept='image/*' onChange={handleFileChange} />
+                        <Form.Control type="file" name="ItemFeaturedPhoto" accept='image/*' onChange={handleFileChange} className='body' />
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className='headings'>Other Photos:</Form.Label>
-                        <Form.Control type='file' name='ItemOtherPhotos' accept='image/*' multiple onChange={handleFileChange} />
+                        <Form.Control type='file' name='ItemOtherPhotos' accept='image/*' multiple onChange={handleFileChange} className='body'/>
                     </Form.Group>
 
                     <Button variant='secondary' type='submit' className='body mt-2'>Submit</Button>
