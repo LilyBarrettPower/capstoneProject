@@ -141,14 +141,12 @@ function ProfilePage() {
             <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
                 <Row>
                     <Col md={2}>
+                        <CreatePostButton />
                         <ProfileInfo currentUser={currentUser} />
                     </Col>
                     <Col md={10}>
                         <Row>
-                            <Col md={6}>
-                                <h3 className='headings'>Items you have for rent:</h3>
-                                <CreatePostButton />
-
+                            <Col md={5}>
                                 {userItems.length > 0 ? (
                                     userItems.map((item) => (
                                         <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />
@@ -158,9 +156,7 @@ function ProfilePage() {
                                 )}
                             </Col>
                             {/* render the booked items here  */}
-                            <Col md={6}>
-                                <h3 className='headings' style={{ marginBottom: '55px' }}>Items you have booked:</h3>
-                        
+                            <Col md={5}>
                                 {userBookedItems.length > 0 ? (
                                     <BookedItemCard
                                         bookedItems={userBookedItems}

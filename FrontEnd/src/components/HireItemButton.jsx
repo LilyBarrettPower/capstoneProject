@@ -10,7 +10,7 @@ function HireItemButton({itemID, ownerID}) {
 
     return (
         <>
-            <Button variant='secondary' className='body' onClick={handleShow}>
+            <Button variant='secondary' className='body mx-2 mt-2' onClick={handleShow}>
                 Hire Item
             </Button>
             <HireItemModal show={showModal} handleClose={() => setShowModal(false)} itemID={itemID} ownerID={ownerID}></HireItemModal>

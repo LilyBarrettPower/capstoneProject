@@ -20,7 +20,6 @@ function NavBar() {
                         <NavLink to="/TimelinePage" className="navbaritem body px-3">Browse</NavLink>
                         <NavLink to="/MessagesPage" className="navbaritem body px-3">Messages</NavLink>
                         <NavLink to="/SavedItemsPage" className="navbaritem body px-3">Saved</NavLink>
-                        <NavLink to="/NotificationsPage" className="navbaritem body px-3">Notifications</NavLink>
                     </Nav>
                 </Navbar.Collapse>
             </Container>

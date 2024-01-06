@@ -81,7 +81,7 @@ const ItemCard = ({ itemData }) => {
                 </div>
             </div>
             <div className="mt-1 mb-3 mx-2">
-                    <Button variant="secondary" onClick={handleShowModal} className='body'>Read more</Button>
+                    <Button variant="secondary" onClick={handleShowModal} className='body mt-2'>Read more</Button>
                     <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
                     <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
             </div>
@@ -89,20 +89,17 @@ const ItemCard = ({ itemData }) => {
 
         <Modal show={showModal} onHide={handleCloseModal} size='lg'>
                 <Modal.Header closeButton>
-                    {/* need to change the itemData to link to the database when created... */}
                     <Modal.Title className='headings'>{itemData.ItemName}</Modal.Title>
-                    <p className='body mt-4 mx-5'>Category: {itemData.ItemCategory}</p>
                 </Modal.Header>
                 <Modal.Body>
                     <div className='row'>
                         <div className='col-md-6'>
+                            <p className='body'>{itemData.ItemCategory}</p>
                             <p className="body">{itemData.ItemDescription}</p>
-                            <p className='body'>{itemData.ItemPricePerDay}</p>
+                            <p className='body'>$ {itemData.ItemPricePerDay} per day hire</p>
                             <p className='body'>{itemData.ItemLocation}</p>
                         </div>
                         <div className='col-md-6'>
-                            <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
-                            {/* This is where I will add the message user, hire item and save item buttons! */}
                         <Carousel className='w-100'>
                             <Carousel.Item>
                                     <img className='d-block w-100' src={itemData.ItemFeaturedPhoto} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
@@ -118,7 +115,9 @@ const ItemCard = ({ itemData }) => {
                                             />
                                         </Carousel.Item>
                                     ))}
-                        </Carousel>
+                            </Carousel>
+                            <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
+                            <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
                         </div>
                     </div>
                 </Modal.Body>

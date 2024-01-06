@@ -11,10 +11,10 @@ function CreatePostButton() {
 
     return (
         <>
-            <Button variant='secondary' className='body' onClick={handleShow}>
+            <Button variant='secondary' className='body mt-3 mb-2' onClick={handleShow}>
                 Create Post
             </Button>
-            <CreatePostModal show={showModal} handleClose={() => setShowModal(false)}></CreatePostModal>
+                <CreatePostModal show={showModal} handleClose={() => setShowModal(false)}></CreatePostModal>
         </>
     )
 }

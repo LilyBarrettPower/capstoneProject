@@ -43,33 +43,35 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
     return (
         <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
-                <Modal.Title>Hire Item</Modal.Title>
+                <Modal.Title className="headings">Hire Item</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form>
                     <Form.Group controlId="startDate">
-                        <Form.Label>Start Date</Form.Label>
+                        <Form.Label className='body'>Start Date</Form.Label>
                         <Form.Control
                             type="date"
                             value={startDate}
+                            className='body'
                             onChange={(e) => setStartDate(e.target.value)}
                         />
                     </Form.Group>
                     <Form.Group controlId="endDate">
-                        <Form.Label>End Date</Form.Label>
+                        <Form.Label className='body'>End Date</Form.Label>
                         <Form.Control
                             type="date"
                             value={endDate}
+                            className='body'
                             onChange={(e) => setEndDate(e.target.value)}
                         />
                     </Form.Group>
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
+                <Button variant="secondary" className='body' onClick={handleClose}>
                     Close
                 </Button>
-                <Button variant="secondary" onClick={handleHire}>
+                <Button variant="secondary" className='body' onClick={handleHire}>
                     Hire
                 </Button>
             </Modal.Footer>
