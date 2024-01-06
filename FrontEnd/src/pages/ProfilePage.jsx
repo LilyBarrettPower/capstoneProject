@@ -24,11 +24,14 @@ function ProfilePage() {
     const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
     const bookedItemsUrl = `http://localhost:3307/rentshare/bookings/getbooked/${parseInt(currentUser.currentUser.UserID, 10)}`;
 
-    const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
+    // const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
 
 
     const [errorBookedItems, setErrorBookedItems] = useState(null);
     const [userBookedItems, setUserBookedItems] = useState([]);
+
+    const [errorRentedItems, setErrorRentedItems] = useState(null);
+    const [userItems, setUserItems] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -49,35 +52,82 @@ function ProfilePage() {
         fetchData();
     }, [bookedItemsUrl]);
 
+
+    const handleDeleteBooking = async (bookingID) => {
+        try {
+            const response = await fetch(`http://localhost:3307/rentshare/bookings/${bookingID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                console.log('Booking deleted successfully!');
+                console.log('Before update:', userBookedItems);
+                alert('Booking removed!')
+                setUserBookedItems((prevBookedItems) =>
+                    prevBookedItems.filter((item) => item.BookingID !== bookingID)
+                );
+                console.log('After update:', userBookedItems);
+            } else {
+                console.error('Error deleting booking:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting booking:', error.message);
+        }
+    };
+
+
+
+    // testing for the fetch for rented items:
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch(userItemsUrl);
+                const result = await response.json();
+                if (response.ok) {
+                    setUserItems(result.data);
+                } else {
+                    setErrorRentedItems(result.error);
+                }
+            } catch (error) {
+                setErrorRentedItems(error.message);
+            }
+        };
+        fetchData();
+    }, [userItemsUrl]);
+
+
+    const handleDeleteListing = async (itemID) => {
+        try {
+            const response = await fetch(`http://localhost:3307/rentshare/items/${itemID}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (response.ok) {
+                console.log('Listing deleted successfully')
+                alert('Listing removed!')
+                setUserItems((prevUserItems) => prevUserItems.filter((item) => item.ItemID !== itemID)
+                );
+            } else {
+                console.error('Error deleting listing', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting listing', error.message)
+        }
+    };
+
+
+
     if (!currentUser.currentUser.UserID) {
         return <div>Loading...</div>; 
     }
 
 
-        const handleDeleteBooking = async (bookingID) => {
-            try {
-                const response = await fetch(`http://localhost:3307/rentshare/bookings/${bookingID}`, {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
-
-                if (response.ok) {
-                    console.log('Booking deleted successfully!');
-                    console.log('Before update:', userBookedItems);
-                    alert('Booking removed!')
-                    setUserBookedItems((prevBookedItems) =>
-                        prevBookedItems.filter((item) => item.BookingID !== bookingID)
-                    );
-                    console.log('After update:', userBookedItems);
-                } else {
-                    console.error('Error deleting booking:', response.statusText);
-                }
-            } catch (error) {
-                console.error('Error deleting booking:', error.message);
-            }
-        };
 
 
 
@@ -101,7 +151,7 @@ function ProfilePage() {
 
                                 {userItems.length > 0 ? (
                                     userItems.map((item) => (
-                                        <RentedItemCard key={item.ItemID} itemData={item} />
+                                        <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />
                                     ))
                                 ) : (
                                     <div>No current items for rent</div>
