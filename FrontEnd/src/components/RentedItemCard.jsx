@@ -5,10 +5,13 @@ import { useState } from 'react';
 import { useUserContext } from '../context/userContext';
 
 
+import DeleteListingButton from './DeleteListingButton';
 
 
 
-const RentedItemCard = ({ itemData }) => {
+
+
+const RentedItemCard = ({ itemData, onDeleteListing }) => {
     
     // import the currentUser from the userContext
     const currentUser = useUserContext();
@@ -38,6 +41,9 @@ const RentedItemCard = ({ itemData }) => {
                 </div>
                 <div className="mt-1 mb-3 mx-2">
                     <Button variant="secondary" onClick={handleShowModal}>Read more</Button>
+                    <DeleteListingButton onDeleteListing={() => onDeleteListing(itemData.ItemID)}>
+                        Delete Listing
+                    </DeleteListingButton>
                 </div>
             </Card>
 
