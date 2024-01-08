@@ -3,6 +3,7 @@
 const Models = require('../Models');
 // for password encryption
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
 
 const getUser = (res) => {
     Models.User.findAll({})
@@ -143,13 +144,33 @@ const loginUser = async (req, res) => {
     }
 };
 
+// controller for searching users for messaging:
+const searchUsers = async (query, res) => {
+    try {
+        const users = await Models.User.findAll({
+            where: {
+                UserName: {
+                    [Op.like]: `%${query}%`,
+                },
+            },
+            attributes: ['UserID', 'UserName'], // Include other attributes as needed
+        });
+
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error searching users:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     getUser,
     createUser,
     updateUser,
     deleteUser,
     registerUser,
-    loginUser
+    loginUser,
+    searchUsers
 };
 
 
