@@ -28,12 +28,17 @@ Message.init({
     Content: {
         type: DataTypes.STRING,
         allowNull: false,
-        require: true,
+        required: true,
     }
 },
     {
         sequelize: sequelizeInstance, modelName: 'messages', timestamps: true, freezeTableName: true,
     }
 );
+
+
+// Define association with User model
+Message.belongsTo(User, { foreignKey: 'SenderID', as: 'Sender' });
+Message.belongsTo(User, { foreignKey: 'RecieverID', as: 'Reciever' });
 
 module.exports = Message;
