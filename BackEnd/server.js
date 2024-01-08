@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+const http = require('http');
+
+
 const path = require('path')
 const cors = require('cors');
 
@@ -8,6 +11,10 @@ require('dotenv').config();
 
 let dbConnect = require('./dbConnect');
 
+
+const socketConnection = require('./socket');
+const server = http.createServer(app);
+const io = socketConnection(server);
 
 // import routes here:
 
@@ -51,6 +58,6 @@ app.get("*", (req, res) => {
 });
 
 const PORT = process.env.DB_PORT || 3307;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
     console.log(`app is listening on port ${PORT}`);
 })
