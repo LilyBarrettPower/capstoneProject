@@ -1,159 +1,77 @@
-// const socketIO = require('socket.io');
-
-// const socketConnection = (server) => {
-//     const io = socketIO(server);
-
-//     io.on('connection', (socket) => {
-//         console.log('A user connected');
-
-//         // Listen for messages from clients
-//         socket.on('message', (data) => {
-//             // Broadcast the message to all connected clients - change this so message is only boradcasted to the use intended 
-//             io.emit('message', data);
-//         });
-
-//         // Handle disconnect event
-//         socket.on('disconnect', () => {
-//             console.log('User disconnected');
-//         });
-//     });
-
-//     return io;
-// };
-
-// module.exports = socketConnection;
-
-// const socketIO = require('socket.io');
-
-// const socketConnection = (server) => {
-//     const io = socketIO(server);
-
-//     io.on('connection', (socket) => {
-//         console.log('A user connected');
-
-//         // Listen for messages from clients
-//         socket.on('message', (data) => {
-//             // Extract sender, receiver, and content from the data
-//             const { sender, receiver, content } = data;
-
-//             // find teh socket of teh recipient
-//             const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.userName === data.receiver);
-
-//             if (recipientSocket) {
-//                 // Emit the message only to the intended recipient
-//                 recipientSocket.emit('message', { sender, content });
-//             } else {
-//                 // Handle the case when the recipient is not found
-//                 console.log(`Recipient ${receiver} not found`);
-//             }
-//         });
-
-//         // Handle disconnect event
-//         socket.on('disconnect', () => {
-//             console.log('User disconnected');
-//         });
-//     });
-
-//     return io;
-// };
-
-// module.exports = socketConnection;
-
-
-
-// const socketConnection = (server) => {
-//     const io = socketIO(server);
-
-//     io.on('connection', (socket) => {
-//         console.log('A user connected');
-
-//         // Listen for messages from clients
-//         socket.on('message', (data) => {
-//             // Extract sender, receiver, and content from the data
-//             const { sender, receiver, content } = data;
-
-//             // find the socket of the recipient
-//             const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.userName === data.receiver);
-
-//             if (recipientSocket) {
-//                 // Emit the message only to the intended recipient
-//                 recipientSocket.emit('message', { sender, content });
-//             } else {
-//                 // Handle the case when the recipient is not found
-//                 console.log(`Recipient ${receiver} not found`);
-//             }
-//         });
-
-//         // Handle disconnect event
-//         socket.on('disconnect', () => {
-//             console.log('User disconnected');
-//         });
-
-//         // Add this log to check if the connect event is triggered
-//         console.log('A user is connected with socket ID:', socket.id);
-
-//         // Add the following log to check the userName when connecting
-//         console.log('User connected with userName:', socket.userName);
-//     });
-
-//     return io;
-// };
-
-// module.exports = socketConnection;
-
 const socketIO = require('socket.io');
+
 const socketConnection = (server) => {
     const io = socketIO(server);
 
-    io.on('connection', (socket) => {
-        //     console.log('A user connected');
+    //     io.on('connection', (socket) => {
+    //         socket.on('userConnected', (receivedUserName) => {
+    //             // Set up user data when a user connects
+    //             socket.userName = receivedUserName;
+    //             console.log(`User connected with userName: ${socket.userName}`);
 
-        //     // Variable to store the user name
-        //     let userName;
+    //             // Emit both UserName and SocketID
+    //             io.emit('userConnected', { userName: socket.userName, socketID: socket.id });
+    //         });
+
+    //         console.log('A user is connected with socket ID:', socket.id);
+
+    //         // Listen for messages from clients
+    //         socket.on('message', (data) => {
+    //             const { sender, receiver, content } = data;
+
+    //             setTimeout(() => {
+    //                 const connectedUsers = Object.values(io.sockets.sockets).map((s) => ({
+    //                     userName: s.userName,
+    //                     socketID: s.id,
+    //                 }));
+    //                 console.log('Connected Users:', connectedUsers);
+
+    //                 const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.id === data.receiver);
+    //                 console.log('Recipient Socket:', recipientSocket);
+
+    //                 if (recipientSocket) {
+    //                     recipientSocket.emit('message', { content, sender: socket.id, receiver });
+    //                 } else {
+    //                     console.log(`Recipient ${receiver} not found`);
+    //                 }
+    //             }, 1000);
+    //         });
+
+    //         // Handle disconnect event
+    //         socket.on('disconnect', () => {
+    //             console.log('User disconnected');
+    //             delete socket.userName;
+    //         });
+    //     });
+
+    //     return io;
+    // };
+
+    // module.exports = socketConnection;
+
+    io.on('connection', (socket) => {
+        console.log('User connected:', socket.id);
 
         // Listen for userConnected event
-        socket.on('userConnected', (receivedUserName) => {
-            // Set up user data when a user connects
-            socket.userName = receivedUserName;
-            console.log(`User connected with userName: ${socket.userName}`);
+        socket.on('userConnected', (userName) => {
+            console.log(`User connected with userName: ${userName}`);
+            // Broadcast to all clients that a new user has connected
+            io.emit('chatMessage', `${userName} has joined the chat.`);
         });
 
-        // socket.on('connection', (socket) => {
-        console.log('A user connected');
-
-        // Add this log to check if the connect event is triggered
-        console.log('A user is connected with socket ID:', socket.id);
-        console.log('User connected with userName:', socket.userName);
-        
-
-        // Listen for messages from clients
-        socket.on('message', (data) => {
-            // Extract sender, receiver, and content from the data
-            const { sender, receiver, content } = data;
-
-            const connectedUserNames = Object.values(io.sockets.sockets).map(s => s.userName);
-            console.log('Connected User Names:', connectedUserNames);
-
-            // find the socket of the recipient
-            const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.userName === data.receiver);
-            console.log('Recipient Socket:', recipientSocket);
-            if (recipientSocket) {
-                // Emit the message only to the intended recipient
-                recipientSocket.emit('message', { content, sender: socket.userName, receiver });
-            } else {
-                // Handle the case when the recipient is not found
-                console.log(`Recipient ${receiver} not found`);
-            }
+        // Listen for messages
+        socket.on('chatMessage', (data) => {
+            console.log('Received message:', data);
+            // Send the message to the user with the specified socket ID
+            io.to(data.receiver).emit('chatMessage', data.message);
         });
 
-        // Handle disconnect event
+        // Listen for disconnect event
         socket.on('disconnect', () => {
-            console.log('User disconnected');
-            delete socket.userName;
+            console.log('User disconnected:', socket.id);
         });
     });
 
-    return io;
 };
 
-module.exports = socketConnection;
+    module.exports = socketConnection;
