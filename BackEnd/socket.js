@@ -56,7 +56,9 @@ const socketConnection = (server) => {
         socket.on('userConnected', (userName) => {
             console.log(`User connected with userName: ${userName}`);
             // Broadcast to all clients that a new user has connected
-            io.emit('chatMessage', `${userName} has joined the chat.`);
+
+            // added sender here:
+            io.emit('chatMessage', { sender: 'System', message: `${userName} has joined the chat.` });
         });
 
         // Listen for messages

@@ -132,31 +132,44 @@ const socket = io('http://localhost:3307');
     // };
     
 const Messages = () => {
-    const [userName, setUserName] = useState('');
+    // const [userName, setUserName] = useState('');
+    // get the users username from the context:
+    const currentUser = useUserContext();
     const [message, setMessage] = useState('');
-    const [receivedMessage, setReceivedMessage] = useState('');
+    const [receivedMessages, setReceivedMessages] = useState([]);
     const [socketId, setSocketId] = useState('');
 
     useEffect(() => {
         // Prompt user for username
-        const user = prompt('Enter your username:');
-        setUserName(user);
+        // const user = prompt('Enter your username:');
+       
 
-        // Emit userConnected event
-        socket.emit('userConnected', user);
+        if (currentUser && currentUser.currentUser.UserName) {
+            // Emit userConnected event with the username from the user context
+            socket.emit('userConnected', currentUser.currentUser.UserName);
 
-        setSocketId(socket.id);
+            // setUserName(user);
 
-        // Listen for chatMessage event
-        socket.on('chatMessage', (data) => {
-            setReceivedMessage(data);
-        });
+            // Emit userConnected event
+            // socket.emit('userConnected', user);
 
-        return () => {
-            // Cleanup event listeners if component unmounts
-            socket.disconnect();
-        };
-    }, []);
+            // Listen for chatMessage event
+            socket.on('chatMessage', (data) => {
+                setReceivedMessages((prevMessages) => [...prevMessages, data]);
+            });
+
+            setSocketId(socket.id);
+
+            // socket.on('connect', () => {
+            //     setSocketId(socket.id);
+            // });
+
+            return () => {
+                // Cleanup event listeners if component unmounts
+                socket.disconnect();
+            };
+        }
+    }, [currentUser]);
 
     const sendMessage = () => {
         // Replace 'receiverSocketId' with the socket ID of the user you want to send the message to
@@ -164,12 +177,26 @@ const Messages = () => {
         socket.emit('chatMessage', { receiver: receiverSocketId, message });
     };
 
+    console.log('Received Messages:', receivedMessages);
+
     return (
         <div>
-            <h2>{userName}'s Chat </h2>
-            <p>SosketID: {socketId}</p>
+            <h2>{currentUser.currentUser.UserName}'s Chat </h2>
+            <p>SocketID: {socketId}</p>
             <div>
-                <strong>Received Message:</strong> {receivedMessage}
+                <strong>Received Messages:</strong>
+                {receivedMessages.map((item, index) => (
+                    <div key={index}>
+                        {typeof item === 'object' ? (
+                            <>
+                                <p>Sender: {item.sender}</p>
+                                <p>Message: {item.message}</p>
+                            </>
+                        ) : (
+                            <p>{item}</p>
+                        )}
+                    </div>
+                ))}
             </div>
             <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
             <button onClick={sendMessage}>Send Message</button>
