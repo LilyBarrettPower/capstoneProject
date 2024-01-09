@@ -59,7 +59,7 @@
 
 // module.exports = socketConnection;
 
-const socketIO = require('socket.io');
+
 
 // const socketConnection = (server) => {
 //     const io = socketIO(server);
@@ -101,7 +101,7 @@ const socketIO = require('socket.io');
 
 // module.exports = socketConnection;
 
-
+const socketIO = require('socket.io');
 const socketConnection = (server) => {
     const io = socketIO(server);
 
@@ -118,40 +118,42 @@ const socketConnection = (server) => {
             console.log(`User connected with userName: ${socket.userName}`);
         });
 
-        socket.on('connection', (socket) => {
-            console.log('A user connected');
+        // socket.on('connection', (socket) => {
+        console.log('A user connected');
 
-            // Add this log to check if the connect event is triggered
-            console.log('A user is connected with socket ID:', socket.id);
-            console.log('User connected with userName:', socket.userName);
+        // Add this log to check if the connect event is triggered
+        console.log('A user is connected with socket ID:', socket.id);
+        console.log('User connected with userName:', socket.userName);
         
 
-            // Listen for messages from clients
-            socket.on('message', (data) => {
-                // Extract sender, receiver, and content from the data
-                const { sender, receiver, content } = data;
+        // Listen for messages from clients
+        socket.on('message', (data) => {
+            // Extract sender, receiver, and content from the data
+            const { sender, receiver, content } = data;
 
-                // find the socket of the recipient
-                const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.userName === data.receiver);
+            const connectedUserNames = Object.values(io.sockets.sockets).map(s => s.userName);
+            console.log('Connected User Names:', connectedUserNames);
 
-                if (recipientSocket) {
-                    // Emit the message only to the intended recipient
-                    recipientSocket.emit('message', { sender, content });
-                } else {
-                    // Handle the case when the recipient is not found
-                    console.log(`Recipient ${receiver} not found`);
-                }
-            });
-
-            // Handle disconnect event
-            socket.on('disconnect', () => {
-                console.log('User disconnected');
-                delete socket.userName;
-            });
+            // find the socket of the recipient
+            const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.userName === data.receiver);
+            console.log('Recipient Socket:', recipientSocket);
+            if (recipientSocket) {
+                // Emit the message only to the intended recipient
+                recipientSocket.emit('message', { content, sender: socket.userName, receiver });
+            } else {
+                // Handle the case when the recipient is not found
+                console.log(`Recipient ${receiver} not found`);
+            }
         });
 
-        return io;
+        // Handle disconnect event
+        socket.on('disconnect', () => {
+            console.log('User disconnected');
+            delete socket.userName;
+        });
     });
-}
+
+    return io;
+};
 
 module.exports = socketConnection;

@@ -102,35 +102,6 @@ const Messages = () => {
     const { currentUser, selectedUser, handleSelectUser } = useUserContext();
 
 
-    useEffect(() => {
-        // Event listeners and emissions
-
-        // Set socket.userName to the UserName of the currently logged-in user
-        if (currentUser && currentUser.UserName) {
-            // socket.userName = currentUser.UserName;
-            socket.emit('userConnected', currentUser.UserName);
-        }
-
-        socket.on('connect', () => {
-            console.log('Connected to Socket.io server userName:');
-            console.log('connected to socket server');
-        });
-
-        socket.on('disconnect', () => {
-            console.log('Disconnected from Socket.io server');
-        });
-
-        socket.on('message', (data) => {
-            // Update the messages state with the received message
-            setMessages((prevMessages) => [...prevMessages, data]);
-        });
-
-        return () => {
-            // Cleanup, disconnect, or remove event listeners if needed
-        };
-    }, [currentUser]);
-
-
     const handleSearch = async () => {
         // Fetch users from your database based on the search query
         try {
@@ -148,6 +119,37 @@ const Messages = () => {
         setSearchQuery('');
     };
 
+    useEffect(() => {
+        // Event listeners and emissions
+
+        // Set socket.userName to the UserName of the currently logged-in user
+        if (currentUser && currentUser.UserName) {
+            // socket.userName = currentUser.UserName;
+            socket.emit('userConnected', currentUser.UserName);
+        }
+
+        console.log('The current username of the current user: ', currentUser.UserName)
+
+        socket.on('connect', () => {
+            console.log('Connected to Socket.io server userName:');
+            console.log('connected to socket server');
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from Socket.io server');
+        });
+
+        socket.on('message', (data) => {
+            console.log('recieved message', data) //THIS CONSOLE.LOG ISNT SHOWING UP!
+            // Update the messages state with the received message
+            setMessages((prevMessages) => [...prevMessages, data]);
+        });
+
+        return () => {
+            // Cleanup, disconnect, or remove event listeners if needed
+        };
+    }, [currentUser]);
+
     const sendMessage = () => {
         // Check if there is a selected user
         if (!selectedUser) {
@@ -160,6 +162,12 @@ const Messages = () => {
 
         // Emit the message to the server with the recipient's UserName
         socket.emit('message', {
+            sender: currentUser.UserName,
+            receiver: selectedUser.UserName,
+            content: message,
+        });
+
+        console.log('Message sent:', {
             sender: currentUser.UserName,
             receiver: selectedUser.UserName,
             content: message,
