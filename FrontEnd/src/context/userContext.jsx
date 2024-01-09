@@ -14,6 +14,10 @@ export const UserProvider = (props) => {
         ProfilePhoto: '',
     });
 
+
+    // adding this for selcting user for messaging
+    const [selectedUser, setSelectedUser] = useState(null);
+
     const handleUpdateUser = (user) => {
         // Convert ProfilePhoto to object URL if it's a File object
         if (user.ProfilePhoto instanceof File) {
@@ -23,6 +27,11 @@ export const UserProvider = (props) => {
         setCurrentUser(user);
         console.log('updated user', user);
             console.log('updated UserID', user.UserID);
+    };
+
+    // for messaging :
+    const handleSelectUser = (user) => {
+        setSelectedUser(user);
     };
 
     const logOut = () => {
@@ -35,11 +44,12 @@ export const UserProvider = (props) => {
             Location: '',
             ProfilePhoto: '',
         });
+        selectedUser(null);
         console.log('user logged out');
     }
 
     return (
-        <UserContext.Provider value={{ currentUser, handleUpdateUser, logOut }}>
+        <UserContext.Provider value={{ currentUser, handleUpdateUser, logOut, selectedUser, handleSelectUser }}>
             {props.children}
         </UserContext.Provider>
     )

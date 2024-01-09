@@ -7,10 +7,16 @@ import Alert from 'react-bootstrap/Alert';
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/userContext";
 
+
+// TESTING:
+// import io from 'socket.io-client';
+// const socket = io('http://localhost:3307');
+
+
 function LoginForm() {
 
     const navigate = useNavigate();
-    const { handleUpdateUser } = useUserContext(); //accessing the user context
+    const { handleUpdateUser, currentUser } = useUserContext(); //accessing the user context
 
     const [status, setStatus] = useState('');
     // const [usersData, setUsersData] = useState([]);
@@ -22,6 +28,11 @@ function LoginForm() {
         e.preventDefault();
         const enteredEmail = emailInputProps.value;
         const enteredPassword = passwordInputProps.value;
+
+        // if (currentUser && currentUser.UserName) {
+        //     // socket.userName = currentUser.UserName;
+        //     socket.emit('userConnected', currentUser.UserName);
+        // }
 
         try {
             const response = await fetch('http://localhost:3307/rentshare/users/login', {

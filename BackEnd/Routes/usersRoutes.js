@@ -27,6 +27,12 @@ router.get('/', (req, res) => {
     Controllers.userController.getUser(res);
 });
 
+// route for searching users for the messaging
+router.get('/search', (req, res) => {
+    const { query } = req.query;
+    Controllers.userController.searchUsers(query, res);
+});
+
 // Can delete this route as have the register route! :) 
 router.post('/create', (req, res) => {
     Controllers.userController.createUser(req.body, res);
