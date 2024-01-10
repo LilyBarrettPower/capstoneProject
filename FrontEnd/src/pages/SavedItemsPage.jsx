@@ -69,10 +69,10 @@ function SavedItemsPage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
+            <h3 className='headings italic' style={{ marginBottom: '25px', marginTop: '25px', marginLeft: '50px' }}>Items you have saved:</h3>
+            <Container fluid className="d-flex">
                 <Row>
-                    <Col md={6}>
-                        <h3 className='headings' style={{ marginBottom: '55px' }}>Items you have saved:</h3>
+                    <Col md={8}>
                         {userSavedItems.length > 0 ? (
                             <SavedItemsCard savedItems={userSavedItems} onUnSave={handleUnsaveItem} />
                         ) : (
