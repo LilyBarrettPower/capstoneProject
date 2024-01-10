@@ -10,6 +10,8 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import '../styling/Messages.css';
+
 const socket = io('http://localhost:3307');
     
 const Messages = () => {
@@ -111,6 +113,25 @@ const Messages = () => {
 
     console.log('Received Messages:', receivedMessages);
 
+
+// testing:
+    // Function to format messages with different styles for sender and receiver
+    const formatMessages = () => {
+        return receivedMessages.map((item, index) => (
+            <div key={index} className={item.sender === currentUser.currentUser.UserName ? 'sender-message' : 'receiver-message'}>
+                {typeof item === 'object' ? (
+                    <>
+                        <p className='headings'>{item.sender === currentUser.currentUser.UserName ? 'You' : item.sender}:</p>
+                        <p className='body'>{item.message}</p>
+                    </>
+                ) : (
+                    <p className='body'>{item}</p>
+                )}
+            </div>
+        ));
+    };
+
+
         return (
             <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
                 <h2 className='headings'>{currentUser.currentUser.UserName}'s Chat </h2>
@@ -150,20 +171,8 @@ const Messages = () => {
                             {selectedReceiver && (
                                 <strong className='headings text-center'>Messaging {selectedReceiver.UserName}</strong>
                             )}
-
-                            {/* <strong>Received Messages:</strong> */}
-                            {receivedMessages.map((item, index) => (
-                                <div key={index}>
-                                    {typeof item === 'object' ? (
-                                        <>
-                                            <p className='headings'>Sender: {item.sender}</p>
-                                            <p className='body'>Message: {item.message}</p>
-                                        </>
-                                    ) : (
-                                        <p className='body'>{item}</p>
-                                    )}
-                                </div>
-                            ))}
+                            {/* Display formatted messages */}
+                            {formatMessages()}
                         </div>
                         <div className="d-flex align-items-end position-fixed bottom-0 p-3" style={{width: '900px'}}>
                         <Form.Control

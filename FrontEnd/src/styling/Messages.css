@@ -1,0 +1,14 @@
+.sender-message {
+    background-color: #ffe4ed;
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
+
+.receiver-message {
+    background-color: #f0f0f0;
+    /* Light grey for receiver messages */
+    padding: 5px;
+    margin: 5px 0;
+    border-radius: 8px;
+}
