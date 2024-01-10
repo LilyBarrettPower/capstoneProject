@@ -1,53 +1,10 @@
 const socketIO = require('socket.io');
 
+// create a users variable to keep track of username and associated socketID
+const users = {};
+
 const socketConnection = (server) => {
     const io = socketIO(server);
-
-    //     io.on('connection', (socket) => {
-    //         socket.on('userConnected', (receivedUserName) => {
-    //             // Set up user data when a user connects
-    //             socket.userName = receivedUserName;
-    //             console.log(`User connected with userName: ${socket.userName}`);
-
-    //             // Emit both UserName and SocketID
-    //             io.emit('userConnected', { userName: socket.userName, socketID: socket.id });
-    //         });
-
-    //         console.log('A user is connected with socket ID:', socket.id);
-
-    //         // Listen for messages from clients
-    //         socket.on('message', (data) => {
-    //             const { sender, receiver, content } = data;
-
-    //             setTimeout(() => {
-    //                 const connectedUsers = Object.values(io.sockets.sockets).map((s) => ({
-    //                     userName: s.userName,
-    //                     socketID: s.id,
-    //                 }));
-    //                 console.log('Connected Users:', connectedUsers);
-
-    //                 const recipientSocket = Object.values(io.sockets.sockets).find((s) => s.id === data.receiver);
-    //                 console.log('Recipient Socket:', recipientSocket);
-
-    //                 if (recipientSocket) {
-    //                     recipientSocket.emit('message', { content, sender: socket.id, receiver });
-    //                 } else {
-    //                     console.log(`Recipient ${receiver} not found`);
-    //                 }
-    //             }, 1000);
-    //         });
-
-    //         // Handle disconnect event
-    //         socket.on('disconnect', () => {
-    //             console.log('User disconnected');
-    //             delete socket.userName;
-    //         });
-    //     });
-
-    //     return io;
-    // };
-
-    // module.exports = socketConnection;
 
     io.on('connection', (socket) => {
         console.log('User connected:', socket.id);
@@ -59,18 +16,35 @@ const socketConnection = (server) => {
 
             // added sender here:
             io.emit('chatMessage', { sender: 'System', message: `${userName} has joined the chat.` });
+
+            // store the users socketID with that users username:
+            users[userName] = socket.id;
         });
 
         // Listen for messages
         socket.on('chatMessage', (data) => {
             console.log('Received message:', data);
-            // Send the message to the user with the specified socket ID
-            io.to(data.receiver).emit('chatMessage', data.message);
+
+            const receiverSocketId = users[data.receiver];
+            if (receiverSocketId) {
+                // Send the message to the user with the specified socket ID
+                io.to(receiverSocketId).emit('chatMessage', {sender: socket.id, message: data.message});
+            } else {
+                console.log(`Reciever ${data.receiver} not found`)
+            }
         });
+
 
         // Listen for disconnect event
         socket.on('disconnect', () => {
             console.log('User disconnected:', socket.id);
+            
+            // remove the user from users when disconnected:
+            const userName = Object.keys(users).find((key) => users[key] === socket.id);
+            if (userName) {
+                delete users[userName];
+                io.emit('chatMessage', { sender: 'System', message: `${userName} has left the chat.` });
+            }
         });
     });
 
