@@ -134,7 +134,7 @@ function ProfilePage() {
 
 
     return (
-        <>
+        <div>
             <Header />
             <NavBar />
             <LogOutButton />
@@ -172,7 +172,7 @@ function ProfilePage() {
                     </Col>
                 </Row>
             </Container>
-        </>
+        </div>
     );
 }
 

@@ -51,9 +51,6 @@ const Messages = () => {
             return;
         }
 
-        // socket.emit('chatMessage', { receiver: selectedReceiver.UserName, message });
-
-        // testing:
         try {
             // Store the message in the database using fetch
             const response = await fetch('http://localhost:3307/rentshare/messages/create', {
