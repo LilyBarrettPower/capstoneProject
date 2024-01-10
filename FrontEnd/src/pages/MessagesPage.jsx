@@ -13,8 +13,6 @@ function MessagesPage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <h1>Messages page</h1>
-
             <Messages></Messages>
 
         </>

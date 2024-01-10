@@ -22,13 +22,14 @@ const socketConnection = (server) => {
         });
 
         // Listen for messages
-        socket.on('chatMessage', (data) => {
+        socket.on('chatMessage', (data, userName) => {
             console.log('Received message:', data);
 
+            const senderUserName = Object.keys(users).find((key) => users[key] === socket.id);
             const receiverSocketId = users[data.receiver];
             if (receiverSocketId) {
                 // Send the message to the user with the specified socket ID
-                io.to(receiverSocketId).emit('chatMessage', {sender: socket.id, message: data.message});
+                io.to(receiverSocketId).emit('chatMessage', {sender: senderUserName, message: data.message});
             } else {
                 console.log(`Reciever ${data.receiver} not found`)
             }
