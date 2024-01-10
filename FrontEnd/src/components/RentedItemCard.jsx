@@ -7,6 +7,10 @@ import { useUserContext } from '../context/userContext';
 
 import DeleteListingButton from './DeleteListingButton';
 
+import { format } from 'date-fns';
+
+import ListGroup from 'react-bootstrap/ListGroup';
+
 
 
 
@@ -16,8 +20,19 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
     // import the currentUser from the userContext
     const currentUser = useUserContext();
     const [showModal, setShowModal] = useState(false);
+    const [bookings, setBookings] = useState([]);
 
-    const handleShowModal = () => setShowModal(true);
+    
+    const handleShowModal = () => {
+        // Fetch bookings for the current item
+        fetch(`http://localhost:3307/rentshare/bookings/getbooked/${currentUser.currentUser.UserID}`)
+            .then(response => response.json())
+            .then(data => setBookings(data.data))
+            .catch(error => console.error('Error fetching bookings:', error));
+
+        setShowModal(true);
+    };
+
     const handleCloseModal = () => setShowModal(false);
 
     return (
@@ -89,6 +104,20 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
                                     ))
                                 )}
                             </Carousel>
+                        </div>
+                        <div>
+                            <h5 className='headings mt-3 mb-2'>Booking Information</h5>
+                            {bookings.length > 0 ? (
+                                bookings
+                                    .filter((booking) => new Date(booking.EndDate) >= new Date())
+                                    .map((booking) => (
+                                        <p key={booking.BookingID} className='body'>
+                                            Booking Date: { format(new Date(booking.StartDate), 'do MMM yyyy')} - {format(new Date(booking.EndDate), 'do MMM yyyy')}
+                                        </p>
+                                    ))  
+                            ) : (
+                                <p className='text-muted'>Your item has no bookings.</p>
+                            )}
                         </div>
                     </div>
                 </Modal.Body>
