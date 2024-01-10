@@ -25,7 +25,7 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
     
     const handleShowModal = () => {
         // Fetch bookings for the current item
-        fetch(`http://localhost:3307/rentshare/bookings/getbooked/${currentUser.currentUser.UserID}`)
+        fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemData.ItemID}}`)
             .then(response => response.json())
             .then(data => setBookings(data.data))
             .catch(error => console.error('Error fetching bookings:', error));

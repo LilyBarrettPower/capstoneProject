@@ -6,9 +6,12 @@ import SaveItemButton from './SaveItemButton';
 import { useUserContext } from '../context/userContext';
 import HireItemButton from './HireItemButton';
 
+import { format } from 'date-fns';
+
 const ItemCard = ({ itemData }) => { 
 
     console.log('itemData:', itemData);
+    const [bookings, setBookings] = useState([]);
     
     const { currentUser } = useUserContext();
     const ownerID = itemData.UserID;
@@ -28,7 +31,23 @@ const ItemCard = ({ itemData }) => {
     
     const [showModal, setShowModal] = useState(false);
 
-    const handleShowModal = () => setShowModal(true);
+    // const handleShowModal = () => setShowModal(true);
+
+    // Testing:
+    const handleShowModal = () => {
+        // Fetch bookings for the current item
+        fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemData.ItemID}}`)
+            .then(response => response.json())
+            .then(data => setBookings(data.data))
+            .catch(error => console.error('Error fetching bookings:', error));
+
+        setShowModal(true);
+    };
+
+
+
+
+
     const handleCloseModal = () => setShowModal(false);
 
     const handleSaveItem = async (itemID) => {
@@ -116,6 +135,20 @@ const ItemCard = ({ itemData }) => {
                                         </Carousel.Item>
                                     ))}
                             </Carousel>
+                            <div>
+                                <h5 className='headings mt-3 mb-2'>Booking Information</h5>
+                                {bookings.length > 0 ? (
+                                    bookings
+                                        .filter((booking) => new Date(booking.EndDate) >= new Date())
+                                        .map((booking) => (
+                                            <p key={booking.BookingID} className='body'>
+                                                Booking Date: {format(new Date(booking.StartDate), 'do MMM yyyy')} - {format(new Date(booking.EndDate), 'do MMM yyyy')}
+                                            </p>
+                                        ))
+                                ) : (
+                                    <p className='text-muted'>This item has no bookings.</p>
+                                )}
+                            </div>
                             <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
                             <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
                         </div>

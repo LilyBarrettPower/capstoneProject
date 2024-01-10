@@ -51,6 +51,20 @@ const getBookedItemById = (UserID, res) => {
         });
 };
 
+const getBookedItemByItemID = (ItemID, res) => {
+    Models.Booking.findAll({
+        where: {
+            ItemID: ItemID,
+        },
+        include: [Models.Item],
+    })
+        .then(data => res.send({ result: 200, data: data }))
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
 const deleteBooking = (req, res) => {
     Models.Booking.destroy({
         where: { BookingID: req.params.BookingID }
@@ -67,5 +81,6 @@ module.exports = {
     createBooking,
     getBookings,
     getBookedItemById,
-    deleteBooking
+    deleteBooking,
+    getBookedItemByItemID
 };
