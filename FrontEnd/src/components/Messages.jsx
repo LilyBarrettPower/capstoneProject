@@ -12,6 +12,11 @@ const Messages = () => {
     const [receivedMessages, setReceivedMessages] = useState([]);
     const [socketId, setSocketId] = useState('');
 
+    // states for the searching of users:
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchResults, setSearchResults] = useState([]);
+    const [selectedReceiver, setSelectedReceiver] = useState(null);
+
     useEffect(() => {
         if (currentUser && currentUser.currentUser.UserName) {
             // Emit userConnected event with the username from the user context
@@ -31,17 +36,32 @@ const Messages = () => {
         }
     }, [currentUser]);
 
-    // const sendMessage = () => {
-    //     // Replace 'receiverSocketId' with the socket ID of the user you want to send the message to
-    //     const receiverSocketId = prompt('Enter the receiver\'s socket ID:');
-    //     socket.emit('chatMessage', { receiver: receiverSocketId, message });
-    // };
-
     const sendMessage = () => {
-        const receiverUserName = prompt('Enter the receiver\'s username:');
-        socket.emit('chatMessage', { receiver: receiverUserName, message });
+        if (!selectedReceiver) {
+            console.log('No selected user');
+            return;
+        }
+        // const receiverUserName = prompt('Enter the receiver\'s username:');
+        socket.emit('chatMessage', { receiver: selectedReceiver.UserName, message });
+        setMessage('');
     };
     
+    // adding search functionality:
+    const handleSearch = async () => {
+        try {
+            const response = await fetch(`http://localhost:3307/rentshare/users/search?query=${searchQuery}`);
+            const data = await response.json();
+            setSearchResults(data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const handleSelectReceiver = (user) => {
+        setSelectedReceiver(user);
+        setSearchResults([]); // Clear search results
+        setSearchQuery('');
+    };
 
     console.log('Received Messages:', receivedMessages);
 
@@ -49,6 +69,33 @@ const Messages = () => {
         <div>
             <h2>{currentUser.currentUser.UserName}'s Chat </h2>
             <p>SocketID: {socketId}</p>
+
+            {/* Search bar for users */}
+            <input
+                type="text"
+                placeholder="Search for users"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <button onClick={handleSearch}>Search</button>
+
+            {/* Display search results */}
+            <ul>
+                {searchResults.map((user) => (
+                    <li key={user.UserID} onClick={() => handleSelectReceiver(user)}>
+                        {user.UserName}
+                    </li>
+                ))}
+            </ul>
+            {/* Display selected receiver message */}
+            {selectedReceiver && (
+                <p>Messaging {selectedReceiver.UserName}</p>
+            )}
+
+
+
+
+
             <div>
                 <strong>Received Messages:</strong>
                 {receivedMessages.map((item, index) => (
