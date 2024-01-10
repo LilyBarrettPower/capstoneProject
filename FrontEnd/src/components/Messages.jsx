@@ -45,15 +45,54 @@ const Messages = () => {
         }
     }, [currentUser]);
 
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (!selectedReceiver) {
             console.log('No selected user');
             return;
         }
-        // const receiverUserName = prompt('Enter the receiver\'s username:');
-        socket.emit('chatMessage', { receiver: selectedReceiver.UserName, message });
+
+        // socket.emit('chatMessage', { receiver: selectedReceiver.UserName, message });
+
+        // testing:
+        try {
+            // Store the message in the database using fetch
+            const response = await fetch('http://localhost:3307/rentshare/messages/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    senderID: currentUser.currentUser.UserID,
+                    receiverID: selectedReceiver.UserID,
+                    content: message,
+                    senderUsername: currentUser.currentUser.UserName,
+                }),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Message stored in the database successfully!');
+                // Optionally, you can update the local state with the new message if needed.
+                setReceivedMessages((prevMessages) => [...prevMessages, { sender: currentUser.currentUser.UserName, message }]);
+            } else {
+                console.error('Error storing message in the database:', result.error);
+            }
+
+            // Emit the message to other users through the socket
+            socket.emit('chatMessage', {
+                receiver: selectedReceiver.UserName,
+                message,
+                receiverID: selectedReceiver.UserID,
+                senderUsername: currentUser.currentUser.UserName,
+            });
+        } catch (error) {
+            console.error('Error sending message:', error.message);
+        }
+
         setMessage('');
     };
+
     
     // adding search functionality:
     const handleSearch = async () => {

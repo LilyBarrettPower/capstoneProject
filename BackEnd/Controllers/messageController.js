@@ -11,14 +11,30 @@ const getMessage = (res) => {
         });
 };
 
+// const createMessage = (data, res) => {
+//     Models.Message.create(data)
+//         .then(data => res.send({ result: 200, data: data }))
+//         .catch(err => {
+//             console.log(err);
+//             res.send({ result: 500, error: err.message });
+//         });
+// }
+
+// testing:
+
 const createMessage = (data, res) => {
-    Models.Message.create(data)
+    // Corrected spelling for RecieverID
+    Models.Message.create({
+        SenderID: data.senderID,
+        RecieverID: data.receiverID,
+        Content: data.message,
+    })
         .then(data => res.send({ result: 200, data: data }))
         .catch(err => {
             console.log(err);
             res.send({ result: 500, error: err.message });
         });
-}
+};
 
 const updateMessage = (req, res) => {
     Models.Message.update(req.body, {
