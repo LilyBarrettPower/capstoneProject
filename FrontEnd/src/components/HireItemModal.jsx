@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -8,11 +8,57 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
 
+    // testing:
+    const [bookedDates, setBookedDates] = useState([]);
+
+
+
     const { currentUser } = useUserContext();
     const renterID = currentUser.UserID;
 
+    // testing:
+    useEffect(() => {
+        // Fetch booked dates for the selected item
+        const fetchBookedDates = async () => {
+            try {
+                const response = await fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemID}}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    const dates = data.data.map(booking => ({
+                        start: new Date(booking.StartDate),
+                        end: new Date(booking.EndDate),
+                    }));
+                    setBookedDates(dates);
+                } else {
+                    console.error('Error fetching booked dates:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error fetching booked dates:', error.message);
+            }
+        };
+
+        fetchBookedDates();
+    }, [itemID]);
+
+    const isDateBooked = (startDate, endDate) => {
+        // Check if any part of the selected range overlaps with existing bookings
+        return bookedDates.some(booking => (
+            (new Date(startDate) >= booking.start && new Date(startDate) <= booking.end) ||
+            (new Date(endDate) >= booking.start && new Date(endDate) <= booking.end) ||
+            (new Date(startDate) <= booking.start && new Date(endDate) >= booking.end)
+        ));
+    };
+  
+
     const handleHire = async () => {
         try {
+            // Check if any part of the selected range is already booked
+            if (isDateBooked(startDate, endDate)) {
+                console.error('Error creating booking: Selected dates are already booked.');
+                alert('These dates are already booked')
+                return;
+            }
+            
             const response = await fetch('http://localhost:3307/rentshare/bookings/create', {
                 method: 'POST',
                 headers: {
@@ -53,7 +99,11 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
                             type="date"
                             value={startDate}
                             className='body'
+                            // onChange={(e) => setStartDate(e.target.value)}
                             onChange={(e) => setStartDate(e.target.value)}
+                            min={new Date().toISOString().split('T')[0]} // Set minimum date to today
+                            max={endDate || undefined} // Set maximum date to end date if available
+                            disabledDates={bookedDates.map(booking => booking.start.toISOString().split('T')[0])} // Disable booked dates
                         />
                     </Form.Group>
                     <Form.Group controlId="endDate">
@@ -62,7 +112,10 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
                             type="date"
                             value={endDate}
                             className='body'
+                            // onChange={(e) => setEndDate(e.target.value)}
                             onChange={(e) => setEndDate(e.target.value)}
+                            min={startDate || new Date().toISOString().split('T')[0]} // Set minimum date to start date if available, else today
+                            disabledDates={bookedDates.map(booking => booking.start.toISOString().split('T')[0])} // Disable booked dates
                         />
                     </Form.Group>
                 </Form>
