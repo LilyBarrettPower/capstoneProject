@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import { useUserContext } from '../context/userContext';
 
+
+// import bootstrap stuff:
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+
 const socket = io('http://localhost:3307');
     
 const Messages = () => {
@@ -66,56 +74,75 @@ const Messages = () => {
 
     console.log('Received Messages:', receivedMessages);
 
-    return (
-        <div>
-            <h2>{currentUser.currentUser.UserName}'s Chat </h2>
-            <p>SocketID: {socketId}</p>
+        return (
+            <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+                <h2 className='headings'>{currentUser.currentUser.UserName}'s Chat </h2>
+                <Row>
+                        <p>SocketID: {socketId}</p>
+                    <Col md={4}>
+                        <div className="d-flex align-items-end mt-2">
+                        {/* Search bar for users */}
+                            <Form.Control
+                                type="text"
+                                placeholder="Search for users"
+                                className='body'
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                            />
+                    
+                            <Button variant='secondary' className='body mx-2' onClick={handleSearch}>
+                                Search
+                            </Button>
+                        </div>
+                        {/* Display search results */}
+                        <ListGroup>
+                            {searchResults.map((user) => (
+                                <ListGroup.Item key={user.UserID}
+                                    action
+                                    className='body'
+                                    onClick={() => handleSelectReceiver(user)}>
+                                    {user.UserName}
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
 
-            {/* Search bar for users */}
-            <input
-                type="text"
-                placeholder="Search for users"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button onClick={handleSearch}>Search</button>
+                    </Col>
+                    <Col md={8}>
+                        <div>
+                            {/* Display selected receiver message */}
+                            {selectedReceiver && (
+                                <strong className='headings text-center'>Messaging {selectedReceiver.UserName}</strong>
+                            )}
 
-            {/* Display search results */}
-            <ul>
-                {searchResults.map((user) => (
-                    <li key={user.UserID} onClick={() => handleSelectReceiver(user)}>
-                        {user.UserName}
-                    </li>
-                ))}
-            </ul>
-            {/* Display selected receiver message */}
-            {selectedReceiver && (
-                <p>Messaging {selectedReceiver.UserName}</p>
-            )}
-
-
-
-
-
-            <div>
-                <strong>Received Messages:</strong>
-                {receivedMessages.map((item, index) => (
-                    <div key={index}>
-                        {typeof item === 'object' ? (
-                            <>
-                                <p>Sender: {item.sender}</p>
-                                <p>Message: {item.message}</p>
-                            </>
-                        ) : (
-                            <p>{item}</p>
-                        )}
-                    </div>
-                ))}
+                            {/* <strong>Received Messages:</strong> */}
+                            {receivedMessages.map((item, index) => (
+                                <div key={index}>
+                                    {typeof item === 'object' ? (
+                                        <>
+                                            <p className='headings'>Sender: {item.sender}</p>
+                                            <p className='body'>Message: {item.message}</p>
+                                        </>
+                                    ) : (
+                                        <p className='body'>{item}</p>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="d-flex align-items-end position-fixed bottom-0 p-3" style={{width: '900px'}}>
+                        <Form.Control
+                            type="text"
+                                value={message}
+                                className='body'
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                            <Button variant='secondary' className='body mt-2 mx-2' onClick={sendMessage}>Send</Button>
+                        </div>
+                    </Col>
+                </Row>
             </div>
-            <input type="text" value={message} onChange={(e) => setMessage(e.target.value)} />
-            <button onClick={sendMessage}>Send Message</button>
-        </div>
-    );
-};
+        );
+    };
+    
+
 
 export default Messages;
