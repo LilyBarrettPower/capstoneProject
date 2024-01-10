@@ -69,7 +69,6 @@ function SavedItemsPage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <h1>Saved items page</h1>
             <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
                 <Row>
                     <Col md={6}>

@@ -61,8 +61,7 @@ function TimelinePage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <h1>Timeline page</h1>
-            <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
+            <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px', marginTop: '20px' }}>
                 <Row>
                     <Col md={2}>
                         <Filters
@@ -77,7 +76,7 @@ function TimelinePage() {
                     <Col md={5}>
                         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
                     </Col>
-                    <Col md={10}>
+                    <Col md={12}>
                         {itemsData.length > 0 ? (
                             <div className='d-flex flex-column justify-content-around'>
                                 {itemsData.map((item, index) => (

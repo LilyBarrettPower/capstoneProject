@@ -46,11 +46,11 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                         </div>
                     </div>
                     <div className="mt-1 mb-3 mx-2">
-                        <Button variant="secondary" className='body' onClick={() => handleShowModal(savedItem)}>
+                        <Button variant="secondary" className='body mx-2 mt-2' onClick={() => handleShowModal(savedItem)}>
                             Read more
                         </Button>
                         <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave} />
-
+                        <HireItemButton itemID={savedItem.item.ItemID} ownerID={savedItem.item.OwnerID} />
                     </div>
                 </Card>
             ))}
