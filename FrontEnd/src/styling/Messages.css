@@ -12,3 +12,9 @@
     margin: 5px 0;
     border-radius: 8px;
 }
+
+.message-container {
+    max-height: calc(100vh - 400px);
+    /* Adjust the value based on your layout */
+    overflow-y: auto;
+}

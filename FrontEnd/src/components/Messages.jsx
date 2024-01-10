@@ -169,10 +169,12 @@ const Messages = () => {
                         <div>
                             {/* Display selected receiver message */}
                             {selectedReceiver && (
-                                <strong className='headings text-center'>Messaging {selectedReceiver.UserName}</strong>
+                                <strong className='headings text-center'>Messaging: {selectedReceiver.UserName}</strong>
                             )}
+                            <div className='message-container'>
                             {/* Display formatted messages */}
-                            {formatMessages()}
+                                {formatMessages()}
+                            </div>
                         </div>
                         <div className="d-flex align-items-end position-fixed bottom-0 p-3" style={{width: '900px'}}>
                         <Form.Control
