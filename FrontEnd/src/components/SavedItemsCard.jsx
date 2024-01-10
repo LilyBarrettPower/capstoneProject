@@ -3,7 +3,7 @@ import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
 import UnSaveItemButton from './UnSaveItemButton';
-
+import HireItemButton from './HireItemButton';
 
 const SavedItemsCard = ({ savedItems, onUnSave }) => {
 
@@ -50,6 +50,7 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                             Read more
                         </Button>
                         <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave} />
+
                     </div>
                 </Card>
             ))}
