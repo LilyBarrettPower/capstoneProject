@@ -7,7 +7,7 @@ const UnSaveItemButton = ({ savedItemID, UnSave }) => {
     }
 
     return (
-        <Button variant='secondary' onClick={handleUnSave} style={{ marginLeft: '10px' }} className='body'>
+        <Button variant='secondary' onClick={handleUnSave} style={{ marginLeft: '10px' }} className='body mx-2 mt-2'>
             Unsave item
         </Button>
     )
