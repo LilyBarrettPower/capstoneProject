@@ -16,9 +16,7 @@ const Messages = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedReceiver, setSelectedReceiver] = useState(null);
-
-    // states for creating private chat rooms:
-    const [room, setRoom] = useState(null);
+    
 
     useEffect(() => {
         if (currentUser && currentUser.currentUser.UserName) {
