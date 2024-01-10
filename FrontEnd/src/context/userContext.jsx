@@ -44,7 +44,7 @@ export const UserProvider = (props) => {
             Location: '',
             ProfilePhoto: '',
         });
-        selectedUser(null);
+        handleSelectUser(null);
         console.log('user logged out');
     }
 
