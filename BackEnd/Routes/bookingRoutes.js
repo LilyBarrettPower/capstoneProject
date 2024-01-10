@@ -16,6 +16,10 @@ router.get('/getbooked/:UserID', (req, res) => {
     Controllers.bookingController.getBookedItemById(req.params.UserID, res);
 });
 
+router.get('/getbookedbyitem/:ItemID', (req, res) => {
+    Controllers.bookingController.getBookedItemByItemID(req.params.ItemID, res);
+});
+
 router.delete('/:BookingID', (req, res) => {
     Controllers.bookingController.deleteBooking(req, res);
 })
