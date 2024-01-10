@@ -61,7 +61,11 @@ function TimelinePage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px', marginTop: '20px' }}>
+            <div>
+                <h2 className="headings italic text-center my-2">What ever you're looking for, you'll find it here!</h2>
+            </div>
+          
+            <Container fluid style={{  marginTop: '20px' }}>
                 <Row>
                     <Col md={2}>
                         <Filters

@@ -3,7 +3,7 @@ import Form from 'react-bootstrap/Form';
 
 const SearchBar = ({ searchQuery, onSearchChange }) => {
     return (
-        <Form.Group controlId="searchQuery">
+        <Form.Group controlId="searchQuery" className="mx-auto">
             <Form.Control
                 type="text"
                 placeholder="Search by Item Name"

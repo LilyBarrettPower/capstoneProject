@@ -37,7 +37,7 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
 
     return (
         <>
-            <h3 className='headings mt-3 mb-2'>Your listings: </h3>
+            <h3 className='headings italic mt-3 mb-2'>Your listings: </h3>
             <Card style={{ width: '100%', margin: '10px' }} className="mb-3">
                 <div className="d-flex">
                     <div style={{ float: 'left', width: '70%' }}>

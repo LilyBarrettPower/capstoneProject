@@ -82,7 +82,7 @@ const ItemCard = ({ itemData }) => {
 
     return (
         <>
-        <Card style={{ width: '50%', margin: '10px' }} className="mb-3">
+            <Card style={{ width: '50%', margin: '10px' }} className="mb-3 mx-auto">
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
                     <Card.Body>

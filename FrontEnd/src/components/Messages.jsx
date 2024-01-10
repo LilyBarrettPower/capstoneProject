@@ -134,11 +134,11 @@ const Messages = () => {
 
         return (
             <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-                <h2 className='headings'>{currentUser.currentUser.UserName}'s Chat </h2>
+                <h2 className='headings italic my-2 mx-5'>{currentUser.currentUser.UserName}'s Chat </h2>
                 <Row>
-                        <p>SocketID: {socketId}</p>
+                        {/* <p>SocketID: {socketId}</p> */}
                     <Col md={4}>
-                        <div className="d-flex align-items-end mt-2">
+                        <div className="d-flex align-items-end mt-2" style={{marginLeft: '10px'}}>
                         {/* Search bar for users */}
                             <Form.Control
                                 type="text"
@@ -176,10 +176,11 @@ const Messages = () => {
                                 {formatMessages()}
                             </div>
                         </div>
-                        <div className="d-flex align-items-end position-fixed bottom-0 p-3" style={{width: '900px'}}>
+                        <div className="d-flex align-items-end position-fixed bottom-0 p-3 body" style={{width: '900px'}}>
                         <Form.Control
                             type="text"
                                 value={message}
+                                placeholder='Type your message...'
                                 className='body'
                             onChange={(e) => setMessage(e.target.value)}
                         />

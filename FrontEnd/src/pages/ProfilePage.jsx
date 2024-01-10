@@ -152,7 +152,7 @@ function ProfilePage() {
                                         <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />
                                     ))
                                 ) : (
-                                    <div>No current items for rent</div>
+                                    <div className='body'>No current items for rent</div>
                                 )}
                             </Col>
                             {/* render the booked items here  */}
@@ -165,7 +165,7 @@ function ProfilePage() {
                                         setUserBookedItems={setUserBookedItems}
                                     />
                                 ) : (
-                                    <div>No booked items</div>
+                                    <div className='body'>No booked items</div>
                                 )}
                             </Col>
                         </Row>

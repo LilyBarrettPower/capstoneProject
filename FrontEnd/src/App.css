@@ -1,9 +1,20 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200&family=Roboto+Mono&display=swap');
+
+
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@0,400;1,100&family=Inter:wght@200&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bagel+Fat+One&display=swap');
 
 .headings {
-    font-family: 'Roboto Mono', monospace;
+    font-family: 'Barlow Semi Condensed', sans-serif;
 }
 
 .body {
     font-family: 'Inter', sans-serif;
+}
+
+.italic {
+    font-style: italic;
+}
+
+.mainHeading{
+    font-family: 'Bagel Fat One', system-ui;
 }

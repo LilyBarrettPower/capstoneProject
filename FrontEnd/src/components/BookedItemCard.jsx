@@ -26,7 +26,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
 
     return (
         <>
-            <h3 className='headings mt-3 mb-2'>Items you have booked:</h3>
+            <h3 className='headings italic mt-3 mb-2'>Items you have booked:</h3>
             {bookedItems.map((bookedItem) => (
                 <Card key={bookedItem.BookingID} style={{ width: '100%', margin: '10px' }} className="mb-3">
                     <div className="d-flex">
