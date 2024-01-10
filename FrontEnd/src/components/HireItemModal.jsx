@@ -7,8 +7,6 @@ import { useUserContext } from "../context/userContext";
 function HireItemModal({ show, handleClose, itemID, ownerID }) {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-
-    // testing:
     const [bookedDates, setBookedDates] = useState([]);
 
 
@@ -16,7 +14,6 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
     const { currentUser } = useUserContext();
     const renterID = currentUser.UserID;
 
-    // testing:
     useEffect(() => {
         // Fetch booked dates for the selected item
         const fetchBookedDates = async () => {
