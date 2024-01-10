@@ -67,7 +67,8 @@ const Messages = () => {
             });
 
             const result = await response.json();
-
+            console.log('API Response:', result);
+            
             if (response.ok) {
                 console.log('Message stored in the database successfully!');
                 // Optionally, you can update the local state with the new message if needed.
