@@ -1,6 +1,8 @@
 'use strict';
 
+
 const Models = require('../Models');
+const { Op } = require('sequelize');
 
 const getMessage = (res) => {
     Models.Message.findAll({})
@@ -8,6 +10,22 @@ const getMessage = (res) => {
         .catch(err => {
             console.log(err);
             res.send({ result: 500, error: err.message });
+        });
+};
+
+// testing route to get historical messages with users:
+const getMessageByUserId = (UserID, res) => {
+    Models.Message.findAll({
+        where: {
+            [Op.or]: [{ SenderID: UserID }, { RecieverID: UserID }],
+            
+        },
+        order: [['createdAt', 'ASC']],
+    })
+        .then(data => res.send({ result: 200, data: data }))
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message })
         });
 };
 
@@ -73,5 +91,6 @@ module.exports = {
     getMessage,
     createMessage,
     updateMessage,
-    deleteMessage
+    deleteMessage,
+    getMessageByUserId
 }

@@ -7,6 +7,12 @@ router.get('/', (req, res) => {
     Controllers.messageController.getMessage(res);
 });
 
+router.get('/getmessages/:UserID', (req, res) => {
+    const { UserID } = req.params;
+    console.log('UserID:', UserID);  // Add this line for debugging
+    Controllers.messageController.getMessageByUserId(UserID, res);
+})
+
 router.post('/create', (req, res) => {
     Controllers.messageController.createMessage(req.body, res);
 })
