@@ -13,6 +13,11 @@ router.get('/getmessages/:UserID', (req, res) => {
     Controllers.messageController.getMessageByUserId(UserID, res);
 })
 
+router.get('/byusername/:UserName', (req, res) => {
+    const { UserName } = req.params;
+    Controllers.messageController.getMessagesByUserName(UserName, res);
+})
+
 router.post('/create', (req, res) => {
     Controllers.messageController.createMessage(req.body, res);
 })

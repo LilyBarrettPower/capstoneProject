@@ -12,19 +12,20 @@ const socket = io('http://localhost:3307');
 
 const SearchMessages = () => {
     const [showModal, setShowModal] = useState(false);
-    const [searchUserID, setSearchUserID] = useState('');
+    const [searchUserName, setSearchUserName] = useState('');
     const [historicalMessages, setHistoricalMessages] = useState([]);
 
     const currentUser = useUserContext();
 
     const handleSearch = async () => {
         try {
-            const response = await fetch(`http://localhost:3307/rentshare/messages/getmessages/${searchUserID}`);
+            const response = await fetch(`http://localhost:3307/rentshare/messages/byusername/${searchUserName}`);
             const data = await response.json();
 
             if (response.ok) {
                 setHistoricalMessages(data.data);
                 setShowModal(true);
+                console.log('Historical Messages:', data.data);
             } else {
                 console.error('Error fetching historical messages:', data.error);
             }
@@ -41,10 +42,10 @@ const SearchMessages = () => {
                     <div className="d-flex align-items-end mt-2">
                             <Form.Control
                                 type="text"
-                            placeholder="Enter UserID"
+                            placeholder="Enter User Name"
                             className='body'
-                                value={searchUserID}
-                                onChange={(e) => setSearchUserID(e.target.value)}
+                                value={searchUserName}
+                                onChange={(e) => setSearchUserName(e.target.value)}
                             />
                         <Button variant='secondary' className='body mx-2' onClick={handleSearch}>
                             Search
@@ -58,16 +59,6 @@ const SearchMessages = () => {
                         <Modal.Header closeButton>
                             <Modal.Title className='headings'>Historical Messages</Modal.Title>
                         </Modal.Header>
-                        {/* <Modal.Body>
-                            {historicalMessages.map((message) => (
-                                <div key={message.MessageID}>
-                                    <p className='headings'><strong>Sender: {message.SenderID}</strong></p>
-                                    <p className='body'>{format(new Date(message.createdAt), 'do MMM yyyy')}</p>
-                                    <p className='body'>Content: {message.Content}</p>
-                                    <hr />
-                                </div>
-                            ))}
-                        </Modal.Body> */}
                         <Modal.Body>
                             {historicalMessages.map((message) => (
                                 <div
@@ -75,7 +66,7 @@ const SearchMessages = () => {
                                     className={`message-container ${message.SenderID === currentUser.currentUser.UserID ? 'current-user-message' : 'other-user-message'}`}
                                 >
                                     <div className="date-content-container">
-                                    <p className='headings'><strong>Sender: {message.SenderID}</strong></p>
+                                    <p className='headings'><strong>Sender: {message.Sender.UserName}</strong></p>
                                         <p className='body date'>{format(new Date(message.createdAt), 'do MMM yyyy')}</p>
                                     </div>
                                         <p className='body'>Content: {message.Content}</p>
