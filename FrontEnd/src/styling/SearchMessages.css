@@ -1,0 +1,18 @@
+.message-container {
+    margin-bottom: 10px;
+    /* Adjust as needed */
+}
+
+.date-content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.current-user-message {
+    background-color: #ffe4ed;
+}
+
+.other-user-message {
+    background-color: #f0f0f0;
+}

@@ -12,6 +12,8 @@ import Col from 'react-bootstrap/Col';
 
 import '../styling/Messages.css';
 
+import SearchMessages from './SearchMessages';
+
 const socket = io('http://localhost:3307');
     
 const Messages = () => {
@@ -163,8 +165,9 @@ const Messages = () => {
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>
-
+                        <SearchMessages></SearchMessages>
                     </Col>
+                    
                     <Col md={8}>
                         <div>
                             {/* Display selected receiver message */}
