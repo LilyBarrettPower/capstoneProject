@@ -3,6 +3,7 @@
 const Models = require('../Models');
 
 
+// controller to create a booking
 const createBooking = async (req, res) => {
     try {
         const { ItemID, RenterID, OwnerID, StartDate, EndDate } = req.body;
@@ -24,10 +25,11 @@ const createBooking = async (req, res) => {
         res.status(201).json({ data: newBooking, message: 'Booking created successfully.' });
     } catch (error) {
         console.error('Error creating booking:', error);
-        res.status(500).json({ result: 500, error: error.message }); // Updated this line
+        res.status(500).json({ result: 500, error: error.message }); 
     }
 };
 
+// controller to get the bookings, not used by front end...
 const getBookings = (req, res) => {
     Models.Booking.findAll({})
         .then(data => res.status(200).json({ result: 200, data: data }))
@@ -37,6 +39,7 @@ const getBookings = (req, res) => {
         });
 };
 
+// controller to get the items that a user has booked which is rendered on home page of that user:
 const getBookedItemById = (UserID, res) => {
     Models.Booking.findAll({
         where: {
@@ -51,6 +54,7 @@ const getBookedItemById = (UserID, res) => {
         });
 };
 
+// controller to get the booked item by itemID which is used to render the booked dates on each item card
 const getBookedItemByItemID = (ItemID, res) => {
     Models.Booking.findAll({
         where: {
