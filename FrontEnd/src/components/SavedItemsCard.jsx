@@ -28,7 +28,7 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
     return (
         <>
             {savedItems.map((savedItem) => (
-                <Card key={savedItem.SavedItemID} style={{ width: '100%', margin: '10px' }} className="mb-3">
+                <Card key={savedItem.SavedItemID} style={{ width: '100%', margin: '10px', maxHeight:'200px' }} className="mb-3">
                     <div className="d-flex">
                         <div style={{ float: 'left', width: '70%' }}>
                             <Card.Body>
@@ -41,7 +41,7 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                             <Card.Img
                                 src={savedItem.item.ItemFeaturedPhoto}
                                 alt={savedItem.item.ItemName}
-                                style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain', margin: '10px' }}
+                                style={{ maxWidth: '80%', maxHeight: '50%', objectFit: 'contain', margin: '10px' }}
                             />
                         </div>
                     </div>
