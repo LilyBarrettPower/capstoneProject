@@ -14,7 +14,6 @@ import '../styling/Messages.css';
 
 import SearchMessages from './SearchMessages';
 
-const socket = io('http://localhost:3307');
     
 const Messages = () => {
     // const [userName, setUserName] = useState('');
@@ -31,13 +30,18 @@ const Messages = () => {
     
 
     useEffect(() => {
+        let isMounted = true;
+        const socket = io('http://localhost:3307');
+
         if (currentUser && currentUser.currentUser.UserName) {
             // Emit userConnected event with the username from the user context
             socket.emit('userConnected', currentUser.currentUser.UserName);
 
             // Listen for chatMessage event
             socket.on('chatMessage', (data) => {
-                setReceivedMessages((prevMessages) => [...prevMessages, data]);
+                if (isMounted) {
+                    setReceivedMessages((prevMessages) => [...prevMessages, data]);
+                }
             });
 
             setSocketId(socket.id);
@@ -45,6 +49,7 @@ const Messages = () => {
             return () => {
                 // Cleanup event listeners if component unmounts
                 socket.disconnect();
+                isMounted = false;
             };
         }
     }, [currentUser]);
