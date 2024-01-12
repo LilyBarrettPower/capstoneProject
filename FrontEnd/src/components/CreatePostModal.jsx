@@ -158,7 +158,7 @@ function CreatePostModal({ show, handleClose }) {
                     </Form.Group>
                     <Form.Group>
                         <Form.Label className='headings'>Other Photos:</Form.Label>
-                        <Form.Control type='file' name='ItemOtherPhotos' accept='image/*' multiple onChange={handleFileChange} className='body'/>
+                        <Form.Control type='file' name='ItemOtherPhotos' accept='image/*' onChange={handleFileChange} multiple className='body'/>
                     </Form.Group>
 
                     <Button variant='secondary' type='submit' className='body mt-2'>Submit</Button>
