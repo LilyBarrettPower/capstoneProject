@@ -15,6 +15,8 @@ const SearchMessages = () => {
     const [searchUserName, setSearchUserName] = useState('');
     const [historicalMessages, setHistoricalMessages] = useState([]);
 
+
+
     const currentUser = useUserContext();
 
     const handleSearch = async () => {
@@ -26,9 +28,10 @@ const SearchMessages = () => {
                 setHistoricalMessages(data.data);
                 setShowModal(true);
                 console.log('Historical Messages:', data.data);
-            } else {
+                // console.log('response', response);
+            }  else {
                 console.error('Error fetching historical messages:', data.error);
-            }
+                }  
         } catch (error) {
             console.error('Error fetching historical messages:', error.message);
         }
@@ -60,18 +63,22 @@ const SearchMessages = () => {
                             <Modal.Title className='headings'>Historical Messages</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
-                            {historicalMessages.map((message) => (
-                                <div
-                                    key={message.MessageID}
-                                    className={`message-container ${message.SenderID === currentUser.currentUser.UserID ? 'current-user-message' : 'other-user-message'}`}
-                                >
-                                    <div className="date-content-container">
-                                    <p className='headings'><strong>Sender: {message.Sender.UserName}</strong></p>
-                                        <p className='body date'>{format(new Date(message.createdAt), 'do MMM yyyy')}</p>
-                                    </div>
+                           {historicalMessages.length === 0 ? (
+                                <p className='body'>No historical messages</p>
+                            ) : (
+                                historicalMessages.map((message) => (
+                                    <div
+                                        key={message.MessageID}
+                                        className={`message-container ${message.SenderID === currentUser.currentUser.UserID ? 'current-user-message' : 'other-user-message'}`}
+                                    >
+                                        <div className="date-content-container">
+                                            <p className='headings'><strong>Sender: {message.Sender.UserName}</strong></p>
+                                            <p className='body date'>{format(new Date(message.createdAt), 'do MMM yyyy')}</p>
+                                        </div>
                                         <p className='body'>Content: {message.Content}</p>
-                                </div>
-                            ))}
+                                    </div>
+                                ))
+                            )}
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={() => setShowModal(false)}>
