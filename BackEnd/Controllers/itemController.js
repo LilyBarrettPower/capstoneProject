@@ -118,6 +118,8 @@ const createItem = async (req, res) => {
         // Handle ItemOtherPhotos
         if (req.files['ItemOtherPhotos'] && req.files['ItemOtherPhotos'].length > 0) {
             newItem.ItemOtherPhotos = req.files['ItemOtherPhotos'].map(file => `http://localhost:3307/uploads/${file.filename}`);
+        } else {
+            newItem.ItemOtherPhotos = []; // Ensure it's an array even if there are no photos
         }
 
         await newItem.save();

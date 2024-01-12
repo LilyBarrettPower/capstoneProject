@@ -147,6 +147,7 @@ function ProfilePage() {
                     <Col md={10}>
                         <Row>
                             <Col md={5}>
+                                <h3 className='headings italic mt-3 mb-2'>Your listings: </h3>
                                 {userItems.length > 0 ? (
                                     userItems.map((item) => (
                                         <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />

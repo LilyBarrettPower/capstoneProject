@@ -30,6 +30,10 @@ function CreatePostModal({ show, handleClose }) {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
+
+
+  
+
     const handleFileChange = (e) => {
         const { name, files } = e.target;
 
@@ -148,11 +152,6 @@ function CreatePostModal({ show, handleClose }) {
                         <Form.Label className='headings'>Item Price Per Day:</Form.Label>
                         <Form.Control type='text' name='ItemPricePerDay' value={formData.ItemPricePerDay} onChange={handleInputChange}/>
                     </Form.Group>
-                    {/* <Form.Group>
-                        <Form.Label>Available days:</Form.Label>
-                        
-                    </Form.Group> */}
-                    {/* Need to figure out how to change this to include a calander integration.... */}
                     <Form.Group>
                         <Form.Label className="headings">Featured Photo:</Form.Label>
                         <Form.Control type="file" name="ItemFeaturedPhoto" accept='image/*' onChange={handleFileChange} className='body' />

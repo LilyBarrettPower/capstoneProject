@@ -39,10 +39,6 @@ Item.init({
     ItemFeaturedDescription: {
         type: DataTypes.STRING,
     },
-    // Availability: {
-    //     type: DataTypes.BOOLEAN,
-    //     defaultValue: true,
-    // },
     ItemLocation: {
         type: DataTypes.STRING,
     },

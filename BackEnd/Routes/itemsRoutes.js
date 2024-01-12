@@ -45,6 +45,8 @@ router.get('/', (res) => {
 // route to create an item in the database (createpostmodal):
 router.post('/create', uploadMiddleware, (req, res) => {
     console.log(req.body);
+    console.log('Request Body:', req.body);
+    console.log('Request Files:', req.files);
     // Call the controller function to create the item
     Controllers.itemController.createItem(req, res);
 });
