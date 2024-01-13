@@ -38,9 +38,10 @@ Booking.init(
             type: DataTypes.DATE,
             allowNull: false,
         },
+        // status indicates the amount of days to/from your booking
         Status: {
-            type: DataTypes.STRING, // You might want to use a more appropriate data type
-            allowNull: true, // Adjust as needed
+            type: DataTypes.STRING, 
+            allowNull: true, 
         },
     },
     {
@@ -50,7 +51,7 @@ Booking.init(
         freezeTableName: true,
     }
 );
-
+// create table associations
 Booking.belongsTo(Item, { foreignKey: 'ItemID' });
 Booking.belongsTo(User, { as: 'Renter', foreignKey: 'RenterID' });
 Booking.belongsTo(User, { as: 'Owner', foreignKey: 'OwnerID' });

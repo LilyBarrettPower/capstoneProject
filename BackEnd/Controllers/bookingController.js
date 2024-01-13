@@ -12,6 +12,11 @@ const createBooking = async (req, res) => {
         const today = new Date();
         const status = Math.floor((new Date(EndDate) - today) / (1000 * 60 * 60 * 24));
 
+        // If the booking has already passed, make the status negative
+        if (new Date(StartDate) < today) {
+            status *= -1;
+        }
+
         // Create a new booking using the Booking model
         const newBooking = await Models.Booking.create({
             ItemID,
@@ -69,6 +74,7 @@ const getBookedItemByItemID = (ItemID, res) => {
         });
 };
 
+// delete booking controller used in the delete booking button
 const deleteBooking = (req, res) => {
     Models.Booking.destroy({
         where: { BookingID: req.params.BookingID }
