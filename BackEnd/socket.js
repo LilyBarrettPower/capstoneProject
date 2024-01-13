@@ -15,7 +15,10 @@ const socketConnection = (server) => {
             // Broadcast to all clients that a new user has connected
 
             // added sender here:
-            io.emit('chatMessage', { sender: 'System', message: `${userName} has joined the chat.` });
+            io.emit('chatMessage', {
+                sender: 'System',
+                message: `${userName} has joined the chat.`,
+            });
 
             // store the users socketID with that users username:
             users[userName] = socket.id;
@@ -23,9 +26,10 @@ const socketConnection = (server) => {
 
         // Listen for messages
         socket.on('chatMessage', (data, userName) => {
-            console.log('Received message:', data);
-
-            const senderUserName = Object.keys(users).find((key) => users[key] === socket.id);
+            console.log('Sent message:', data);
+            
+            const senderUserName = data.senderUsername;
+            console.log('sender username:', senderUserName)
             const receiverSocketId = users[data.receiver];
             if (receiverSocketId) {
                 // Send the message to the user with the specified socket ID
