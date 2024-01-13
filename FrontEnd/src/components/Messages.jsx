@@ -119,10 +119,10 @@ const Messages = () => {
         setSearchQuery('');
     };
 
-    console.log('Received Messages:', receivedMessages);
+    console.log('Received Messages client side:', receivedMessages);
 
 
-// testing:
+
     // Function to format messages with different styles for sender and receiver
     const formatMessages = () => {
         return receivedMessages.map((item, index) => {
@@ -142,6 +142,8 @@ const Messages = () => {
         });
     };
 
+
+   
 
         return (
             <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
