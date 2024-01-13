@@ -2,29 +2,28 @@ const express = require('express');
 const app = express();
 
 const http = require('http');
-
-
 const path = require('path')
 const cors = require('cors');
 
+// require my environment variables
 require('dotenv').config();
 
+// require database connection
 let dbConnect = require('./dbConnect');
 
-
+// require socket stuff for messaging
 const socketConnection = require('./socket');
 const server = http.createServer(app);
 const io = socketConnection(server);
 
 // import routes here:
-
 const itemsRoutes = require('./Routes/itemsRoutes');
 const messagesRoutes = require('./Routes/messagesRoutes');
 const savedItemsRoutes = require('./Routes/savedItemsRoutes');
 const usersRoutes = require('./Routes/usersRoutes');
 const bookingRoutes = require('./Routes/bookingRoutes');
 
-
+// configure Cors for cross origin resource sharing:
 const corsOptions = {
     origin: 'http://localhost:3307', // Update with your front end's origin
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',

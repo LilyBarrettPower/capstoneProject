@@ -1,24 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const path = require('path')
-const multer = require('multer');
-
-
-// for profile picture upload
-const uploadDirectory = path.join(__dirname, 'uploads');
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadDirectory);
-    },
-    filename: function (req, file, cb) {
-        cb(null, Date.now() + '-' + file.originalname);
-    }
-});
-const upload = multer({ storage: storage });
-
-
+const multerMiddleware = require('../Middleware/multerMiddleware')
 const Controllers = require('../Controllers')
 
 
@@ -46,18 +29,12 @@ router.delete('/:UserID', (req, res) => {
     Controllers.userController.deleteUser(req, res);
 })
 
-// user registration route:
-// router.post('/register', (req, res) => {
-//     Controllers.userController.registerUser(req, res);
-// })
-
 router.post('/login', (req, res) => {
     Controllers.userController.loginUser(req, res);
 })
 
-
 // router for the profile picture upload
-router.post('/register', upload.single('ProfilePhoto'), Controllers.userController.registerUser);
+router.post('/register', multerMiddleware([{ name: 'ProfilePhoto', maxCount: 1 }]), Controllers.userController.registerUser);
 
 
 

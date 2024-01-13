@@ -7,12 +7,12 @@ router.get('/', (req, res) => {
     Controllers.savedItemController.getSavedItem(res);
 });
 
-// route to get the saved items for only the user logged in:
+// route to get the saved items for only the user logged in, based on the userID
 router.get('/getsaved/:UserID', (req, res) => {
     Controllers.savedItemController.getSavedItemById(req.params.UserID, res);
 });
 
-// route to get teh details of teh samed items 
+// route to get the details of the saved items 
 router.get('/getsaveddetails/:UserID', (req, res) => {
     const userId = parseInt(req.params.UserID, 10);
 
