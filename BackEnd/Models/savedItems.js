@@ -32,7 +32,7 @@ SavedItem.init({
     }
 );
 
-
+// define associations
 SavedItem.belongsTo(Item, { foreignKey: 'ItemID' });
 
 module.exports = SavedItem;

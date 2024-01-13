@@ -5,7 +5,7 @@ const Models = require('../Models');
 const { Op } = require('sequelize');
 const sequelizeInstance = require('../dbConnect').Sequelize;
 
-
+// generic controller to get all messages used in testing
 const getMessage = (res) => {
     Models.Message.findAll({})
         .then(data => res.send({ result: 200, data: data }))
@@ -15,13 +15,15 @@ const getMessage = (res) => {
         });
 };
 
-// testing route to get historical messages with users:
+// route to get historical messages with users based on UserID:
 const getMessageByUserId = (UserID, res) => {
     Models.Message.findAll({
+        // find messages where the SenderID or the RecieverID match the UserID in the search 
         where: {
             [Op.or]: [{ SenderID: UserID }, { RecieverID: UserID }],
             
         },
+        // order the results by the timestamp in ascending order:
         order: [['createdAt', 'ASC']],
     })
         .then(data => res.send({ result: 200, data: data }))
@@ -31,14 +33,17 @@ const getMessageByUserId = (UserID, res) => {
         });
 };
 
+// controller to get historical messages based on UserName
 const getMessagesByUserName = (UserName, res) => {
     Models.Message.findAll({
+        // find messages where the SenderID or the Reciever ID match the UserID accosiated with the UserName searched
         where: {
             [Op.or]: [
                 { SenderID: { [Op.in]: [sequelizeInstance.literal(`SELECT UserID FROM users WHERE UserName = '${UserName}'`)] } },
                 { RecieverID: { [Op.in]: [sequelizeInstance.literal(`SELECT UserID FROM users WHERE UserName = '${UserName}'`)] } },
             ],
         },
+        // include the sender accosiation to fetch the senders username for the front end to display 
         include: [
             {
                 model: Models.User,
@@ -46,6 +51,7 @@ const getMessagesByUserName = (UserName, res) => {
                 attributes: ['UserName'], // Include only the UserName attribute
             },
         ],
+        // order the results by createdAT date in ascending order
         order: [['createdAt', 'ASC']],
     })
         .then(data => res.send({ result: 200, data: data }))
@@ -56,8 +62,9 @@ const getMessagesByUserName = (UserName, res) => {
 };
 
 
+// controller to create a message, when message sent in front end it creates the message in the DB
 const createMessage = (data, res) => {
-    console.log('Received data:', data);
+    console.log('Received data:', data); // testing
 
     Models.Message.create({
         SenderID: data.senderID,
@@ -74,6 +81,7 @@ const createMessage = (data, res) => {
         });
 };
 
+// generic controller to update message - testing:
 const updateMessage = (req, res) => {
     Models.Message.update(req.body, {
         where: { MessageID: req.params.MessageID }
@@ -85,6 +93,7 @@ const updateMessage = (req, res) => {
         });
 }
 
+// generic controller to delete messages used in testing:
 const deleteMessage = (req, res) => {
     Models.Message.destroy({
         where: { MessageID: req.params.MessageID }

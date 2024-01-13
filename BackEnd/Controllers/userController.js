@@ -5,6 +5,7 @@ const Models = require('../Models');
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 
+// get all users:
 const getUser = (res) => {
     Models.User.findAll({})
         .then(data => res.send({ result: 200, data: data }))
@@ -14,6 +15,7 @@ const getUser = (res) => {
         });
 };
 
+// create a user:
 const createUser = (data, res) => {
     Models.User.create(data)
         .then(data => res.send({ result: 200, data: data }))
@@ -23,6 +25,7 @@ const createUser = (data, res) => {
         });
 }
 
+// update a user:
 const updateUser = (req, res) => {
     Models.User.update(req.body, {
         where: {UserID : req.params.UserID}
@@ -34,6 +37,7 @@ const updateUser = (req, res) => {
         });
 }
 
+// delete a user:
 const deleteUser = (req, res) => {
     Models.User.destroy({
         where: {UserID: req.params.UserID}
@@ -48,11 +52,13 @@ const deleteUser = (req, res) => {
 // new register user controller::::::
 const registerUser = async (req, res) => {
     try {
+        // descrtucture req.body
         const { FullName, UserName, Email, Password, Contact, Location, } = req.body;
 
-        console.log('email', Email);
-        console.log('username', UserName);
+        console.log('email', Email);  //testing
+        console.log('username', UserName);  //testing
 
+        // validation - check al fields are filled in
         if (!FullName || !UserName || !Email || !Password || !Contact || !Location) {
             return res.status(400).json({ error: 'all fields are required' });
         }
@@ -71,7 +77,7 @@ const registerUser = async (req, res) => {
 
         // encrypt the password here:
         const hashedPassword = await bcrypt.hash(Password, 10);
-        // Add more valication here...
+       
         
         // create a new user 
         const newUser = new Models.User({
@@ -109,19 +115,21 @@ const registerUser = async (req, res) => {
 };
 
 // controller for loggin in the users 
-// Here, you need to create a token to hash the password then compare the hashed password to the hashed password in the database 
+ 
 const loginUser = async (req, res) => {
     try {
+        // destructure the req.body
         const { Email, Password } = req.body
 
-        // Validate if user is in the database 
+        // Validate if user is in the database, throw error if email is not registered
         const user = await Models.User.findOne({ where: { Email } });
         if (!user) {
             return res.status(400).json({message: 'This email is not registered'})
         }
-
+        // match the password to the encrypted password in the database 
         const passwordMatch = await bcrypt.compare(Password, user.Password);
         if (passwordMatch) {
+            // if the passwords match, log the user in
             res.status(200).json({
                 message: 'User successfully logged in',
                 user: {
@@ -148,12 +156,13 @@ const loginUser = async (req, res) => {
 const searchUsers = async (query, res) => {
     try {
         const users = await Models.User.findAll({
+            // find records where the username contains teh query string:
             where: {
                 UserName: {
                     [Op.like]: `%${query}%`,
                 },
             },
-            attributes: ['UserID', 'UserName'], // Include other attributes as needed
+            attributes: ['UserID', 'UserName'], // Include the needed attributes
         });
 
         res.status(200).json(users);

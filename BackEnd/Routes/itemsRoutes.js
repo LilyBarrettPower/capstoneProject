@@ -33,7 +33,7 @@ router.get('/getall', (req, res) => {
     Controllers.itemController.getAllItems(req, res);
 });
 
-// route for getting the rented items:
+// route for getting the rented items by userID:
 router.get('/getrented/:UserID', (req, res) => {
     Controllers.itemController.getRentedItems(req, res);
 });
@@ -44,9 +44,8 @@ router.get('/', (res) => {
 
 // route to create an item in the database (createpostmodal):
 router.post('/create', uploadMiddleware, (req, res) => {
-    console.log(req.body);
-    console.log('Request Body:', req.body);
-    console.log('Request Files:', req.files);
+    console.log('Request Body:', req.body); // testing
+    console.log('Request Files:', req.files);  // testing
     // Call the controller function to create the item
     Controllers.itemController.createItem(req, res);
 });
