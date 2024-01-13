@@ -28,10 +28,11 @@ const Messages = () => {
     const [searchResults, setSearchResults] = useState([]);
     const [selectedReceiver, setSelectedReceiver] = useState(null);
     
+    const socket = io('http://localhost:3307');
 
     useEffect(() => {
         let isMounted = true;
-        const socket = io('http://localhost:3307');
+        
 
         if (currentUser && currentUser.currentUser.UserName) {
             // Emit userConnected event with the username from the user context
@@ -124,18 +125,21 @@ const Messages = () => {
 // testing:
     // Function to format messages with different styles for sender and receiver
     const formatMessages = () => {
-        return receivedMessages.map((item, index) => (
-            <div key={index} className={item.sender === currentUser.currentUser.UserName ? 'sender-message' : 'receiver-message'}>
-                {typeof item === 'object' ? (
-                    <>
-                        <p className='headings'>{item.sender === currentUser.currentUser.UserName ? 'You' : item.sender}:</p>
-                        <p className='body'>{item.message}</p>
-                    </>
-                ) : (
-                    <p className='body'>{item}</p>
-                )}
-            </div>
-        ));
+        return receivedMessages.map((item, index) => {
+            console.log('Received Message:', item);
+            return (
+                <div key={index} className={item.sender === currentUser.currentUser.UserName ? 'sender-message' : 'receiver-message'}>
+                    {typeof item === 'object' ? (
+                        <>
+                            <p className='headings'>{item.sender === currentUser.currentUser.UserName ? 'You' : item.sender}:</p>
+                            <p className='body'>{item.message}</p>
+                        </>
+                    ) : (
+                        <p className='body'>{item}</p>
+                    )}
+                </div>
+            );
+        });
     };
 
 
