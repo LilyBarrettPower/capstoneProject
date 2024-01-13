@@ -1,9 +1,24 @@
 const express = require('express');
 const router = express.Router();
 
-const multerMiddleware = require('../Middleware/multerMiddleware')
+const path = require('path')
+const multer = require('multer');
+
+
 const Controllers = require('../Controllers')
 
+// for profile picture upload
+const uploadDirectory = path.join(__dirname, 'uploads');
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, uploadDirectory);
+    },
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname);
+    }
+});
+const upload = multer({ storage: storage });
 
 // General CRUD operations:
 router.get('/', (req, res) => {
@@ -34,7 +49,7 @@ router.post('/login', (req, res) => {
 })
 
 // router for the profile picture upload
-router.post('/register', multerMiddleware([{ name: 'ProfilePhoto', maxCount: 1 }]), Controllers.userController.registerUser);
+router.post('/register', upload.single('ProfilePhoto'), Controllers.userController.registerUser);
 
 
 

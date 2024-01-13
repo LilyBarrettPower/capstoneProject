@@ -3,13 +3,14 @@ import { useState } from "react";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-
-
+// import user conetxt for the current user infomration
 import { useUserContext } from "../context/userContext";
 
 function CreatePostModal({ show, handleClose }) {
+   
     const { currentUser } = useUserContext();
 
+    // initial form data for creating a new item
     const initialFormData = {
         ItemCategory: '',
         ItemName: '',
@@ -20,61 +21,56 @@ function CreatePostModal({ show, handleClose }) {
         Availability: '',
         ItemFeaturedPhoto: '',
         ItemOtherPhotos: [],
-        // May need to think about how to do this one better to get the carousel working...
     };
-
+// state to manage the form data
     const [formData, setFormData] = useState(initialFormData);
-
+// function to handle input changes in the form
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
-
-
-
-  
-
+// function to handle the file changes in the form
     const handleFileChange = (e) => {
         const { name, files } = e.target;
-
         // Check if files are present before updating state
         if (files.length > 0) {
             setFormData((prevData) => ({ ...prevData, [name]: files[0] }));
         }
     };
-
+// function to handle the submit of the form
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         try {
+            // create a new formdata object to send the form data 
             const formDataToSend = new FormData();
-
             // Append all form data
+            // loop through each key in formdata
             for (const key in formData) {
+                // check if the value accosiated with the key is an array
                 if (Array.isArray(formData[key])) {
+                    // if its an array, loop through each element
                     for (let i = 0; i < formData[key].length; i++) {
                         formDataToSend.append(`${key}[${i}]`, formData[key][i]);
                     }
                 } else {
+                    // if the element is not an array, append directly 
                     formDataToSend.append(key, formData[key]);
                 }
             }
 
             // Append UserID separately
             formDataToSend.append('UserID', currentUser.UserID.toString());
-
+// send a post request to the server to save the newly made item in the database 
             const response = await fetch('http://localhost:3307/rentshare/items/create', {
                 method: 'POST',
                 body: formDataToSend,
             });
-
             if (response.ok) {
                 const result = await response.json();
                 console.log('Item registered successfully', result);
-
                 // create a pop up to alert user their item has been created:
                 alert('Item registered successfully');
-
                 // reset form data on successful creation:
                 setFormData({
                     ItemCategory: '',
@@ -88,6 +84,7 @@ function CreatePostModal({ show, handleClose }) {
                     ItemOtherPhotos: [],
                     UserID: currentUser.UserID,
                 });
+                // close the create post modal
                 handleClose();
             } else {
                 const errorResult = await response.json();

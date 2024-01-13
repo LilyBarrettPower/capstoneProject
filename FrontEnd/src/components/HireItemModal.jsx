@@ -5,12 +5,11 @@ import Form from 'react-bootstrap/Form';
 import { useUserContext } from "../context/userContext";
 
 function HireItemModal({ show, handleClose, itemID, ownerID }) {
+    // state to store the dates:
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [bookedDates, setBookedDates] = useState([]);
-
-
-
+// get the current user from the context
     const { currentUser } = useUserContext();
     const renterID = currentUser.UserID;
 
@@ -21,10 +20,12 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
                 const response = await fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemID}}`);
                 if (response.ok) {
                     const data = await response.json();
+                    // Map fetched data to start and end date objects
                     const dates = data.data.map(booking => ({
                         start: new Date(booking.StartDate),
                         end: new Date(booking.EndDate),
                     }));
+                    // update state with booked dates:
                     setBookedDates(dates);
                 } else {
                     console.error('Error fetching booked dates:', response.statusText);
@@ -55,7 +56,7 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
                 alert('These dates are already booked')
                 return;
             }
-            
+            // send a request to create a new booking in the DB
             const response = await fetch('http://localhost:3307/rentshare/bookings/create', {
                 method: 'POST',
                 headers: {

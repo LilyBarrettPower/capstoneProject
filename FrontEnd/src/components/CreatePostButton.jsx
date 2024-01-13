@@ -4,16 +4,20 @@ import CreatePostModal from './CreatePostModal';
 
 
 function CreatePostButton() {
+    // state for showing modal
     const [showModal, setShowModal] = useState(false);
 
+    // function to show modal
     const handleShow = () => setShowModal(true);
-    // const handleClose = () => setShowModal(false);
+
 
     return (
         <>
             <Button variant='secondary' className='body mt-3 mb-2' onClick={handleShow}>
+                {/* when button is clicked, handleShow is called */}
                 Create Post
             </Button>
+            {/* render the modal: */}
                 <CreatePostModal show={showModal} handleClose={() => setShowModal(false)}></CreatePostModal>
         </>
     )
