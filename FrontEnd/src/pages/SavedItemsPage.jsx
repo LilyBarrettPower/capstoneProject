@@ -80,7 +80,7 @@ function SavedItemsPage() {
                         {userSavedItems.length > 0 ? (
                             <SavedItemsCard savedItems={userSavedItems} onUnSave={handleUnsaveItem} />
                         ) : (
-                            <div>No saved items</div>
+                            <div className='headings'>No saved items</div>
                         )}
                     </Col>
                 </Row>
