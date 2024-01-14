@@ -17,14 +17,16 @@ import { useUserContext } from '../context/userContext';
 function TimelinePage() {
     // Use the context custom hook
     const { currentUser } = useUserContext();
+    // state for the items
     const [itemsData, setItemsData] = useState([]);
     const [isLoading, setIsLoading] = useState(true); // Add loading state
+    // state for the searching and filtering
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
-    // Fetch data when the component mounts
+    // Fetch data when the component mounts based on teh search, and filter conditions
     useEffect(() => {
         const fetchItems = async () => {
             try {
@@ -33,10 +35,12 @@ function TimelinePage() {
                 if (!response.ok) {
                     throw new Error(`Error fetching items: ${response.status} - ${response.statusText}`);
                 }
-
+                // check the response is in JSON format
                 const contentType = response.headers.get("content-type");
                 if (contentType && contentType.includes("application/json")) {
+                    // parse the Json data from the response 
                     const result = await response.json();
+                    // update the state with the fetched data
                     setItemsData(result.data);
                 } else {
                     throw new Error("Response is not in JSON format");
