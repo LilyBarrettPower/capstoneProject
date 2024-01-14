@@ -4,6 +4,7 @@ const useFetch = (url) => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(null);
 
+    // custom hook for fetching data from the database 
     useEffect(() => {
         const fetchData = async () => {
             try {

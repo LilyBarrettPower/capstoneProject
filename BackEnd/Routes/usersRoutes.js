@@ -5,6 +5,8 @@ const path = require('path')
 const multer = require('multer');
 
 
+const Controllers = require('../Controllers')
+
 // for profile picture upload
 const uploadDirectory = path.join(__dirname, 'uploads');
 
@@ -17,10 +19,6 @@ const storage = multer.diskStorage({
     }
 });
 const upload = multer({ storage: storage });
-
-
-const Controllers = require('../Controllers')
-
 
 // General CRUD operations:
 router.get('/', (req, res) => {
@@ -46,15 +44,9 @@ router.delete('/:UserID', (req, res) => {
     Controllers.userController.deleteUser(req, res);
 })
 
-// user registration route:
-// router.post('/register', (req, res) => {
-//     Controllers.userController.registerUser(req, res);
-// })
-
 router.post('/login', (req, res) => {
     Controllers.userController.loginUser(req, res);
 })
-
 
 // router for the profile picture upload
 router.post('/register', upload.single('ProfilePhoto'), Controllers.userController.registerUser);

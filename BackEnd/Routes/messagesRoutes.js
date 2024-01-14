@@ -7,17 +7,20 @@ router.get('/', (req, res) => {
     Controllers.messageController.getMessage(res);
 });
 
+// route to get messages by userID
 router.get('/getmessages/:UserID', (req, res) => {
     const { UserID } = req.params;
     console.log('UserID:', UserID);  // Add this line for debugging
     Controllers.messageController.getMessageByUserId(UserID, res);
 })
 
+// route to get messages by username
 router.get('/byusername/:UserName', (req, res) => {
     const { UserName } = req.params;
     Controllers.messageController.getMessagesByUserName(UserName, res);
 })
 
+// route to create a message 
 router.post('/create', (req, res) => {
     Controllers.messageController.createMessage(req.body, res);
 })

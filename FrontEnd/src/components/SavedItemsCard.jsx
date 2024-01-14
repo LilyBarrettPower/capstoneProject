@@ -10,6 +10,7 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
     console.log(onUnSave); 
 
     const { currentUser } = useUserContext();
+    // states for the modal
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null); 
 
@@ -96,7 +97,6 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                                             </Carousel.Item>
                                         )}
                                     </Carousel>
-                                    {/* This is where I will put "message user" button */}
                         </div>
                     </div>
                         </Modal.Body>

@@ -8,19 +8,14 @@ import { useNavigate } from "react-router-dom";
 import { useUserContext } from "../context/userContext";
 
 
-// TESTING:
-// import io from 'socket.io-client';
-// const socket = io('http://localhost:3307');
-
-
 function LoginForm() {
-
+    // use navigate from react router to navigate to the home page on successful login
     const navigate = useNavigate();
     const { handleUpdateUser, currentUser } = useUserContext(); //accessing the user context
 
     const [status, setStatus] = useState('');
-    // const [usersData, setUsersData] = useState([]);
-
+    
+    // use my custom hook useLoginInput - email has an example placeholder
     const [emailInputProps, resetEmail] = useLoginInput('example@gmail.com');
     const [passwordInputProps, resetPassword] = useLoginInput();
 
@@ -28,11 +23,6 @@ function LoginForm() {
         e.preventDefault();
         const enteredEmail = emailInputProps.value;
         const enteredPassword = passwordInputProps.value;
-
-        // if (currentUser && currentUser.UserName) {
-        //     // socket.userName = currentUser.UserName;
-        //     socket.emit('userConnected', currentUser.UserName);
-        // }
 
         try {
             const response = await fetch('http://localhost:3307/rentshare/users/login', {

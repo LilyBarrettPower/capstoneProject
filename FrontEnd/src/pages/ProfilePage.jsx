@@ -5,7 +5,7 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import LogOutButton from '../components/LogOutButton';
 import RentedItemCard from '../components/RentedItemCard';
-import useFetch from '../hooks/UseFetch';
+import useFetch from '../hooks/useFetch';
 import BookedItemCard from '../components/BookedItemCard';
 
 // import the relevant bootstrap:
@@ -18,21 +18,18 @@ import { useState, useEffect } from 'react';
 
 
 function ProfilePage() {
-
-
+    // get the current user from the context
     const currentUser = useUserContext();
+    // set the url's for fetches
     const userItemsUrl = `http://localhost:3307/rentshare/items/getrented/${parseInt(currentUser.currentUser.UserID, 10)}`;
     const bookedItemsUrl = `http://localhost:3307/rentshare/bookings/getbooked/${parseInt(currentUser.currentUser.UserID, 10)}`;
-
-    // const { data: userItems, error: errorItems } = useFetch(userItemsUrl);
-
-
+    // create states for booked items
     const [errorBookedItems, setErrorBookedItems] = useState(null);
     const [userBookedItems, setUserBookedItems] = useState([]);
-
+    // create states for rented items
     const [errorRentedItems, setErrorRentedItems] = useState(null);
     const [userItems, setUserItems] = useState([]);
-
+    // yseEffect to fetch the booked items data based on the current user
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -55,6 +52,7 @@ function ProfilePage() {
 
     const handleDeleteBooking = async (bookingID) => {
         try {
+            // use the API to delete a booking based on the booking ID
             const response = await fetch(`http://localhost:3307/rentshare/bookings/${bookingID}`, {
                 method: 'DELETE',
                 headers: {
@@ -64,8 +62,9 @@ function ProfilePage() {
 
             if (response.ok) {
                 console.log('Booking deleted successfully!');
-                console.log('Before update:', userBookedItems);
+                console.log('Before update:', userBookedItems); // testing
                 alert('Booking removed!')
+                // update the UI
                 setUserBookedItems((prevBookedItems) =>
                     prevBookedItems.filter((item) => item.BookingID !== bookingID)
                 );
@@ -77,11 +76,7 @@ function ProfilePage() {
             console.error('Error deleting booking:', error.message);
         }
     };
-
-
-
-    // testing for the fetch for rented items:
-
+    // useEffect to fetch the items a user has created based on the current user
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -102,6 +97,7 @@ function ProfilePage() {
 
     const handleDeleteListing = async (itemID) => {
         try {
+            // use the API to delete a listing that the current user created based on the itemID
             const response = await fetch(`http://localhost:3307/rentshare/items/${itemID}`, {
                 method: 'DELETE',
                 headers: {
@@ -111,6 +107,7 @@ function ProfilePage() {
             if (response.ok) {
                 console.log('Listing deleted successfully')
                 alert('Listing removed!')
+                // update the UI
                 setUserItems((prevUserItems) => prevUserItems.filter((item) => item.ItemID !== itemID)
                 );
             } else {
@@ -120,19 +117,10 @@ function ProfilePage() {
             console.error('Error deleting listing', error.message)
         }
     };
-
-
-
+    // if theres no current user then show a message
     if (!currentUser.currentUser.UserID) {
-        return <div>Loading...</div>; 
+        return <div className='headings'>No user logged in</div>; 
     }
-
-
-
-
-
-
-
     return (
         <div>
             <Header />
@@ -147,7 +135,7 @@ function ProfilePage() {
                     <Col md={10}>
                         <Row>
                             <Col md={5}>
-                                <h3 className='headings italic mt-3 mb-2'>Your listings: </h3>
+                                
                                 {userItems.length > 0 ? (
                                     userItems.map((item) => (
                                         <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />

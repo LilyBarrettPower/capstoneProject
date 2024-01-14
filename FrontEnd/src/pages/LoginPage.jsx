@@ -5,6 +5,7 @@ import LoginForm from '../components/LoginForm';
 function LoginPage() {
     return (
         <>
+            {/* add the background video */}
             <video
                 autoPlay
                 loop

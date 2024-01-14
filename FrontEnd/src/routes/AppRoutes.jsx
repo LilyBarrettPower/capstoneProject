@@ -4,7 +4,6 @@ import ProfilePage from '../pages/ProfilePage';
 import TimelinePage from '../pages/TimelinePage';
 import MessagesPage from '../pages/MessagesPage';
 import SavedItemsPage from '../pages/SavedItemsPage';
-import NotificationsPage from '../pages/NotificationsPage';
 import LoginPage from '../pages/LoginPage';
 import SignupPage from '../pages/SignupPage';
 
@@ -17,7 +16,6 @@ function AppRoutes() {
             <Route path="/TimelinePage" element={<TimelinePage/>} />
             <Route path="/MessagesPage" element={<MessagesPage/>} />
             <Route path="/SavedItemsPage" element={<SavedItemsPage/>} />
-            <Route path="/NotificationsPage" element={<NotificationsPage />} />
             <Route path='/SignupPage' element={<SignupPage/>}/>
          
             <Route index element={<Navigate to="/LoginPage" />} />

@@ -3,7 +3,8 @@ import Button from "react-bootstrap/Button";
 
 import HireItemModal from './HireItemModal';
 
-function HireItemButton({itemID, ownerID}) {
+function HireItemButton({ itemID, ownerID }) {
+    // state to handle the modal
     const [showModal, setShowModal] = useState(false);
 
     const handleShow = () => setShowModal(true);

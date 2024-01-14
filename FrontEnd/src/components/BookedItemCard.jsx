@@ -1,32 +1,32 @@
+// import everything required:
 import React, { useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
 import DeleteBookingButton from './DeleteBookingButton';
-
 import { format } from 'date-fns';
 
 const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) => {
 
-    console.log('bookedItems:', bookedItems);
+    console.log('bookedItems:', bookedItems); // testing
 
     const { currentUser } = useUserContext();
+    // state to manage the visibility of the modal
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
 
-
+// function to show modal with selected item data
     const handleShowModal = (itemData) => {
         setSelectedItem(itemData);
         setShowModal(true);
     };
+    // function to close the modal
     const handleCloseModal = () => setShowModal(false);
-
-
-
 
     return (
         <>
             <h3 className='headings italic mt-3 mb-2'>Items you have booked:</h3>
+            {/* map through booked items and dsiaply each as a card */}
             {bookedItems.map((bookedItem) => (
                 <Card key={bookedItem.BookingID} style={{ width: '100%', margin: '10px' }} className="mb-3">
                     <div className="d-flex">
@@ -47,6 +47,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                         </div>
                     </div>
                     <div className="mt-1 mb-3 mx-2">
+                        {/* display buttons */}
                         <Button variant="secondary" className='body' onClick={() => handleShowModal(bookedItem)}>
                             Read more
                         </Button>
@@ -60,7 +61,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                     </div>
                 </Card>
             ))}
-
+{/* display the modal for detailed information */}
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 {selectedItem && (
                     <>
@@ -106,7 +107,6 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                                             </Carousel.Item>
                                         )}
                                     </Carousel>
-                                    {/* Here is where I will put the days of hire! */}
                                 </div>
                             </div>
                         </Modal.Body>

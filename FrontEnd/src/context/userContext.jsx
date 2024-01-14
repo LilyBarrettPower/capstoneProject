@@ -33,7 +33,7 @@ export const UserProvider = (props) => {
     const handleSelectUser = (user) => {
         setSelectedUser(user);
     };
-
+    // reset the current user when logged out
     const logOut = () => {
         setCurrentUser({
             UserID: '',
