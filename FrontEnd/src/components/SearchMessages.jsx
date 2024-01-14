@@ -11,20 +11,23 @@ import '../styling/SearchMessages.css'
 const socket = io('http://localhost:3307');
 
 const SearchMessages = () => {
+    // state for the modal
     const [showModal, setShowModal] = useState(false);
+    // state for the search username
     const [searchUserName, setSearchUserName] = useState('');
+    // state for historical messages
     const [historicalMessages, setHistoricalMessages] = useState([]);
-
-
-
+    // get the current user from the context
     const currentUser = useUserContext();
 
     const handleSearch = async () => {
         try {
+            // search the database for messages based on the inputted username
             const response = await fetch(`http://localhost:3307/rentshare/messages/byusername/${searchUserName}`);
             const data = await response.json();
 
             if (response.ok) {
+                // set the historical messages to the messages returned by the fetch
                 setHistoricalMessages(data.data);
                 setShowModal(true);
                 console.log('Historical Messages:', data.data);
@@ -63,6 +66,7 @@ const SearchMessages = () => {
                             <Modal.Title className='headings'>Historical Messages</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
+                            {/* check if there are historical messages with that user, map over the messages and style based on the ID of the sender */}
                            {historicalMessages.length === 0 ? (
                                 <p className='body'>No historical messages</p>
                             ) : (

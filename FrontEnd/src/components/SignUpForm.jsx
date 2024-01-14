@@ -8,6 +8,7 @@ import { useUserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
 
 function SignUpForm() {
+    // create empty initial form data
     const initialFormData = {
         FullName: "",
         UserName: "",
@@ -15,13 +16,12 @@ function SignUpForm() {
         Contact: "",
         Location: "",
         Password: "",
-        // Added new field for profile picture:
         ProfilePhoto: null,
     };
-
+    // get the update user function from the context
     const { handleUpdateUser } = useUserContext();
     const navigate = useNavigate();
-
+    // use the signup input custom hook
     const {
         formData,
         handleInputChange,
@@ -32,8 +32,6 @@ function SignUpForm() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // console.log("Form data:", formData);
-        // console.log for testing purposes
 
     const formDataToSend = new FormData();
     for (const key in formData) {
@@ -42,21 +40,14 @@ function SignUpForm() {
         
 
         try {
-            // console.log for testing:
-            // console.log('Request URL:', 'http://localhost:3307/rentshare/users/register');
+            // send a post request to the database to create the user 
             const response = await fetch('http://localhost:3307/rentshare/users/register', {
                 method: 'POST',
-                // headers: {
-                //     'Content-Type': 'application/json',
-                // },
                 body: formDataToSend,  //JSON.stringify(formData),
             });
 
             const data = await response.json();
-
-            // console.log('after fetch', response)
             if (response.ok) {
-                // const result = await response.json();
                 console.log('user registered successfully:', data);
 
                 // after successful registration, log user in
@@ -85,7 +76,6 @@ function SignUpForm() {
                     console.error('error during login after registration', errorResult.error);
                 }
             } else {
-                // const errorResult = await response.json();
                 console.error('error during registration', data.error);
                 console.error('details', data)
             }

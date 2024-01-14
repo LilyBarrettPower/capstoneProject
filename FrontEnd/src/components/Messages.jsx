@@ -16,24 +16,24 @@ import SearchMessages from './SearchMessages';
 
     
 const Messages = () => {
-    // const [userName, setUserName] = useState('');
-    // get the users username from the context:
+    // get the current userfrom the context:
     const currentUser = useUserContext();
+    // state for the messages
     const [message, setMessage] = useState('');
     const [receivedMessages, setReceivedMessages] = useState([]);
+    // state for the socket ID
     const [socketId, setSocketId] = useState('');
 
     // states for the searching of users:
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
     const [selectedReceiver, setSelectedReceiver] = useState(null);
-    
+    // start a socket instance:
     const socket = io('http://localhost:3307');
 
     useEffect(() => {
+        // flag for if the component is mounted or not 
         let isMounted = true;
-        
-
         if (currentUser && currentUser.currentUser.UserName) {
             // Emit userConnected event with the username from the user context
             socket.emit('userConnected', currentUser.currentUser.UserName);
@@ -41,10 +41,11 @@ const Messages = () => {
             // Listen for chatMessage event
             socket.on('chatMessage', (data) => {
                 if (isMounted) {
+                    // if the component is mounted, set the recieved messages state to the data 
                     setReceivedMessages((prevMessages) => [...prevMessages, data]);
                 }
             });
-
+            // set the socketID to the current socket.id
             setSocketId(socket.id);
 
             return () => {
@@ -58,6 +59,7 @@ const Messages = () => {
     const sendMessage = async () => {
         if (!selectedReceiver) {
             console.log('No selected user');
+            alert('You must select a user to send a message to')
             return;
         }
 
@@ -81,7 +83,7 @@ const Messages = () => {
             
             if (response.ok) {
                 console.log('Message stored in the database successfully!');
-                // Optionally, you can update the local state with the new message if needed.
+                // update the state with the new message 
                 setReceivedMessages((prevMessages) => [...prevMessages, { sender: currentUser.currentUser.UserName, message }]);
             } else {
                 console.error('Error storing message in the database:', result.error);
@@ -105,8 +107,10 @@ const Messages = () => {
     // adding search functionality:
     const handleSearch = async () => {
         try {
+            // search the database for users with a username that was inputted
             const response = await fetch(`http://localhost:3307/rentshare/users/search?query=${searchQuery}`);
             const data = await response.json();
+            // set the search results to the returned data
             setSearchResults(data);
         } catch (error) {
             console.error('Error fetching users:', error);
@@ -114,12 +118,12 @@ const Messages = () => {
     };
 
     const handleSelectReceiver = (user) => {
-        setSelectedReceiver(user);
+        setSelectedReceiver(user); // set the selected reciever to the user searched
         setSearchResults([]); // Clear search results
-        setSearchQuery('');
+        setSearchQuery(''); // clear the search 
     };
 
-    console.log('Received Messages client side:', receivedMessages);
+    console.log('Received Messages client side:', receivedMessages); // testing
 
 
 
@@ -128,13 +132,14 @@ const Messages = () => {
         return receivedMessages.map((item, index) => {
             console.log('Received Message:', item);
             return (
-                <div key={index} className={item.sender === currentUser.currentUser.UserName ? 'sender-message' : 'receiver-message'}>
-                    {typeof item === 'object' ? (
+                // if the senders username is the same as the current user then style this as a sender-message
+                <div key={index} className={item.sender === currentUser.currentUser.UserName ? 'sender-message' : 'receiver-message'}> 
+                    {typeof item === 'object' ? ( // check if the item is returned as an object 
                         <>
                             <p className='headings'>{item.sender === currentUser.currentUser.UserName ? 'You' : item.sender}:</p>
                             <p className='body'>{item.message}</p>
                         </>
-                    ) : (
+                    ) : ( // if not, render the item alone 
                         <p className='body'>{item}</p>
                     )}
                 </div>
@@ -143,13 +148,10 @@ const Messages = () => {
     };
 
 
-   
-
         return (
             <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
                 <h2 className='headings italic my-2 mx-5'>{currentUser.currentUser.UserName}'s Chat </h2>
                 <Row>
-                        {/* <p>SocketID: {socketId}</p> */}
                     <Col md={4}>
                         <div className="d-flex align-items-end mt-2" style={{marginLeft: '10px'}}>
                         {/* Search bar for users */}

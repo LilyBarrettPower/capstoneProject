@@ -9,11 +9,11 @@ function ProfileInfo() {
     // using the useUserContext custom hook
     const { currentUser } = useUserContext();
 
-
+    // if there is no current user then return null
     if (!currentUser) {
         return null;
     }
-
+    // destructure current user 
     const { FullName, Location, Contact, ProfilePhoto } = currentUser;
 
 

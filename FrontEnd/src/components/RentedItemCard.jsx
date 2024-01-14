@@ -9,22 +9,19 @@ import DeleteListingButton from './DeleteListingButton';
 
 import { format } from 'date-fns';
 
-import ListGroup from 'react-bootstrap/ListGroup';
-
-
-
 
 
 const RentedItemCard = ({ itemData, onDeleteListing }) => {
     
     // import the currentUser from the userContext
     const currentUser = useUserContext();
+    // states for the bookings
     const [showModal, setShowModal] = useState(false);
     const [bookings, setBookings] = useState([]);
 
     
     const handleShowModal = () => {
-        // Fetch bookings for the current item
+        // Fetch bookings for the current item based on itemID
         fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemData.ItemID}}`)
             .then(response => response.json())
             .then(data => setBookings(data.data))

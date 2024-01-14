@@ -10,51 +10,46 @@ import { format } from 'date-fns';
 
 const ItemCard = ({ itemData }) => { 
 
-    console.log('itemData:', itemData);
+    console.log('itemData:', itemData); // testing
+    // create a state to store the bookings data
     const [bookings, setBookings] = useState([]);
-    
+    // get the current user from the context
     const { currentUser } = useUserContext();
+    // get the owener id from the item as UserID
     const ownerID = itemData.UserID;
 
-    console.log(currentUser.UserID);
-
+    console.log(currentUser.UserID); // testing
+        //check if item data is available
         if (!itemData) {
             console.error('Item data is undefined or null.');
             return null; // Render nothing if itemData is not available
         }
-
+        // testing:
         console.log('ItemName:', itemData.ItemName);
         console.log('ItemFeaturedDescription:', itemData.ItemFeaturedDescription);
         console.log('ItemPricePerDay:', itemData.ItemPricePerDay);
 
 
-    
+    // state for the modal:
     const [showModal, setShowModal] = useState(false);
 
-    // const handleShowModal = () => setShowModal(true);
-
-    // Testing:
+    
     const handleShowModal = () => {
-        // Fetch bookings for the current item
+        // Fetch bookings for the current item based on the itemID
         fetch(`http://localhost:3307/rentshare/bookings/getbookedbyitem/${itemData.ItemID}}`)
             .then(response => response.json())
-            .then(data => setBookings(data.data))
+            .then(data => setBookings(data.data)) // set the booking data to the returned data from the fetch
             .catch(error => console.error('Error fetching bookings:', error));
 
         setShowModal(true);
     };
 
-
-
-
-
     const handleCloseModal = () => setShowModal(false);
-
+// function to save the item, called when user presses save item button:
     const handleSaveItem = async (itemID) => {
         try {
             const userID = currentUser.UserID;
-
-            // Make API call to save the item
+            // Make API call to save the item in the database 
             const response = await fetch('http://localhost:3307/rentshare/saveditems/create', {
                 method: 'POST',
                 headers: {
@@ -122,7 +117,8 @@ const ItemCard = ({ itemData }) => {
                         <Carousel className='w-100'>
                             <Carousel.Item>
                                     <img className='d-block w-100' src={itemData.ItemFeaturedPhoto} alt='Featured image' style={{ MaxWidth: '400px', maxHeight: '300px' }} />
-                            </Carousel.Item>
+                                </Carousel.Item>
+                                {/* check if itemData.ItemOtherPhotos is an array before proceeding: */}
                                 {Array.isArray(JSON.parse(itemData.ItemOtherPhotos)) &&
                                     JSON.parse(itemData.ItemOtherPhotos).map((photo, photoIndex) => (
                                         <Carousel.Item key={photoIndex}>
@@ -137,7 +133,8 @@ const ItemCard = ({ itemData }) => {
                             </Carousel>
                             <div>
                                 <h5 className='headings mt-3 mb-2'>Booking Information</h5>
-                                {bookings.length > 0 ? (
+                                {/* filter and map over bookings to display only bookings whos enddate is in the future */}
+                                {bookings.length > 0 ? ( // check if there are bookings for this item
                                     bookings
                                         .filter((booking) => new Date(booking.EndDate) >= new Date())
                                         .map((booking) => (

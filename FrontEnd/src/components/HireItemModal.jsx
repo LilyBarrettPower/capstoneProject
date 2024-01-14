@@ -72,7 +72,7 @@ function HireItemModal({ show, handleClose, itemID, ownerID }) {
             });
 
             if (response.ok) {
-                // Handle success, maybe update the UI or show a success message
+                // Handle success,  show a success message
                 console.log('Booking created successfully!');
                 handleClose(); // Close the modal after successful booking
             } else {
