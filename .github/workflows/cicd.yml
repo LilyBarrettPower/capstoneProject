@@ -44,7 +44,7 @@ jobs:
         file: ./FrontEnd/Dockerfile
         push: true
         platforms: linux/amd64, linux/arm64
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CapstoneProject-FrontEnd:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/capstone-front-end:latest
 
     - name: Build and push backend
       id: docker_build_backend
@@ -54,7 +54,7 @@ jobs:
         file: ./BackEnd/Dockerfile
         push: true
         platforms: linux/amd64, linux/arm64
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/CapstoneProject-BackEnd:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/capstone-back-end:latest
 
     - name: Image digest frontend
       run: echo ${{ steps.docker_build_frontend.outputs.digest }}
