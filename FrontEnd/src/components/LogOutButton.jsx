@@ -1,7 +1,7 @@
 // import bootstrap components
 import Button from "react-bootstrap/esm/Button";
 // import custom styling 
-import '../styling/logOutButton.css';
+import '../styling/LogOutButton.css';
 // import extras:
 import { useUserContext } from "../context/userContext";
 import { useNavigate } from "react-router-dom";
