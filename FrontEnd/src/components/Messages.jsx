@@ -150,7 +150,9 @@ const Messages = () => {
 
         return (
             <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
-                <h2 className='headings italic my-2 mx-5'>{currentUser.currentUser.UserName}'s Chat </h2>
+                <div className='titleContent my-2'>
+                    <h2 className='headings italic my-2 text-center'>{currentUser.currentUser.UserName}'s Chat </h2>
+                </div>
                 <Row>
                     <Col md={4}>
                         <div className="d-flex align-items-end mt-2" style={{marginLeft: '10px'}}>

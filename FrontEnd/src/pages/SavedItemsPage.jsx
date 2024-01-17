@@ -73,10 +73,9 @@ function SavedItemsPage() {
             <Header></Header>
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
-            <h3 className='headings italic' style={{ marginBottom: '25px', marginTop: '25px', marginLeft: '50px' }}>Items you have saved:</h3>
             <Container fluid className="d-flex">
-                <Row>
-                    <Col md={8}>
+                <Row className="justify-content-center">
+                    <Col md={8} className='CardContainer mx-auto'>
                         {userSavedItems.length > 0 ? (
                             <SavedItemsCard savedItems={userSavedItems} onUnSave={handleUnsaveItem} />
                         ) : (

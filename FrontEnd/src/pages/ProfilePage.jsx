@@ -16,6 +16,8 @@ import Container from 'react-bootstrap/esm/Container';
 import { useUserContext } from '../context/userContext'
 import { useState, useEffect } from 'react';
 
+import '../styling/Page.css';
+
 
 function ProfilePage() {
     // get the current user from the context
@@ -128,14 +130,14 @@ function ProfilePage() {
             <LogOutButton />
             <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
                 <Row>
-                    <Col md={2}>
+                    <Col md={2} className='profileInfoCard'>
                         <CreatePostButton />
                         <ProfileInfo currentUser={currentUser} />
                     </Col>
                     <Col md={10}>
                         <Row>
-                            <Col md={5}>
-                                
+                            <Col md={5} className='CardContainer'>
+                                <h3 className='headings italic mt-3 mb-2'>Your listings:</h3>
                                 {userItems.length > 0 ? (
                                     userItems.map((item) => (
                                         <RentedItemCard key={item.ItemID} itemData={item} onDeleteListing={handleDeleteListing} />
@@ -145,7 +147,8 @@ function ProfilePage() {
                                 )}
                             </Col>
                             {/* render the booked items here  */}
-                            <Col md={5}>
+                            <Col md={5} className='CardContainer'>
+                                <h3 className='headings italic mt-3 mb-2'>Your bookings:</h3>
                                 {userBookedItems.length > 0 ? (
                                     <BookedItemCard
                                         bookedItems={userBookedItems}

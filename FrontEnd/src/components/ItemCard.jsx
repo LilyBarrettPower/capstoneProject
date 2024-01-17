@@ -77,7 +77,7 @@ const ItemCard = ({ itemData }) => {
 
     return (
         <>
-            <Card style={{ width: '50%', margin: '10px' }} className="mb-3 mx-auto">
+            <Card style={{ width: '100%', margin: '10px' }} className="mb-3 mx-auto">
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
                     <Card.Body>
@@ -90,7 +90,7 @@ const ItemCard = ({ itemData }) => {
                     <Card.Img
                         src={itemData.ItemFeaturedPhoto}
                         alt={itemData.ItemName}
-                        style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain', margin: '10px' }}
+                        style={{ maxWidth: '80%', maxHeight: '50%', objectFit: 'contain', margin: '10px' }}
                     />
                 </div>
             </div>
