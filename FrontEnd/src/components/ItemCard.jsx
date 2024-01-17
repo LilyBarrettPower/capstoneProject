@@ -77,28 +77,29 @@ const ItemCard = ({ itemData }) => {
 
     return (
         <>
-            <Card style={{ width: '100%', margin: '10px' }} className="mb-3 mx-auto">
+            <Card style={{ width: '100%', margin: '10px', maxHeight: '200px' }} className="mb-3 mx-auto">
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
                     <Card.Body>
                             <Card.Title className="headings">{itemData.ItemName || 'No Name'}</Card.Title>
                             <Card.Text className="body">{itemData.ItemFeaturedDescription || 'No Description'}</Card.Text>
                             <Card.Text className="body">${itemData.ItemPricePerDay ? `${itemData.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
+                            <div className="mt-1 mb-3 mx-2">
+                                <Button variant="secondary" onClick={handleShowModal} className='body mt-2'>Read more</Button>
+                                <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
+                                <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
+                            </div>
+                            
                     </Card.Body>
+                    </div>
+                    <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
+                        <Card.Img
+                            src={itemData.ItemFeaturedPhoto}
+                            alt={itemData.ItemName}
+                            style={{ maxWidth: '80%', maxHeight: '150px', objectFit: 'contain', margin: '10px' }}
+                        />
+                    </div>
                 </div>
-                <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
-                    <Card.Img
-                        src={itemData.ItemFeaturedPhoto}
-                        alt={itemData.ItemName}
-                        style={{ maxWidth: '80%', maxHeight: '50%', objectFit: 'contain', margin: '10px' }}
-                    />
-                </div>
-            </div>
-            <div className="mt-1 mb-3 mx-2">
-                    <Button variant="secondary" onClick={handleShowModal} className='body mt-2'>Read more</Button>
-                    <SaveItemButton itemID={itemData.ItemID} onSave={handleSaveItem} />
-                    <HireItemButton itemID={itemData.ItemID} ownerID={ownerID} />
-            </div>
         </Card>
 
         <Modal show={showModal} onHide={handleCloseModal} size='lg'>

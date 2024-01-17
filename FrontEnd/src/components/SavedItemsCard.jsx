@@ -39,6 +39,13 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                                 <Card.Title className="headings">{savedItem.item.ItemName || 'No Name'}</Card.Title>
                                 <Card.Text className="body">{savedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${savedItem.item.ItemPricePerDay ? `${savedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
+                                <div className="mt-1 mb-3 mx-2">
+                                    <Button variant="secondary" className='body mx-2 mt-2' onClick={() => handleShowModal(savedItem)}>
+                                        Read more
+                                    </Button>
+                                    <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave} />
+                                    <HireItemButton itemID={savedItem.item.ItemID} ownerID={savedItem.item.OwnerID} />
+                                </div>
                             </Card.Body>
                         </div>
                         <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
@@ -48,13 +55,6 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                                 style={{ maxWidth: '80%', maxHeight: '50%', objectFit: 'contain', margin: '10px' }}
                             />
                         </div>
-                    </div>
-                    <div className="mt-1 mb-3 mx-2">
-                        <Button variant="secondary" className='body mx-2 mt-2' onClick={() => handleShowModal(savedItem)}>
-                            Read more
-                        </Button>
-                        <UnSaveItemButton savedItemID={savedItem.SavedItemID} UnSave={onUnSave} />
-                        <HireItemButton itemID={savedItem.item.ItemID} ownerID={savedItem.item.OwnerID} />
                     </div>
                 </Card>
             ))}
