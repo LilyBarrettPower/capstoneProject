@@ -14,6 +14,8 @@ import Container from 'react-bootstrap/esm/Container';
 
 import { useUserContext } from '../context/userContext';
 
+import '../styling/Page.css'
+
 function TimelinePage() {
     // Use the context custom hook
     const { currentUser } = useUserContext();
@@ -66,11 +68,11 @@ function TimelinePage() {
             <NavBar></NavBar>
             <LogOutButton></LogOutButton>
             <div>
-                <h2 className="headings italic text-center my-2">What ever you're looking for, you'll find it here!</h2>
+                <h2 className="headings italic text-center my-2 titleContent">What ever you're looking for, you'll find it here!</h2>
             </div>
           
             <Container fluid style={{  marginTop: '20px' }}>
-                <Row>
+                <Row className='justify-content-center'>
                     <Col md={2}>
                         <Filters
                             selectedCategory={selectedCategory}
@@ -84,7 +86,7 @@ function TimelinePage() {
                     <Col md={5}>
                         <SearchBar searchQuery={searchQuery} onSearchChange={setSearchQuery} />
                     </Col>
-                    <Col md={12}>
+                    <Col md={10} className='CardContainer mx-auto'>
                         {itemsData.length > 0 ? (
                             <div className='d-flex flex-column justify-content-around'>
                                 {itemsData.map((item, index) => (

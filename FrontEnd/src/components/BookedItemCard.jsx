@@ -25,10 +25,9 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
 
     return (
         <>
-            <h3 className='headings italic mt-3 mb-2'>Items you have booked:</h3>
             {/* map through booked items and dsiaply each as a card */}
             {bookedItems.map((bookedItem) => (
-                <Card key={bookedItem.BookingID} style={{ width: '100%', margin: '10px' }} className="mb-3">
+                <Card key={bookedItem.BookingID} style={{ width: '100%'}} className="mb-3">
                     <div className="d-flex">
                         <div style={{ float: 'left', width: '70%' }}>
                             <Card.Body>

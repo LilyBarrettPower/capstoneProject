@@ -13,7 +13,7 @@ Create a MySQL database:
 - create local instance localhost:3306
 - create a schema called RentShareDB
 
-# Set up the code:
+Set up the code:
 - git clone https://github.com/LilyBarrettPower/capstoneProject.git
 - cd FrontEnd
 - npm install

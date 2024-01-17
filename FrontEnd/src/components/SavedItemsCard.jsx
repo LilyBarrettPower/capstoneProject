@@ -5,6 +5,8 @@ import { useUserContext } from '../context/userContext';
 import UnSaveItemButton from './UnSaveItemButton';
 import HireItemButton from './HireItemButton';
 
+
+
 const SavedItemsCard = ({ savedItems, onUnSave }) => {
 
     console.log(onUnSave); 
@@ -28,8 +30,9 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
 
     return (
         <>
+            <h3 className='headings italic mt-3 mb-2'>Items you have saved:</h3>
             {savedItems.map((savedItem) => (
-                <Card key={savedItem.SavedItemID} style={{ width: '100%', margin: '10px', maxHeight:'200px' }} className="mb-3">
+                <Card key={savedItem.SavedItemID} style={{ width: '100%', maxHeight:'200px' }} className="mb-3">
                     <div className="d-flex">
                         <div style={{ float: 'left', width: '70%' }}>
                             <Card.Body>

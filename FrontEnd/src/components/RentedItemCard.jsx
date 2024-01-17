@@ -11,6 +11,8 @@ import { format } from 'date-fns';
 
 
 
+
+
 const RentedItemCard = ({ itemData, onDeleteListing }) => {
     
     // import the currentUser from the userContext
@@ -34,7 +36,9 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
 
     return (
         <>
-            <Card style={{ width: '100%', margin: '10px' }} className="mb-3">
+            {/* added div for styling: */}
+            <div>
+            <Card style={{ width: '100%' }} className="mb-3">
                 <div className="d-flex">
                     <div style={{ float: 'left', width: '70%' }}>
                         <Card.Body>
@@ -117,8 +121,8 @@ const RentedItemCard = ({ itemData, onDeleteListing }) => {
                         </div>
                     </div>
                 </Modal.Body>
-
-            </Modal>
+                </Modal>
+            </div>
         </>
     )
 };

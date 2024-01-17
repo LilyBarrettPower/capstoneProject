@@ -18,3 +18,8 @@
     /* Adjust the value based on your layout */
     overflow-y: auto;
 }
+
+.titleContent {
+        background-color: #6F5E53;
+            padding: 10px;
+        }
