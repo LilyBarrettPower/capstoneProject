@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 // import user conetxt for the current user infomration
 import { useUserContext } from "../context/userContext";
 
-function CreatePostModal({ show, handleClose }) {
+function CreatePostModal({ show, handleClose, onCreateItem }) {
    
     const { currentUser } = useUserContext();
 
@@ -86,6 +86,8 @@ function CreatePostModal({ show, handleClose }) {
                 });
                 // close the create post modal
                 handleClose();
+                // call the onCreateItem function to update the UI
+                onCreateItem();
             } else {
                 const errorResult = await response.json();
                 console.error('Error while registering item', errorResult.error);
