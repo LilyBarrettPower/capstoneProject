@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';

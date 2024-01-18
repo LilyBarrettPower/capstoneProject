@@ -31,6 +31,11 @@ router.get('/search', (req, res) => {
     Controllers.userController.searchUsers(query, res);
 });
 
+// route for getting user details by UserID
+router.get('/:UserID', (req, res) => {
+    Controllers.userController.getUserByUserID(req.params.UserID, res);
+});
+
 // Can delete this route as have the register route! :) 
 router.post('/create', (req, res) => {
     Controllers.userController.createUser(req.body, res);

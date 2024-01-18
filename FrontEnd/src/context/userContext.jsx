@@ -14,10 +14,10 @@ export const UserProvider = (props) => {
         ProfilePhoto: '',
     });
 
-
     // adding this for selcting user for messaging
     const [selectedUser, setSelectedUser] = useState(null);
 
+ 
     const handleUpdateUser = (user) => {
         // Convert ProfilePhoto to object URL if it's a File object
         if (user.ProfilePhoto instanceof File) {
