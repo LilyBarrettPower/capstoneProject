@@ -1,5 +1,5 @@
 // import everything required:
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
 import { useUserContext } from '../context/userContext';
@@ -14,6 +14,35 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
     // state to manage the visibility of the modal
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    // adding this for getting the userdetails:
+    const [userDetails, setUserDetails] = useState({});
+
+
+    // Fetch the poster's username based on UserID
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            for (const bookedItem of bookedItems) {
+                if (bookedItem.item.UserID !== currentUser.UserID) {
+                    try {
+                        const response = await fetch(`http://localhost:3307/rentshare/users/${bookedItem.item.UserID}`);
+                        const result = await response.json();
+                        if (response.ok) {
+                            setUserDetails((prevDetails) => ({
+                                ...prevDetails,
+                                [bookedItem.item.UserID]: result.data, // Store user details by UserID
+                            }));
+                        } else {
+                            console.error('Error fetching user details:', result.error);
+                        }
+                    } catch (error) {
+                        console.error('Error fetching user details:', error.message);
+                    }
+                }
+            }
+        };
+
+        fetchUserDetails();
+    }, [bookedItems, currentUser.UserID]);
 
 // function to show modal with selected item data
     const handleShowModal = (itemData) => {
@@ -26,41 +55,48 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
     return (
         <>
             {/* map through booked items and dsiaply each as a card */}
-            {bookedItems.map((bookedItem) => (
-                <Card key={bookedItem.BookingID} style={{ width: '100%'}} className="mb-3">
-                    <div className="d-flex">
-                        <div style={{ float: 'left', width: '70%' }}>
-                            <Card.Body>
-                                <Card.Title className="headings">{bookedItem.item.ItemName || 'No Name'}</Card.Title>
-                                <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
-                                <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
-                                <Card.Text className='body'>{format(new Date(bookedItem.StartDate), 'do MMM yyyy')} - {format(new Date(bookedItem.EndDate), 'do MMM yyyy')}</Card.Text> 
-                            </Card.Body>
+            {bookedItems.map((bookedItem) => {
+                const posterUsername = bookedItem.item.UserID === currentUser.UserID
+                    ? currentUser.UserName
+                    : userDetails[bookedItem.item.UserID]?.UserName || 'Unknown';
+                
+                return (
+                    <Card key={bookedItem.BookingID} style={{ width: '100%' }} className="mb-3">
+                        <div className="d-flex">
+                            <div style={{ float: 'left', width: '70%' }}>
+                                <Card.Body>
+                                    <Card.Title className="headings">{bookedItem.item.ItemName || 'No Name'}</Card.Title>
+                                    <Card.Text className='body'>Posted by: { posterUsername}</Card.Text>
+                                    <Card.Text className="body">{bookedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
+                                    <Card.Text className="body">${bookedItem.item.ItemPricePerDay ? `${bookedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
+                                    <Card.Text className='body'>{format(new Date(bookedItem.StartDate), 'do MMM yyyy')} - {format(new Date(bookedItem.EndDate), 'do MMM yyyy')}</Card.Text>
+                                </Card.Body>
+                            </div>
+                            <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
+                                <Card.Img
+                                    src={bookedItem.item.ItemFeaturedPhoto}
+                                    alt={bookedItem.item.ItemName}
+                                    style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain', margin: '10px' }}
+                                />
+                            </div>
                         </div>
-                        <div style={{ float: 'right', width: '30%', display: 'flex', justifyContent: 'center' }}>
-                            <Card.Img
-                                src={bookedItem.item.ItemFeaturedPhoto}
-                                alt={bookedItem.item.ItemName}
-                                style={{ maxWidth: '80%', maxHeight: '80%', objectFit: 'contain', margin: '10px' }}
-                            />
+                        <div className="mt-1 mb-3 mx-2">
+                            {/* display buttons */}
+                            <Button variant="secondary" className='body' onClick={() => handleShowModal(bookedItem)}>
+                                Read more
+                            </Button>
+                            <DeleteBookingButton
+                                bookingID={bookedItem.BookingID}
+                                onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
+                                setUserBookedItems={setUserBookedItems}
+                            >
+                                Remove booking
+                            </DeleteBookingButton>
                         </div>
-                    </div>
-                    <div className="mt-1 mb-3 mx-2">
-                        {/* display buttons */}
-                        <Button variant="secondary" className='body' onClick={() => handleShowModal(bookedItem)}>
-                            Read more
-                        </Button>
-                        <DeleteBookingButton
-                            bookingID={bookedItem.BookingID}
-                            onDeleteBooking={() => onDeleteBooking(bookedItem.BookingID)}
-                            setUserBookedItems={setUserBookedItems}
-                        >
-                            Remove booking
-                        </DeleteBookingButton>
-                    </div>
-                </Card>
-            ))}
-{/* display the modal for detailed information */}
+                    </Card>
+                );
+            })}
+            {/* display the modal for detailed information */}
             <Modal show={showModal} onHide={handleCloseModal} size="lg">
                 {selectedItem && (
                     <>
@@ -113,7 +149,7 @@ const BookedItemCard = ({ bookedItems, onDeleteBooking, setUserBookedItems,}) =>
                 )}
             </Modal>
         </>
-    )
+    );
 }
 
 export default BookedItemCard;
