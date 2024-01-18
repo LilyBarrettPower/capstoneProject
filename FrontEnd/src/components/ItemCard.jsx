@@ -1,6 +1,6 @@
 import Card from 'react-bootstrap/Card';
 import { Button, Modal, Carousel } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SaveItemButton from './SaveItemButton';
 import { useUserContext } from '../context/userContext';
@@ -8,7 +8,9 @@ import HireItemButton from './HireItemButton';
 
 import { format } from 'date-fns';
 
+
 const ItemCard = ({ itemData }) => { 
+
 
     console.log('itemData:', itemData); // testing
     // create a state to store the bookings data
@@ -17,6 +19,8 @@ const ItemCard = ({ itemData }) => {
     const { currentUser } = useUserContext();
     // get the owener id from the item as UserID
     const ownerID = itemData.UserID;
+    // adding this for getting the userdetails:
+    const [userDetails, setUserDetails] = useState({});
 
     console.log(currentUser.UserID); // testing
         //check if item data is available
@@ -29,7 +33,29 @@ const ItemCard = ({ itemData }) => {
         console.log('ItemFeaturedDescription:', itemData.ItemFeaturedDescription);
         console.log('ItemPricePerDay:', itemData.ItemPricePerDay);
 
+    // Fetch the poster's username based on UserID
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            if (itemData.UserID !== currentUser.UserID) {
+                try {
+                    const response = await fetch(`http://localhost:3307/rentshare/users/${itemData.UserID}`);
+                    const result = await response.json();
+                    if (response.ok) {
+                        setUserDetails(result.data);
+                    } else {
+                        console.error('Error fetching user details:', result.error);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user details:', error.message);
+                }
+            }
+        };
 
+        fetchUserDetails();
+    }, [itemData.UserID, currentUser.UserID]);
+
+    const posterUsername = itemData.UserID === currentUser.UserID ? currentUser.UserName : userDetails.UserName || 'Unknown';
+    
     // state for the modal:
     const [showModal, setShowModal] = useState(false);
 
@@ -77,11 +103,12 @@ const ItemCard = ({ itemData }) => {
 
     return (
         <>
-            <Card style={{ width: '100%', margin: '10px', maxHeight: '200px' }} className="mb-3 mx-auto">
+            <Card style={{ width: '100%', margin: '10px', maxHeight: '250px' }} className="mb-3 mx-auto">
             <div className="d-flex">
                 <div style={{ float: 'left', width: '70%' }}>
                     <Card.Body>
                             <Card.Title className="headings">{itemData.ItemName || 'No Name'}</Card.Title>
+                            <Card.Text className="body">Posted by: {posterUsername}</Card.Text>
                             <Card.Text className="body">{itemData.ItemFeaturedDescription || 'No Description'}</Card.Text>
                             <Card.Text className="body">${itemData.ItemPricePerDay ? `${itemData.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                             <div className="mt-1 mb-3 mx-2">

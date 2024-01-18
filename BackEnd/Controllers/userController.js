@@ -172,6 +172,22 @@ const searchUsers = async (query, res) => {
     }
 };
 
+// get user details by UserID:
+const getUserByUserID = (userID, res) => {
+    Models.User.findByPk(userID)
+        .then(data => {
+            if (data) {
+                res.send({ result: 200, data: data });
+            } else {
+                res.send({ result: 404, error: 'User not found' });
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.send({ result: 500, error: err.message });
+        });
+};
+
 module.exports = {
     getUser,
     createUser,
@@ -179,7 +195,8 @@ module.exports = {
     deleteUser,
     registerUser,
     loginUser,
-    searchUsers
+    searchUsers,
+    getUserByUserID
 };
 
 
