@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import CreatePostModal from './CreatePostModal';
 
 
-function CreatePostButton() {
+function CreatePostButton({onCreateItem}) {
     // state for showing modal
     const [showModal, setShowModal] = useState(false);
 
@@ -18,7 +18,7 @@ function CreatePostButton() {
                 Create Post
             </Button>
             {/* render the modal: */}
-                <CreatePostModal show={showModal} handleClose={() => setShowModal(false)}></CreatePostModal>
+            <CreatePostModal show={showModal} handleClose={() => setShowModal(false)} onCreateItem={onCreateItem} ></CreatePostModal>
         </>
     )
 }

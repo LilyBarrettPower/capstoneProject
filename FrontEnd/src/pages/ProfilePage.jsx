@@ -119,6 +119,23 @@ function ProfilePage() {
             console.error('Error deleting listing', error.message)
         }
     };
+
+    // create a handlecreateitem function to update the Ui when an item is created:
+    const handleCreateItem = async () => {
+        try {
+            const response = await fetch(userItemsUrl);
+            const result = await response.json();
+
+            if (response.ok) {
+                setUserItems(result.data);
+            } else {
+                setErrorRentedItems(result.error);
+            }
+        } catch (error) {
+            setErrorRentedItems(error.message);
+        }
+    };
+
     // if theres no current user then show a message
     if (!currentUser.currentUser.UserID) {
         return <div className='headings'>No user logged in</div>; 
@@ -131,7 +148,7 @@ function ProfilePage() {
             <Container fluid style={{ paddingLeft: '80px', paddingRight: '20px' }}>
                 <Row>
                     <Col md={2} className='profileInfoCard'>
-                        <CreatePostButton />
+                        <CreatePostButton onCreateItem={handleCreateItem} />
                         <ProfileInfo currentUser={currentUser} />
                     </Col>
                     <Col md={10}>
