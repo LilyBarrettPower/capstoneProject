@@ -9,12 +9,39 @@ import HireItemButton from './HireItemButton';
 
 const SavedItemsCard = ({ savedItems, onUnSave }) => {
 
-    console.log(onUnSave); 
+    console.log(savedItems); 
 
     const { currentUser } = useUserContext();
     // states for the modal
     const [showModal, setShowModal] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null); 
+    // adding this for getting the userdetails:
+    const [userDetails, setUserDetails] = useState({});
+
+    // Fetch the poster's username based on UserID
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            if (savedItems.item.UserID !== currentUser.UserID) {
+                try {
+                    const response = await fetch(`http://localhost:3307/rentshare/users/${savedItems.item.UserID}`);
+                    const result = await response.json();
+                    if (response.ok) {
+                        setUserDetails(result.data);
+                    } else {
+                        console.error('Error fetching user details:', result.error);
+                    }
+                } catch (error) {
+                    console.error('Error fetching user details:', error.message);
+                }
+            }
+        };
+
+        fetchUserDetails();
+    }, [savedItems.item.UserID, currentUser.UserID]);
+
+    const posterUsername = savedItems.item.UserID === currentUser.UserID ? currentUser.UserName : userDetails.UserName || 'Unknown';
+
+
 
 
     const handleShowModal = (itemData) => {
@@ -37,6 +64,7 @@ const SavedItemsCard = ({ savedItems, onUnSave }) => {
                         <div style={{ float: 'left', width: '70%' }}>
                             <Card.Body>
                                 <Card.Title className="headings">{savedItem.item.ItemName || 'No Name'}</Card.Title>
+                                <Card.Text className='body'>Posted by: { posterUsername}</Card.Text>
                                 <Card.Text className="body">{savedItem.item.ItemFeaturedDescription || 'No Description'}</Card.Text>
                                 <Card.Text className="body">${savedItem.item.ItemPricePerDay ? `${savedItem.item.ItemPricePerDay} Per Day` : 'No Price'}</Card.Text>
                                 <div className="mt-1 mb-3 mx-2">
